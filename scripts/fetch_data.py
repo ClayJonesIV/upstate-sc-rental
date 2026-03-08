@@ -27,14 +27,23 @@ HEADERS = {
     "Accept": "application/json",
 }
 
+MAX_API_CALLS = 50
+_call_count = 0
+
 def fetch_zip(zip_code: str) -> dict | None:
     """Fetch /markets data for a single zip code."""
+    global _call_count
+    if _call_count >= MAX_API_CALLS:
+        print(f"  ⛔ Skipping {zip_code} — API call limit of {MAX_API_CALLS} reached")
+        return None
+
     url = f"{RENTCAST_BASE_URL}/markets"
-    params = {"zipCode": zip_code, "historyMonths": 3}  # last 3 months for safety
+    params = {"zipCode": zip_code, "historyMonths": 3}
     try:
         r = requests.get(url, headers=HEADERS, params=params, timeout=30)
         r.raise_for_status()
-        print(f"  ✓ {zip_code}")
+        _call_count += 1
+        print(f"  ✓ {zip_code} (call {_call_count}/{MAX_API_CALLS})")
         return r.json()
     except requests.HTTPError as e:
         print(f"  ✗ {zip_code} — HTTP {r.status_code}: {r.text[:120]}")
@@ -50,7 +59,6 @@ def extract_rental_metrics(data: dict, bedrooms: int | None = None) -> dict:
     rental = data.get("rentalData", {})
 
     if bedrooms is not None:
-        # RentCast nests bedroom data under rentalData.bedrooms.{n}bedroom
         key = f"{bedrooms}bedroom" if bedrooms <= 4 else f"{bedrooms}bedroom"
         bd = rental.get("bedrooms", {}).get(key, {})
         return {
@@ -116,7 +124,6 @@ def build_month_record(run_date: datetime, all_zip_data: dict) -> dict:
             raw = all_zip_data.get(z)
             if raw is None:
                 continue
-            # Extract aggregate + per-bedroom metrics for this zip
             agg = extract_rental_metrics(raw)
             agg["bedrooms"] = {}
             for b in BEDROOM_SIZES:
@@ -155,7 +162,7 @@ def main():
         if result:
             all_zip_data[z] = result
         if i < len(ALL_ZIPS) - 1:
-            time.sleep(0.5)   # be polite to the API
+            time.sleep(0.5)
 
     # Save raw snapshot for debugging
     RAW_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -177,7 +184,8 @@ def main():
 
     save_history(history)
     print(f"History saved → {HISTORY_FILE.name}")
-    print(f"\n✅ Fetch complete — {len(all_zip_data)}/{len(ALL_ZIPS)} zips returned data\n")
+    print(f"\n✅ Fetch complete — {len(all_zip_data)}/{len(ALL_ZIPS)} zips returned data")
+    print(f"   API calls used: {_call_count}/{MAX_API_CALLS}\n")
 
 if __name__ == "__main__":
     main()
