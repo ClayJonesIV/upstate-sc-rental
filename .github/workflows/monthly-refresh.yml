@@ -23,22 +23,34 @@ jobs:
       - name: Install dependencies
         run: pip install requests anthropic
 
-      - name: Fetch RentCast market data
+      # ── Step 1: Pull free public data (Apartment List + Zillow Research) ──
+      # No API key needed. Fetches bedroom-level rent CSVs and saves to
+      # data/supplemental_latest.json for fetch_data.py to blend in.
+      - name: Fetch supplemental data (Apartment List + Zillow Research)
+        run: python scripts/fetch_supplemental.py
+
+      # ── Step 2: Fetch RentCast data and blend with supplemental ───────────
+      # Reads supplemental_latest.json automatically and merges bedroom rents.
+      - name: Fetch RentCast market data (+ blend supplemental)
         env:
           RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
         run: python scripts/fetch_data.py
 
+      # ── Step 3: Calculate MoM / QoQ / YoY trends ─────────────────────────
       - name: Calculate trends (MoM, QoQ, YoY)
         run: python scripts/calculate_trends.py
 
+      # ── Step 4: Generate AI narrative analysis ────────────────────────────
       - name: Generate AI insights
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scripts/generate_insights.py
 
+      # ── Step 5: Build dashboard HTML ──────────────────────────────────────
       - name: Build dashboard HTML
         run: python scripts/build_dashboard.py
 
+      # ── Step 6: Send email report ─────────────────────────────────────────
       - name: Send email report
         env:
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
@@ -47,6 +59,7 @@ jobs:
           GITHUB_PAGES_URL: ${{ secrets.PAGE_URL }}
         run: python scripts/send_email.py
 
+      # ── Step 7: Commit all updated files ──────────────────────────────────
       - name: Commit updated data and dashboard
         run: |
           git config --global user.name "Rental Market Bot"
