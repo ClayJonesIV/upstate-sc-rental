@@ -3,6 +3,9 @@
 build_dashboard.py
 Reads data/history.json, data/trends.json, data/insights.json
 and writes a complete self-contained docs/index.html for GitHub Pages.
+
+Updated to show bedroom-level rent data sourced from RentCast +
+Apartment List + Zillow Research, with source attribution per row.
 """
 
 import json
@@ -43,6 +46,19 @@ def temp_color(temp):
         "neutral": "#86b96e", "cool": "#7eb3d4", "cold": "#b99ddb"
     }.get(temp, "#86b96e")
 
+def source_badge(source: str | None) -> str:
+    """Return a small HTML badge for the rent data source."""
+    if not source or source in ("unavailable", "rentcast"):
+        return ""
+    labels = {
+        "apartment_list": ("AL", "#5dbcb0", "Apartment List"),
+        "zillow_derived":  ("ZL", "#7ab8f5", "Zillow Research (derived)"),
+        "zillow":          ("ZL", "#7ab8f5", "Zillow Research"),
+    }
+    abbr, color, title = labels.get(source, ("?", "#888", source))
+    return (f'<span class="src-badge" style="background:{color}22;color:{color};'
+            f'border:1px solid {color}44" title="{title}">{abbr}</span>')
+
 def insight_paragraphs(text: str) -> str:
     """Convert insight text with HEADER\nParagraph format to HTML."""
     headers = ["MARKET CONDITIONS", "IMPLICATIONS FOR CURRENT OWNERS",
@@ -64,7 +80,7 @@ def insight_paragraphs(text: str) -> str:
 
 # ─── HTML sections ────────────────────────────────────────────────────────────
 
-def build_market_card(mkt_key, trends, insights):
+def build_market_card(mkt_key, trends, insights, latest_history):
     mkt_cfg  = MARKETS[mkt_key]
     mt       = trends["markets"].get(mkt_key, {})
     agg      = mt.get("aggregate", {})
@@ -82,18 +98,41 @@ def build_market_card(mkt_key, trends, insights):
     inv_cur  = agg.get("totalListings", {}).get("current")
     inv_yoy  = agg.get("totalListings", {}).get("changes", {}).get("yoy", {}).get("pct_change")
 
+    # Get rent_source per bedroom from latest history record
+    latest_mkt = latest_history.get("markets", {}).get(mkt_key, {}) or {}
+    latest_beds = latest_mkt.get("bedrooms", {})
+
     bed_rows = ""
+    any_bed_data = False
     for b in ["1", "2", "3", "4"]:
-        bd = beds.get(b, {})
-        r  = bd.get("averageRent", {}).get("current")
-        ry = bd.get("averageRent", {}).get("changes", {}).get("yoy", {}).get("pct_change")
-        d  = bd.get("averageDaysOnMarket", {}).get("current")
+        bd      = beds.get(b, {})
+        r       = bd.get("averageRent", {}).get("current")
+        ry      = bd.get("averageRent", {}).get("changes", {}).get("yoy", {}).get("pct_change")
+        d       = bd.get("averageDaysOnMarket", {}).get("current")
+        src     = latest_beds.get(b, {}).get("rent_source")
+        badge   = source_badge(src)
+        if r:
+            any_bed_data = True
         bed_rows += (
-            f"<tr><td>{b}BR</td>"
+            f"<tr><td>{b}BR {badge}</td>"
             f"<td>{fmt_rent(r)}</td>"
             f"<td class='{pct_class(ry)}'>{fmt_pct(ry)}</td>"
             f"<td>{fmt_days(d)}</td></tr>"
         )
+
+    # Data sources note for this market
+    sources_used = set()
+    for b in ["1","2","3","4"]:
+        src = latest_beds.get(b, {}).get("rent_source")
+        if src and src not in ("unavailable", "rentcast", None):
+            sources_used.add(src)
+    rentcast_note = "RentCast (aggregate)"
+    if sources_used:
+        src_labels = {"apartment_list": "Apartment List", "zillow_derived": "Zillow Research", "zillow": "Zillow Research"}
+        supp_names = ", ".join(src_labels.get(s, s) for s in sources_used)
+        data_note = f"Aggregate: RentCast · Bedroom rents: {supp_names}"
+    else:
+        data_note = "Data: RentCast only (bedroom breakdown unavailable)"
 
     insight_text = insights.get("markets", {}).get(mkt_key, "")
     insight_html = insight_paragraphs(insight_text) if insight_text else "<p>Analysis not available.</p>"
@@ -102,6 +141,11 @@ def build_market_card(mkt_key, trends, insights):
         '<span class="tier-badge tier-full">Live Data</span>'
         if mkt_cfg["tier"] == "primary"
         else '<span class="tier-badge tier-snap">RentCast</span>'
+    )
+
+    no_bed_msg = "" if any_bed_data else (
+        '<p class="no-bed-note">⚠ Bedroom breakdown unavailable for this market this month. '
+        'Data will populate as supplemental sources are matched.</p>'
     )
 
     return f"""
@@ -114,6 +158,7 @@ def build_market_card(mkt_key, trends, insights):
       </span>
     </div>
     <div class="market-label">{mkt_cfg['label']}</div>
+    <div class="data-sources-line">{data_note}</div>
   </div>
 
   <div class="metrics-row">
@@ -145,6 +190,7 @@ def build_market_card(mkt_key, trends, insights):
   </div>
 
   <div class="bedroom-table-wrap">
+    {no_bed_msg}
     <table class="bedroom-table">
       <thead><tr><th>Size</th><th>Avg Rent</th><th>YoY</th><th>Avg DOM</th></tr></thead>
       <tbody>{bed_rows}</tbody>
@@ -168,17 +214,27 @@ def build_html(trends, insights, history):
     regional_insight = insights.get("regional", "")
     regional_html = insight_paragraphs(regional_insight) if regional_insight else ""
 
-    # Build market sections — primary markets first, then foothills
+    # Latest history record for source attribution
+    latest_history = history[-1] if history else {}
+
+    # Detect which supplemental sources were used this month
+    data_sources = latest_history.get("data_sources", ["rentcast"])
+    source_labels = {
+        "rentcast": "RentCast",
+        "apartment_list": "Apartment List",
+        "zillow_research": "Zillow Research",
+    }
+    sources_display = " · ".join(source_labels.get(s, s) for s in data_sources)
+
     primary_sections = ""
     foothills_sections = ""
     for mkt_key, mkt_cfg in MARKETS.items():
-        card = build_market_card(mkt_key, trends, insights)
+        card = build_market_card(mkt_key, trends, insights, latest_history)
         if mkt_cfg["tier"] == "primary":
             primary_sections += card
         else:
             foothills_sections += card
 
-    # Nav links
     nav_links = " · ".join(
         f'<a href="#mkt-{k}">{v["name"]}</a>' for k, v in MARKETS.items()
     )
@@ -227,11 +283,13 @@ h1 em{{color:#86b96e;font-style:italic}}
 .market-title-row{{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}}
 .market-title-row h2{{font-size:20px;font-weight:400}}
 .market-label{{font-size:11px;color:#4a6040;font-family:'Courier New',monospace}}
+.data-sources-line{{font-size:10px;color:#3a5030;font-family:'Courier New',monospace;margin-top:3px;letter-spacing:.3px}}
 
 .temp-badge{{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:sans-serif}}
 .tier-badge{{font-size:9px;padding:2px 8px;border-radius:8px;font-family:'Courier New',monospace;letter-spacing:.5px;vertical-align:middle}}
 .tier-full{{background:rgba(134,185,110,.15);color:#86b96e;border:1px solid rgba(134,185,110,.3)}}
 .tier-snap{{background:rgba(196,163,110,.15);color:#c4a36e;border:1px solid rgba(196,163,110,.3)}}
+.src-badge{{font-size:9px;padding:1px 5px;border-radius:4px;font-family:'Courier New',monospace;vertical-align:middle;margin-left:4px;cursor:default}}
 
 .metrics-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}}
 .metric-card{{background:rgba(0,0,0,.2);border-radius:10px;padding:14px 16px;border-top:2px solid transparent}}
@@ -253,10 +311,14 @@ h1 em{{color:#86b96e;font-style:italic}}
 .bedroom-table td.up{{color:#86b96e;font-weight:700}}
 .bedroom-table td.down{{color:#e07a6a;font-weight:700}}
 
+.no-bed-note{{font-size:12px;color:#6a5020;font-family:sans-serif;font-style:italic;margin-bottom:10px;padding:8px 12px;background:rgba(244,162,53,.06);border-radius:6px;border-left:3px solid rgba(244,162,53,.3)}}
+
 .insight-block{{background:rgba(0,0,0,.15);border-radius:10px;padding:22px 24px;border-left:3px solid rgba(134,185,110,.25)}}
 .insight-label{{font-size:10px;color:#86b96e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:14px}}
 
 .data-note{{background:rgba(126,179,212,.07);border:1px solid rgba(126,179,212,.18);border-left:3px solid #7eb3d4;border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:#8ab8d0;font-family:sans-serif;line-height:1.6}}
+.legend-row{{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:11px}}
+.legend-item{{display:flex;align-items:center;gap:5px}}
 
 .footer{{text-align:center;font-size:11px;color:#2a4030;font-family:'Courier New',monospace;margin-top:60px;padding-top:20px;border-top:1px solid rgba(255,255,255,.04)}}
 
@@ -269,7 +331,7 @@ h1 em{{color:#86b96e;font-style:italic}}
 <body>
 
 <div class="site-header">
-  <div class="eyebrow">🏠 Upstate South Carolina · 10 Markets · RentCast Live Data</div>
+  <div class="eyebrow">🏠 Upstate South Carolina · 10 Markets · Multi-Source Data</div>
   <h1>Rental Market <em>Intelligence</em></h1>
   <p class="subtitle">Auto-refreshed monthly · {months_count} months of history · Last updated {generated}</p>
   <div class="hero-stats">
@@ -304,10 +366,15 @@ h1 em{{color:#86b96e;font-style:italic}}
 
 <div class="main">
   <div class="data-note">
-    <strong>📊 Live Data:</strong> Market data pulled monthly from
-    <strong>RentCast API</strong> (rentcast.io) covering 18 zip codes across 10 Upstate SC markets.
-    Analysis generated by <strong>Claude AI</strong>. Data reflects active rental listings only.
+    <strong>📊 Multi-Source Data:</strong> Aggregate market data (avg rent, days on market,
+    listings) from <strong>RentCast API</strong> covering 18 zip codes.
+    Bedroom-level rent estimates from <strong>Apartment List</strong> (1BR/2BR) and
+    <strong>Zillow Research ZORI</strong> (3BR/4BR derived). Analysis by <strong>Claude AI</strong>.
     <strong>Not financial advice.</strong>
+    <div class="legend-row">
+      <span class="legend-item"><span class="src-badge" style="background:#5dbcb022;color:#5dbcb0;border:1px solid #5dbcb044">AL</span> Apartment List</span>
+      <span class="legend-item"><span class="src-badge" style="background:#7ab8f522;color:#7ab8f5;border:1px solid #7ab8f544">ZL</span> Zillow Research</span>
+    </div>
   </div>
 
   <div class="section-header">Regional Executive Summary</div>
@@ -326,7 +393,7 @@ h1 em{{color:#86b96e;font-style:italic}}
   {foothills_sections}
 
   <div class="footer">
-    Upstate SC Rental Market Intelligence · Data: RentCast API · Analysis: Claude AI ·
+    Upstate SC Rental Market Intelligence · Data: {sources_display} · Analysis: Claude AI ·
     Auto-refreshed 1st of each month via GitHub Actions · {as_of_display}
   </div>
 </div>
@@ -339,8 +406,8 @@ def main():
     print("Dashboard Builder")
     print(f"{'='*55}")
 
-    history = json.loads(HISTORY_FILE.read_text()) if HISTORY_FILE.exists() else []
-    trends  = json.loads(TRENDS_FILE.read_text())  if TRENDS_FILE.exists()  else {}
+    history  = json.loads(HISTORY_FILE.read_text())  if HISTORY_FILE.exists()  else []
+    trends   = json.loads(TRENDS_FILE.read_text())   if TRENDS_FILE.exists()   else {}
     insights = json.loads(INSIGHTS_FILE.read_text()) if INSIGHTS_FILE.exists() else {}
 
     html = build_html(trends, insights, history)
