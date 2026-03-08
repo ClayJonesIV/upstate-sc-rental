@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-03-08T11:17:50.739061",
+  "generated_at": "2026-03-08T11:28:15.013266",
   "as_of": "2026-03",
   "regional": "Regional analysis unavailable this month.",
   "markets": {
-    "greenville": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "spartanburg": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "anderson": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "simpsonville": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "greer": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "easley": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "piedmont": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "liberty": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "clemson": "Analysis unavailable: unsupported format string passed to NoneType.__format__",
-    "seneca": "Analysis unavailable: unsupported format string passed to NoneType.__format__"
+    "greenville": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvd1Rg6bUgGfGiw4EJ'}",
+    "spartanburg": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvdDaPtZXSp6qicXzk'}",
+    "anderson": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvdUTccRrj2GNZJ3p5'}",
+    "simpsonville": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvdjLHsFR9j7foQkWp'}",
+    "greer": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvdzTXsphc93eUvw83'}",
+    "easley": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvePmftLySnDLngDrv'}",
+    "piedmont": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXveeesoeUYBNHRRbqP'}",
+    "liberty": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvew23wp72LKaqR2h8'}",
+    "clemson": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvf9umL77rKY2V69Pj'}",
+    "seneca": "Analysis unavailable: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYqXvfMpN1zbbivYtDxCe'}"
   }
 }

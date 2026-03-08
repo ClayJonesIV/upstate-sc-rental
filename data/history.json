@@ -8290,18 +8290,308 @@
   },
   {
     "month": "2026-03",
-    "fetched_at": "2026-03-08T11:17:37.422377+00:00",
+    "fetched_at": "2026-03-08T11:28:00.980702+00:00",
     "markets": {
-      "greenville": null,
-      "spartanburg": null,
-      "anderson": null,
-      "simpsonville": null,
-      "greer": null,
-      "easley": null,
-      "piedmont": null,
-      "liberty": null,
-      "clemson": null,
-      "seneca": null
+      "greenville": {
+        "averageRent": 1732.0,
+        "medianRent": 1573.5,
+        "averageDaysOnMarket": 46.43,
+        "medianDaysOnMarket": 5.75,
+        "totalListings": 124.75,
+        "newListings": 33.75,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "spartanburg": {
+        "averageRent": 1232.33,
+        "medianRent": 1136.67,
+        "averageDaysOnMarket": 33.72,
+        "medianDaysOnMarket": 1.0,
+        "totalListings": 108.0,
+        "newListings": 41.67,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "anderson": {
+        "averageRent": 1305.5,
+        "medianRent": 1262.5,
+        "averageDaysOnMarket": 65.9,
+        "medianDaysOnMarket": 38.5,
+        "totalListings": 45.5,
+        "newListings": 7.5,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "simpsonville": {
+        "averageRent": 1943.5,
+        "medianRent": 1862.0,
+        "averageDaysOnMarket": 31.74,
+        "medianDaysOnMarket": 7.0,
+        "totalListings": 90.0,
+        "newListings": 21.0,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "greer": {
+        "averageRent": 1833.5,
+        "medianRent": 1712.5,
+        "averageDaysOnMarket": 34.38,
+        "medianDaysOnMarket": 1.5,
+        "totalListings": 117.5,
+        "newListings": 39.0,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "easley": {
+        "averageRent": 1617.5,
+        "medianRent": 1537.0,
+        "averageDaysOnMarket": 27.25,
+        "medianDaysOnMarket": 1.0,
+        "totalListings": 42.5,
+        "newListings": 13.0,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "piedmont": {
+        "averageRent": 1825.0,
+        "medianRent": 1800.0,
+        "averageDaysOnMarket": 26.24,
+        "medianDaysOnMarket": 1.0,
+        "totalListings": 36.0,
+        "newListings": 11.0,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "liberty": {
+        "averageRent": 1426.0,
+        "medianRent": 1400.0,
+        "averageDaysOnMarket": 59.08,
+        "medianDaysOnMarket": 31.0,
+        "totalListings": 12.0,
+        "newListings": 2.0,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "clemson": {
+        "averageRent": 1515.0,
+        "medianRent": 1250.0,
+        "averageDaysOnMarket": 75.86,
+        "medianDaysOnMarket": 60.0,
+        "totalListings": 173.0,
+        "newListings": 17.0,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      },
+      "seneca": {
+        "averageRent": 1508.0,
+        "medianRent": 1450.0,
+        "averageDaysOnMarket": 47.92,
+        "medianDaysOnMarket": 10.0,
+        "totalListings": 48.5,
+        "newListings": 9.0,
+        "bedrooms": {
+          "1": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "2": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "3": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          },
+          "4": {
+            "averageRent": null,
+            "averageDaysOnMarket": null,
+            "totalListings": null
+          }
+        }
+      }
     }
   }
 ]
