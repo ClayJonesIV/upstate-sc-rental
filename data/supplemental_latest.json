@@ -1,0 +1,230 @@
+{
+  "fetched_at": "2026-03-08T22:11:48.801633+00:00",
+  "month": "2026-03",
+  "sources": [
+    "apartment_list",
+    "zillow_research"
+  ],
+  "markets": {
+    "greenville": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "spartanburg": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "anderson": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "simpsonville": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "greer": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "easley": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "piedmont": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "liberty": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "clemson": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    },
+    "seneca": {
+      "zillow_avg": null,
+      "zillow_source": "city",
+      "bedrooms": {
+        "1": {
+          "averageRent": null,
+          "source": null
+        },
+        "2": {
+          "averageRent": null,
+          "source": null
+        },
+        "3": {
+          "averageRent": null,
+          "source": null
+        },
+        "4": {
+          "averageRent": null,
+          "source": null
+        }
+      }
+    }
+  }
+}
