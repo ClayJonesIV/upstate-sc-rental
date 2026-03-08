@@ -8287,5 +8287,21 @@
         }
       }
     }
+  },
+  {
+    "month": "2026-03",
+    "fetched_at": "2026-03-08T11:17:37.422377+00:00",
+    "markets": {
+      "greenville": null,
+      "spartanburg": null,
+      "anderson": null,
+      "simpsonville": null,
+      "greer": null,
+      "easley": null,
+      "piedmont": null,
+      "liberty": null,
+      "clemson": null,
+      "seneca": null
+    }
   }
 ]
