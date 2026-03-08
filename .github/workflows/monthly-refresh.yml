@@ -1,0 +1,56 @@
+name: Monthly Rental Market Refresh
+
+on:
+  schedule:
+    - cron: '0 12 1 * *'
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests anthropic
+
+      - name: Fetch RentCast market data
+        env:
+          RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
+        run: python scripts/fetch_data.py
+
+      - name: Calculate trends (MoM, QoQ, YoY)
+        run: python scripts/calculate_trends.py
+
+      - name: Generate AI insights
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/generate_insights.py
+
+      - name: Build dashboard HTML
+        run: python scripts/build_dashboard.py
+
+      - name: Send email report
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          REPORT_RECIPIENT: ${{ secrets.REPORT_RECIPIENT }}
+          GITHUB_PAGES_URL: ${{ secrets.PAGE_URL }}
+        run: python scripts/send_email.py
+
+      - name: Commit updated data and dashboard
+        run: |
+          git config --global user.name "Rental Market Bot"
+          git config --global user.email "action@github.com"
+          git add data/ docs/
+          git diff --staged --quiet || git commit -m "Monthly refresh: $(date +'%B %Y')"
+          git push
