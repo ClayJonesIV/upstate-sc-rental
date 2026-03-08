@@ -35,7 +35,7 @@ jobs:
         run: |
           git config --global user.name "Rental Market Bot"
           git config --global user.email "action@github.com"
+          git pull --rebase origin main
           git add docs/
           git diff --staged --quiet || git commit -m "Rebuild dashboard: $(date +'%B %Y')"
-          git pull --rebase origin main
           git push
