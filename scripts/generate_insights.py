@@ -42,20 +42,21 @@ def market_prompt(mkt_key: str, mkt_cfg: dict, mkt_trends: dict, month: str) -> 
 
     rent_cur  = agg["averageRent"]["current"]
     rent_mom  = agg["averageRent"]["changes"]["mom"]["pct_change"]
-    rent_qoq  = agg["averageRent"]["changes"]["qoq"]["pct_change"]
-    rent_yoy  = agg["averageRent"]["changes"]["yoy"]["pct_change"]
+    rent_qoq  = None   # withheld — insufficient history
+    rent_yoy  = None   # withheld — insufficient history
     dom_cur   = agg["averageDaysOnMarket"]["current"]
     dom_mom   = agg["averageDaysOnMarket"]["changes"]["mom"]["pct_change"]
-    dom_yoy   = agg["averageDaysOnMarket"]["changes"]["yoy"]["pct_change"]
+    dom_yoy   = None   # withheld — insufficient history
     inv_cur   = agg["totalListings"]["current"]
     inv_mom   = agg["totalListings"]["changes"]["mom"]["pct_change"]
-    inv_yoy   = agg["totalListings"]["changes"]["yoy"]["pct_change"]
+    inv_yoy   = None   # withheld — insufficient historyrent_mom  = agg["averageRent"]["changes"]["mom"]["pct_change"]
+    
 
     bed_summary = ""
     for b in ["1", "2", "3", "4"]:
         bd = beds.get(b, {})
         r = bd.get("averageRent", {}).get("current")
-        r_yoy = bd.get("averageRent", {}).get("changes", {}).get("yoy", {}).get("pct_change")
+        r_yoy = None   # withheld — insufficient history
         d = bd.get("averageDaysOnMarket", {}).get("current")
         if r:
             bed_summary += f"\n  {b}BR: avg rent ${r:,.0f}" + (f", {r_yoy:+.1f}% YoY" if r_yoy else "") + (f", DOM {d:.0f}d" if d else "")
@@ -70,14 +71,14 @@ CURRENT DATA:
 - Market temperature: {cond['temperature_label']} (score: {cond['score']})
 - Average rent: ${rent_cur:,.0f} if rent_cur else 'N/A'
   - MoM: {f'{rent_mom:+.1f}%' if rent_mom is not None else 'N/A'}
-  - QoQ: {f'{rent_qoq:+.1f}%' if rent_qoq is not None else 'N/A'}
-  - YoY: {f'{rent_yoy:+.1f}%' if rent_yoy is not None else 'N/A'}
+  - QoQ: Insufficient Data
+  - YoY: Insufficient Data
 - Days on market: {f'{dom_cur:.0f}' if dom_cur else 'N/A'} days
   - MoM: {f'{dom_mom:+.1f}%' if dom_mom is not None else 'N/A'}
-  - YoY: {f'{dom_yoy:+.1f}%' if dom_yoy is not None else 'N/A'}
+  - YoY: Insufficient Data
 - Active listings: {f'{inv_cur:,.0f}' if inv_cur else 'N/A'}
   - MoM: {f'{inv_mom:+.1f}%' if inv_mom is not None else 'N/A'}
-  - YoY: {f'{inv_yoy:+.1f}%' if inv_yoy is not None else 'N/A'}
+  - YoY: Insufficient Data
 - By bedroom:{bed_summary}
 
 Write exactly FOUR paragraphs with these headers on their own line before each:
