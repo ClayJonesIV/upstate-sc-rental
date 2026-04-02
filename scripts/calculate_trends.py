@@ -14,6 +14,10 @@ TRENDS_FILE  = Path(__file__).parent.parent / "data" / "trends.json"
 
 WINDOWS = {"mom": 1, "qoq": 3, "yoy": 12}
 
+# Minimum months of history required before a window is considered reliable.
+# Values below the threshold are calculated and stored but flagged as unreliable.
+MIN_MONTHS = {"mom": 2, "qoq": 6, "yoy": 14}
+
 def pct_change(old, new):
     if old is None or new is None or old == 0:
         return None
@@ -94,13 +98,15 @@ def compute_trends(history: list) -> dict:
                 ref = get_month(history, offset)
                 ref_val = market_val(ref, mkt_key, metric)
                 pct = pct_change(ref_val, current)
+                reliable = len(history) >= MIN_MONTHS[label]
                 metric_data["changes"][label] = {
                     "reference_value": ref_val,
-                    "pct_change": pct,
-                    "direction": direction(pct),
-                    "signal": signal(metric, pct),
+                    "pct_change": pct if reliable else None,
+                    "pct_change_raw": pct,          # always stored for future use
+                    "direction": direction(pct) if reliable else "flat",
+                    "signal": signal(metric, pct) if reliable else "insufficient data",
+                    "reliable": reliable,
                 }
-
             mkt_trends["aggregate"][metric] = metric_data
 
         # ── Bedroom breakdowns ─────────────────────────────────────────────
@@ -110,15 +116,18 @@ def compute_trends(history: list) -> dict:
             for metric in ["averageRent", "averageDaysOnMarket", "totalListings"]:
                 current = market_val(latest, mkt_key, metric, bedroom=bkey)
                 m_data = {"current": current, "changes": {}}
-                for label, offset in WINDOWS.items():
-                    ref = get_month(history, offset)
-                    ref_val = market_val(ref, mkt_key, metric, bedroom=bkey)
-                    pct = pct_change(ref_val, current)
-                    m_data["changes"][label] = {
-                        "reference_value": ref_val,
-                        "pct_change": pct,
-                        "direction": direction(pct),
-                        "signal": signal(metric, pct),
+            for label, offset in WINDOWS.items():
+                ref = get_month(history, offset)
+                ref_val = market_val(ref, mkt_key, metric)
+                pct = pct_change(ref_val, current)
+                reliable = len(history) >= MIN_MONTHS[label]
+                metric_data["changes"][label] = {
+                    "reference_value": ref_val,
+                    "pct_change": pct if reliable else None,
+                    "pct_change_raw": pct,          # always stored for future use
+                    "direction": direction(pct) if reliable else "flat",
+                    "signal": signal(metric, pct) if reliable else "insufficient data",
+                    "reliable": reliable,
                     }
                 bed_data[metric] = m_data
             mkt_trends["bedrooms"][bkey] = bed_data
