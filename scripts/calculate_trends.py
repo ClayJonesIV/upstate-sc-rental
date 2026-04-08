@@ -116,18 +116,18 @@ def compute_trends(history: list) -> dict:
             for metric in ["averageRent", "averageDaysOnMarket", "totalListings"]:
                 current = market_val(latest, mkt_key, metric, bedroom=bkey)
                 m_data = {"current": current, "changes": {}}
-            for label, offset in WINDOWS.items():
-                ref = get_month(history, offset)
-                ref_val = market_val(ref, mkt_key, metric)
-                pct = pct_change(ref_val, current)
-                reliable = len(history) >= MIN_MONTHS[label]
-                metric_data["changes"][label] = {
-                    "reference_value": ref_val,
-                    "pct_change": pct if reliable else None,
-                    "pct_change_raw": pct,          # always stored for future use
-                    "direction": direction(pct) if reliable else "flat",
-                    "signal": signal(metric, pct) if reliable else "insufficient data",
-                    "reliable": reliable,
+                for label, offset in WINDOWS.items():
+                    ref = get_month(history, offset)
+                    ref_val = market_val(ref, mkt_key, metric, bedroom=bkey)
+                    pct = pct_change(ref_val, current)
+                    reliable = len(history) >= MIN_MONTHS[label]
+                    m_data["changes"][label] = {
+                        "reference_value": ref_val,
+                        "pct_change": pct if reliable else None,
+                        "pct_change_raw": pct,          # always stored for future use
+                        "direction": direction(pct) if reliable else "flat",
+                        "signal": signal(metric, pct) if reliable else "insufficient data",
+                        "reliable": reliable,
                     }
                 bed_data[metric] = m_data
             mkt_trends["bedrooms"][bkey] = bed_data
@@ -181,14 +181,20 @@ def compute_trends(history: list) -> dict:
         for m in MARKETS
         if trends["markets"][m]["aggregate"]["averageRent"]["changes"]["yoy"]["pct_change"] is not None
     ]
+    all_mom = [
+        trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"]
+        for m in MARKETS
+        if trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] is not None
+    ]
     trends["regional_summary"] = {
+        "avg_rent_mom_pct": round(sum(all_mom) / len(all_mom), 2) if all_mom else None,
         "avg_rent_yoy_pct": round(sum(all_yoy) / len(all_yoy), 2) if all_yoy else None,
         "markets_with_rent_growth": sum(1 for v in all_yoy if v > 0),
         "markets_declining": sum(1 for v in all_yoy if v < 0),
         "hottest_market": max(MARKETS.keys(), key=lambda m:
-            trends["markets"][m]["aggregate"]["averageRent"]["changes"]["yoy"]["pct_change"] or -999),
+            trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] or -999),
         "softest_market": min(MARKETS.keys(), key=lambda m:
-            trends["markets"][m]["aggregate"]["averageRent"]["changes"]["yoy"]["pct_change"] or 999),
+            trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] or 999),
     }
 
     return trends

@@ -71,9 +71,9 @@ def insight_paragraphs(text: str) -> str:
     """Convert insight text with HEADER\nParagraph format to HTML."""
     headers = ["MARKET CONDITIONS", "IMPLICATIONS FOR CURRENT OWNERS",
                "VACANCY MARKETING STRATEGY", "RENEWAL PRICING STRATEGY",
-               "UPSTATE SC MACRO VIEW", "CROSS-MARKET INVESTMENT THESIS",
+               "UPSTATE SC MACRO VIEW",
                "OUTLOOK AND RISKS"]
-    html = text
+    html = text.replace("**", "")
     for h in headers:
         html = html.replace(h, f'<h4 class="insight-header">{h}</h4>')
     paras = []
@@ -99,23 +99,17 @@ def build_market_card(mkt_key, trends, insights, supp_market):
 
     rent_cur = agg.get("averageRent", {}).get("current")
     rent_mom = agg.get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
-    rent_qoq = None  # withheld until sufficient history
-    rent_yoy = None  # withheld until sufficient history
     dom_cur  = agg.get("averageDaysOnMarket", {}).get("current")
-    dom_yoy  = None  # withheld until sufficient history
     inv_cur  = agg.get("totalListings", {}).get("current")
-    inv_yoy  = None  # withheld until sufficient history
 
     bed_rows = ""
     for b in ["1", "2", "3", "4"]:
         bd = beds.get(b, {})
         r  = bd.get("averageRent", {}).get("current")
-        ry = None  # withheld until sufficient history
         d  = bd.get("averageDaysOnMarket", {}).get("current")
         bed_rows += (
             f"<tr><td>{b}BR</td>"
             f"<td>{fmt_rent(r)}</td>"
-            f"<td class='{pct_class(ry)}'>{fmt_pct(ry)}</td>"
             f"<td>{fmt_days(d)}</td></tr>"
         )
 
@@ -156,31 +150,23 @@ def build_market_card(mkt_key, trends, insights, supp_market):
       <div class="metric-val">{fmt_rent(rent_cur)}</div>
       <div class="trend-row">
         <span class="trend-item {pct_class(rent_mom)}">MoM {fmt_pct(rent_mom)}</span>
-        <span class="trend-item {pct_class(rent_qoq)}">QoQ {fmt_pct(rent_qoq)}</span>
-        <span class="trend-item {pct_class(rent_yoy)}">YoY {fmt_pct(rent_yoy)}</span>
       </div>
     </div>
     <div class="metric-card" style="border-top-color:{color}">
       <div class="metric-label">Days on Market</div>
       <div class="metric-val">{fmt_days(dom_cur)}</div>
-      <div class="trend-row">
-        <span class="trend-item {pct_class(-dom_yoy if dom_yoy else None)}">YoY {fmt_pct(dom_yoy)}</span>
-        <span class="trend-note">(lower = tighter market)</span>
-      </div>
+      <div class="trend-row"><span class="trend-note">(lower = tighter market)</span></div>
     </div>
     <div class="metric-card" style="border-top-color:{color}">
       <div class="metric-label">Active Listings</div>
       <div class="metric-val">{f'{inv_cur:,.0f}' if inv_cur else '—'}</div>
-      <div class="trend-row">
-        <span class="trend-item {pct_class(-inv_yoy if inv_yoy else None)}">YoY {fmt_pct(inv_yoy)}</span>
-        <span class="trend-note">(lower = less supply)</span>
-      </div>
+      <div class="trend-row"><span class="trend-note">(lower = less supply)</span></div>
     </div>
   </div>
 
   <div class="bedroom-table-wrap">
     <table class="bedroom-table">
-      <thead><tr><th>Size</th><th>Avg Rent</th><th>YoY</th><th>Avg DOM</th></tr></thead>
+      <thead><tr><th>Size</th><th>Avg Rent</th><th>Avg DOM</th></tr></thead>
       <tbody>{bed_rows}</tbody>
     </table>
   </div>
@@ -205,6 +191,12 @@ def build_html(trends, insights, history, supplemental):
     supplemental_fetched = supplemental.get("fetched_at", "") if supplemental else ""
     months_count = len(history)
     rs = trends.get("regional_summary", {})
+    avg_mom = [
+        trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"]
+        for m in MARKETS
+        if trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] is not None
+    ]
+    avg_mom_rent = round(sum(avg_mom) / len(avg_mom), 2) if avg_mom else None
 
     regional_insight = insights.get("regional", "")
     regional_html = insight_paragraphs(regional_insight) if regional_insight else ""
@@ -328,8 +320,8 @@ h1 em{{color:#86b96e;font-style:italic}}
       <div class="hs-val" style="color:#86b96e;font-size:15px">{as_of_display}</div>
     </div>
     <div class="hero-stat">
-      <div class="hs-label">Avg YoY Rent</div>
-      <div class="hs-val" style="color:{'#86b96e' if (rs.get('avg_rent_yoy_pct') or 0) >= 0 else '#e07a6a'}">{fmt_pct(rs.get('avg_rent_yoy_pct'))}</div>
+      <div class="hs-label">Avg MoM Rent</div>
+      <div class="hs-val" style="color:{'#86b96e' if (avg_mom_rent or 0) >= 0 else '#e07a6a'}">{fmt_pct(avg_mom_rent)}</div>
     </div>
     <div class="hero-stat">
       <div class="hs-label">Hottest Market</div>
@@ -338,14 +330,6 @@ h1 em{{color:#86b96e;font-style:italic}}
     <div class="hero-stat">
       <div class="hs-label">Softest Market</div>
       <div class="hs-val" style="color:#7eb3d4;font-size:15px">{softest}</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hs-label">Markets Growing</div>
-      <div class="hs-val" style="color:#86b96e">{rs.get('markets_with_rent_growth', '—')}</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hs-label">History</div>
-      <div class="hs-val" style="color:#c4a36e">{months_count}mo</div>
     </div>
   </div>
 </div>

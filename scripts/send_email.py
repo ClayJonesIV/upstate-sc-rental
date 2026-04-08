@@ -25,7 +25,7 @@ from config import MARKETS
 GMAIL_ADDRESS    = os.environ["GMAIL_ADDRESS"]
 GMAIL_APP_PW     = os.environ["GMAIL_APP_PASSWORD"]
 RECIPIENT        = os.environ["REPORT_RECIPIENT"]
-PAGES_URL        = os.environ.get("GITHUB_PAGES_URL", "https://your-username.github.io/upstate-sc-rental")
+PAGES_URL        = os.environ.get("PAGE_URL") or os.environ.get("GITHUB_PAGES_URL", "https://your-username.github.io/upstate-sc-rental")
 
 def fmt_rent(v):
     if v is None: return "—"
@@ -56,8 +56,6 @@ def build_market_row(mkt_key, trends, insights):
 
     rent_cur = agg.get("averageRent", {}).get("current")
     rent_mom = agg.get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
-    rent_qoq = agg.get("averageRent", {}).get("changes", {}).get("qoq", {}).get("pct_change")
-    rent_yoy = agg.get("averageRent", {}).get("changes", {}).get("yoy", {}).get("pct_change")
     dom_cur  = agg.get("averageDaysOnMarket", {}).get("current")
     inv_cur  = agg.get("totalListings", {}).get("current")
 
@@ -75,14 +73,12 @@ def build_market_row(mkt_key, trends, insights):
       <td style="padding:12px 14px;border-bottom:1px solid #1a2f20;font-weight:bold;color:{color};white-space:nowrap">{mkt_cfg['name']}</td>
       <td style="padding:12px 14px;border-bottom:1px solid #1a2f20;font-size:16px;font-weight:800;color:#f0f5e8;white-space:nowrap">{fmt_rent(rent_cur)}</td>
       <td style="padding:12px 14px;border-bottom:1px solid #1a2f20;color:{pct_color(rent_mom)};font-weight:700;white-space:nowrap">{fmt_pct(rent_mom)}</td>
-      <td style="padding:12px 14px;border-bottom:1px solid #1a2f20;color:{pct_color(rent_qoq)};font-weight:700;white-space:nowrap">{fmt_pct(rent_qoq)}</td>
-      <td style="padding:12px 14px;border-bottom:1px solid #1a2f20;color:{pct_color(rent_yoy)};font-weight:700;white-space:nowrap">{fmt_pct(rent_yoy)}</td>
       <td style="padding:12px 14px;border-bottom:1px solid #1a2f20;white-space:nowrap">{f'{dom_cur:.0f}d' if dom_cur else '—'}</td>
       <td style="padding:12px 14px;border-bottom:1px solid #1a2f20;white-space:nowrap">{f'{inv_cur:,.0f}' if inv_cur else '—'}</td>
       <td style="padding:12px 14px;border-bottom:1px solid #1a2f20"><span style="background:{tc}22;color:{tc};border:1px solid {tc}55;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">{cond.get('temperature_label','—')}</span></td>
     </tr>
     <tr>
-      <td colspan="8" style="padding:6px 14px 16px 14px;border-bottom:1px solid #0d1f14;font-size:12px;color:#7a9a70;font-style:italic;line-height:1.5">
+      <td colspan="6" style="padding:6px 14px 16px 14px;border-bottom:1px solid #0d1f14;font-size:12px;color:#7a9a70;font-style:italic;line-height:1.5">
         <strong style="color:#86b96e;font-style:normal">Renewal rec:</strong> {renewal_snippet}
       </td>
     </tr>"""
@@ -96,7 +92,7 @@ def build_market_insight_section(mkt_key, insights):
         "MARKET CONDITIONS", "IMPLICATIONS FOR CURRENT OWNERS",
         "VACANCY MARKETING STRATEGY", "RENEWAL PRICING STRATEGY"
     ]
-    html = text
+    html = text.replace("**", "")
     for h in headers:
         html = html.replace(h,
             f'<div style="font-size:10px;color:{color};letter-spacing:1.5px;text-transform:uppercase;'
@@ -123,8 +119,13 @@ def build_email_html(trends, insights):
     rs = trends.get("regional_summary", {})
     hottest = MARKETS.get(rs.get("hottest_market", ""), {}).get("name", "—")
     softest = MARKETS.get(rs.get("softest_market", ""), {}).get("name", "—")
-    avg_yoy = rs.get("avg_rent_yoy_pct")
-    yoy_color = "#4caf50" if (avg_yoy or 0) >= 0 else "#ef5350"
+    avg_mom_values = [
+        trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"]
+        for m in MARKETS
+        if trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] is not None
+    ]
+    avg_mom = round(sum(avg_mom_values) / len(avg_mom_values), 2) if avg_mom_values else None
+    mom_color = "#4caf50" if (avg_mom or 0) >= 0 else "#ef5350"
 
     # Market rows for summary table
     primary_rows = "".join(build_market_row(k, trends, insights) for k, v in MARKETS.items() if v["tier"] == "primary")
@@ -142,6 +143,7 @@ def build_email_html(trends, insights):
         if not chunk: continue
         for h in ["UPSTATE SC MACRO VIEW", "CROSS-MARKET INVESTMENT THESIS", "OUTLOOK AND RISKS"]:
             chunk = chunk.replace(h, f'<div style="font-size:10px;color:#86b96e;letter-spacing:1.5px;text-transform:uppercase;font-family:Courier New,monospace;margin:18px 0 6px;font-weight:bold">{h}</div>')
+        chunk = chunk.replace("**", "")
         if not chunk.startswith("<div"):
             chunk = f'<p style="font-size:13px;color:#b8c8b0;line-height:1.75;margin:0 0 12px">{chunk}</p>'
         regional_html += chunk
@@ -151,8 +153,6 @@ def build_email_html(trends, insights):
       <th style="padding:10px 14px;text-align:left;color:#4a6040;font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-family:Courier New,monospace">Market</th>
       <th style="padding:10px 14px;text-align:left;color:#4a6040;font-size:10px;letter-spacing:.5px;text-transform:uppercase">Avg Rent</th>
       <th style="padding:10px 14px;text-align:left;color:#4a6040;font-size:10px;letter-spacing:.5px;text-transform:uppercase">MoM</th>
-      <th style="padding:10px 14px;text-align:left;color:#4a6040;font-size:10px;letter-spacing:.5px;text-transform:uppercase">QoQ</th>
-      <th style="padding:10px 14px;text-align:left;color:#4a6040;font-size:10px;letter-spacing:.5px;text-transform:uppercase">YoY</th>
       <th style="padding:10px 14px;text-align:left;color:#4a6040;font-size:10px;letter-spacing:.5px;text-transform:uppercase">DOM</th>
       <th style="padding:10px 14px;text-align:left;color:#4a6040;font-size:10px;letter-spacing:.5px;text-transform:uppercase">Listings</th>
       <th style="padding:10px 14px;text-align:left;color:#4a6040;font-size:10px;letter-spacing:.5px;text-transform:uppercase">Temp</th>
@@ -174,10 +174,9 @@ def build_email_html(trends, insights):
 
   <!-- Hero stats -->
   <div style="background:#0a1a10;padding:20px 36px;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:24px;flex-wrap:wrap">
-    <div><div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Avg YoY Rent</div><div style="font-size:22px;font-weight:800;color:{yoy_color};font-family:sans-serif">{fmt_pct(avg_yoy)}</div></div>
+    <div><div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Avg MoM Rent</div><div style="font-size:22px;font-weight:800;color:{mom_color};font-family:sans-serif">{fmt_pct(avg_mom)}</div></div>
     <div><div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Hottest Market</div><div style="font-size:22px;font-weight:800;color:#f4a235;font-family:sans-serif">{hottest}</div></div>
     <div><div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Softest Market</div><div style="font-size:22px;font-weight:800;color:#7eb3d4;font-family:sans-serif">{softest}</div></div>
-    <div><div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Markets Growing</div><div style="font-size:22px;font-weight:800;color:#86b96e;font-family:sans-serif">{rs.get('markets_with_rent_growth','—')}/10</div></div>
   </div>
 
   <div style="padding:28px 36px">
