@@ -143,31 +143,31 @@ def compute_trends(history: list) -> dict:
             mkt_trends["bedrooms"][bkey] = bed_data
 
         # ── Market conditions summary ──────────────────────────────────────
-        # Synthesize a simple market temperature from rent growth + DOM trend
+        # Synthesize a market temperature from current pricing and lease-up conditions.
+        # This intentionally avoids leaning on YoY growth, which can lag the current market.
         rent_mom   = mkt_trends["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"]
-        rent_yoy   = mkt_trends["aggregate"]["averageRent"]["changes"]["yoy"]["pct_change"]
         dom_mom    = mkt_trends["aggregate"]["averageDaysOnMarket"]["changes"]["mom"]["pct_change"]
         inv_mom    = mkt_trends["aggregate"]["totalListings"]["changes"]["mom"]["pct_change"]
 
-        # Score: rent up + DOM down + inventory down = landlord market
+        # Score: current rent pressure + faster lease-up + tighter inventory = landlord-leaning market
         score = 0
-        if rent_yoy is not None:
-            score += 2 if rent_yoy > 3 else 1 if rent_yoy > 0 else -1 if rent_yoy > -3 else -2
+        if rent_mom is not None:
+            score += 1 if rent_mom > 1 else -1 if rent_mom < -1 else 0
         if dom_mom is not None:
-            score += 1 if dom_mom < -5 else -1 if dom_mom > 5 else 0
+            score += 1 if dom_mom < -3 else -1 if dom_mom > 3 else 0
         if inv_mom is not None:
-            score += 1 if inv_mom < -5 else -1 if inv_mom > 10 else 0
+            score += 1 if inv_mom < -5 else -1 if inv_mom > 8 else 0
 
-        if score >= 3:
+        if score >= 2:
             temp = "hot"
-            temp_label = "Landlord's Market"
+            temp_label = "Landlord-Favored"
         elif score >= 1:
             temp = "warm"
             temp_label = "Slightly Landlord-Favored"
-        elif score >= -1:
+        elif score == 0:
             temp = "neutral"
             temp_label = "Balanced Market"
-        elif score >= -2:
+        elif score == -1:
             temp = "cool"
             temp_label = "Slightly Renter-Favored"
         else:
@@ -178,7 +178,7 @@ def compute_trends(history: list) -> dict:
             "temperature": temp,
             "temperature_label": temp_label,
             "score": score,
-            "rent_yoy_pct": rent_yoy,
+            "rent_mom_pct": rent_mom,
             "dom_mom_direction": direction(dom_mom),
             "inventory_mom_direction": direction(inv_mom),
         }

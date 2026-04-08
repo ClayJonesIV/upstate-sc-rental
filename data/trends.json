@@ -538,10 +538,10 @@
         }
       },
       "market_conditions": {
-        "temperature": "warm",
-        "temperature_label": "Slightly Landlord-Favored",
-        "score": 2,
-        "rent_yoy_pct": 21.9,
+        "temperature": "cool",
+        "temperature_label": "Slightly Renter-Favored",
+        "score": -1,
+        "rent_mom_pct": -0.2,
         "dom_mom_direction": "up",
         "inventory_mom_direction": "flat"
       }
@@ -1082,10 +1082,10 @@
         }
       },
       "market_conditions": {
-        "temperature": "warm",
-        "temperature_label": "Slightly Landlord-Favored",
+        "temperature": "hot",
+        "temperature_label": "Landlord-Favored",
         "score": 2,
-        "rent_yoy_pct": 1.46,
+        "rent_mom_pct": 1.27,
         "dom_mom_direction": "down",
         "inventory_mom_direction": "flat"
       }
@@ -1627,9 +1627,9 @@
       },
       "market_conditions": {
         "temperature": "hot",
-        "temperature_label": "Landlord's Market",
-        "score": 3,
-        "rent_yoy_pct": 24.31,
+        "temperature_label": "Landlord-Favored",
+        "score": 2,
+        "rent_mom_pct": 4.17,
         "dom_mom_direction": "down",
         "inventory_mom_direction": "flat"
       }
@@ -2173,7 +2173,7 @@
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
         "score": 1,
-        "rent_yoy_pct": 36.08,
+        "rent_mom_pct": 2.65,
         "dom_mom_direction": "down",
         "inventory_mom_direction": "up"
       }
@@ -2714,10 +2714,10 @@
         }
       },
       "market_conditions": {
-        "temperature": "warm",
-        "temperature_label": "Slightly Landlord-Favored",
-        "score": 2,
-        "rent_yoy_pct": 36.66,
+        "temperature": "cold",
+        "temperature_label": "Renter's Market",
+        "score": -2,
+        "rent_mom_pct": -2.51,
         "dom_mom_direction": "up",
         "inventory_mom_direction": "up"
       }
@@ -3260,8 +3260,8 @@
       "market_conditions": {
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
-        "score": 2,
-        "rent_yoy_pct": 52.71,
+        "score": 1,
+        "rent_mom_pct": 4.61,
         "dom_mom_direction": "down",
         "inventory_mom_direction": "up"
       }
@@ -3803,9 +3803,9 @@
       },
       "market_conditions": {
         "temperature": "hot",
-        "temperature_label": "Landlord's Market",
-        "score": 4,
-        "rent_yoy_pct": 75.23,
+        "temperature_label": "Landlord-Favored",
+        "score": 3,
+        "rent_mom_pct": 3.51,
         "dom_mom_direction": "down",
         "inventory_mom_direction": "down"
       }
@@ -4346,10 +4346,10 @@
         }
       },
       "market_conditions": {
-        "temperature": "warm",
-        "temperature_label": "Slightly Landlord-Favored",
-        "score": 1,
-        "rent_yoy_pct": 45.65,
+        "temperature": "cold",
+        "temperature_label": "Renter's Market",
+        "score": -2,
+        "rent_mom_pct": -4.91,
         "dom_mom_direction": "flat",
         "inventory_mom_direction": "up"
       }
@@ -4890,10 +4890,10 @@
         }
       },
       "market_conditions": {
-        "temperature": "warm",
-        "temperature_label": "Slightly Landlord-Favored",
-        "score": 1,
-        "rent_yoy_pct": 58.36,
+        "temperature": "neutral",
+        "temperature_label": "Balanced Market",
+        "score": 0,
+        "rent_mom_pct": 1.91,
         "dom_mom_direction": "up",
         "inventory_mom_direction": "up"
       }
@@ -5434,10 +5434,10 @@
         }
       },
       "market_conditions": {
-        "temperature": "warm",
-        "temperature_label": "Slightly Landlord-Favored",
-        "score": 1,
-        "rent_yoy_pct": 34.7,
+        "temperature": "cold",
+        "temperature_label": "Renter's Market",
+        "score": -2,
+        "rent_mom_pct": -5.14,
         "dom_mom_direction": "up",
         "inventory_mom_direction": "up"
       }

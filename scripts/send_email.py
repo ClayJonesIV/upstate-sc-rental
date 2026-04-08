@@ -114,8 +114,8 @@ def insight_html(text, color="#86b96e", headers=None):
 
 def aggregate_group_metrics(group_keys, trends):
     rent_vals, dom_vals, listing_vals = [], [], []
-    weighted_rent_mom, weighted_rent_qoq = [], []
-    weighted_dom_mom, weighted_dom_qoq = [], []
+    weighted_rent_mom = []
+    weighted_dom_mom = []
     temps = []
     for key in group_keys:
         market = trends.get("markets", {}).get(key, {})
@@ -125,9 +125,7 @@ def aggregate_group_metrics(group_keys, trends):
         dom = agg.get("averageDaysOnMarket", {}).get("current")
         listings = agg.get("totalListings", {}).get("current")
         mom = agg.get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
-        qoq = agg.get("averageRent", {}).get("changes", {}).get("qoq", {}).get("pct_change")
         dom_mom = agg.get("averageDaysOnMarket", {}).get("changes", {}).get("mom", {}).get("pct_change")
-        dom_qoq = agg.get("averageDaysOnMarket", {}).get("changes", {}).get("qoq", {}).get("pct_change")
         if rent is not None:
             rent_vals.append((rent, listings_weight or 1))
         if dom is not None:
@@ -136,12 +134,8 @@ def aggregate_group_metrics(group_keys, trends):
             listing_vals.append(listings)
         if mom is not None:
             weighted_rent_mom.append((mom, listings_weight or 1))
-        if qoq is not None:
-            weighted_rent_qoq.append((qoq, listings_weight or 1))
         if dom_mom is not None:
             weighted_dom_mom.append((dom_mom, listings_weight or 1))
-        if dom_qoq is not None:
-            weighted_dom_qoq.append((dom_qoq, listings_weight or 1))
         temp = market.get("market_conditions", {}).get("temperature")
         if temp:
             temps.append(temp)
@@ -169,9 +163,7 @@ def aggregate_group_metrics(group_keys, trends):
         "average_dom": round(sum(value * weight for value, weight in dom_vals) / sum(weight for _, weight in dom_vals), 2) if dom_vals else None,
         "total_listings": round(sum(listing_vals), 2) if listing_vals else None,
         "average_mom": round(sum(value * weight for value, weight in weighted_rent_mom) / sum(weight for _, weight in weighted_rent_mom), 2) if weighted_rent_mom else None,
-        "average_qoq": round(sum(value * weight for value, weight in weighted_rent_qoq) / sum(weight for _, weight in weighted_rent_qoq), 2) if weighted_rent_qoq else None,
         "average_dom_mom": round(sum(value * weight for value, weight in weighted_dom_mom) / sum(weight for _, weight in weighted_dom_mom), 2) if weighted_dom_mom else None,
-        "average_dom_qoq": round(sum(value * weight for value, weight in weighted_dom_qoq) / sum(weight for _, weight in weighted_dom_qoq), 2) if weighted_dom_qoq else None,
         "temperature": temp,
         "temperature_label": temp_label,
     }
@@ -202,18 +194,13 @@ def build_group_section(group_key, trends, insights):
     metrics = aggregate_group_metrics(group["markets"], trends)
     color = "#86b96e" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
     tc = temp_color(metrics["temperature"])
-    rent_qoq_html = ""
     dom_trend_html = ""
 
     if group_key != "other":
-        rent_qoq_html = (
-            f'<div style="font-size:11px;color:{pct_color(metrics["average_qoq"])};font-family:sans-serif;margin-top:4px">'
-            f'QoQ {fmt_pct(metrics["average_qoq"])}</div>'
-        )
         dom_color = pct_color(-metrics["average_dom_mom"]) if metrics["average_dom_mom"] is not None else "#888"
         dom_trend_html = (
             f'<div style="font-size:11px;color:{dom_color};font-family:sans-serif;margin-top:4px">'
-            f'MoM {fmt_pct(metrics["average_dom_mom"])} | QoQ {fmt_pct(metrics["average_dom_qoq"])}</div>'
+            f'MoM {fmt_pct(metrics["average_dom_mom"])}</div>'
         )
 
     if group_key == "headline":
@@ -262,7 +249,6 @@ def build_group_section(group_key, trends, insights):
         <div style="background:#0a1a10;border-radius:10px;padding:12px 14px;min-width:150px">
           <div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Avg MoM</div>
           <div style="font-size:21px;font-weight:800;color:{pct_color(metrics['average_mom'])};font-family:sans-serif">{fmt_pct(metrics['average_mom'])}</div>
-          {rent_qoq_html}
         </div>
         <div style="background:#0a1a10;border-radius:10px;padding:12px 14px;min-width:150px">
           <div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Avg DOM</div>

@@ -98,8 +98,8 @@ def source_note_for_bedroom(bedroom: str, supp_market: dict | None) -> str:
 def aggregate_group_metrics(group_keys: list[str], history: list, trends: dict) -> dict:
     latest_history = history[-1] if history else {"markets": {}}
     rent_vals, dom_vals, listing_vals = [], [], []
-    weighted_rent_mom, weighted_rent_qoq = [], []
-    weighted_dom_mom, weighted_dom_qoq = [], []
+    weighted_rent_mom = []
+    weighted_dom_mom = []
     temps = []
     for key in group_keys:
         hist_market = latest_history.get("markets", {}).get(key)
@@ -113,17 +113,11 @@ def aggregate_group_metrics(group_keys: list[str], history: list, trends: dict) 
             if hist_market.get("totalListings") is not None:
                 listing_vals.append(hist_market["totalListings"])
         mom = trend_market.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
-        qoq = trend_market.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("qoq", {}).get("pct_change")
         dom_mom = trend_market.get("aggregate", {}).get("averageDaysOnMarket", {}).get("changes", {}).get("mom", {}).get("pct_change")
-        dom_qoq = trend_market.get("aggregate", {}).get("averageDaysOnMarket", {}).get("changes", {}).get("qoq", {}).get("pct_change")
         if mom is not None:
             weighted_rent_mom.append((mom, listings_weight or 1))
-        if qoq is not None:
-            weighted_rent_qoq.append((qoq, listings_weight or 1))
         if dom_mom is not None:
             weighted_dom_mom.append((dom_mom, listings_weight or 1))
-        if dom_qoq is not None:
-            weighted_dom_qoq.append((dom_qoq, listings_weight or 1))
         temp = trend_market.get("market_conditions", {}).get("temperature")
         if temp:
             temps.append(temp)
@@ -151,9 +145,7 @@ def aggregate_group_metrics(group_keys: list[str], history: list, trends: dict) 
         "average_dom": round(sum(value * weight for value, weight in dom_vals) / sum(weight for _, weight in dom_vals), 2) if dom_vals else None,
         "total_listings": round(sum(listing_vals), 2) if listing_vals else None,
         "average_mom": round(sum(value * weight for value, weight in weighted_rent_mom) / sum(weight for _, weight in weighted_rent_mom), 2) if weighted_rent_mom else None,
-        "average_qoq": round(sum(value * weight for value, weight in weighted_rent_qoq) / sum(weight for _, weight in weighted_rent_qoq), 2) if weighted_rent_qoq else None,
         "average_dom_mom": round(sum(value * weight for value, weight in weighted_dom_mom) / sum(weight for _, weight in weighted_dom_mom), 2) if weighted_dom_mom else None,
-        "average_dom_qoq": round(sum(value * weight for value, weight in weighted_dom_qoq) / sum(weight for _, weight in weighted_dom_qoq), 2) if weighted_dom_qoq else None,
         "temperature": temp,
         "temperature_label": temp_label,
     }
@@ -257,7 +249,6 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
       <div class="metric-val">{fmt_rent(metrics['average_rent'])}</div>
       <div class="trend-row">
         <span class="trend-item {pct_class(metrics['average_mom'])}">MoM {fmt_pct(metrics['average_mom'])}</span>
-        {f'<span class="trend-item {pct_class(metrics["average_qoq"])}">QoQ {fmt_pct(metrics["average_qoq"])}</span>' if group_key != "other" else ''}
       </div>
     </div>
     <div class="metric-card" style="border-top-color:{color}">
@@ -265,7 +256,6 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
       <div class="metric-val">{fmt_days(metrics['average_dom'])}</div>
       <div class="trend-row">
         {f'<span class="trend-item {pct_class(-metrics["average_dom_mom"]) if metrics["average_dom_mom"] is not None else ""}">MoM {fmt_pct(metrics["average_dom_mom"])}</span>' if group_key != "other" else ''}
-        {f'<span class="trend-item {pct_class(-metrics["average_dom_qoq"]) if metrics["average_dom_qoq"] is not None else ""}">QoQ {fmt_pct(metrics["average_dom_qoq"])}</span>' if group_key != "other" else ''}
         <span class="trend-note">(lower is better)</span>
       </div>
     </div>
