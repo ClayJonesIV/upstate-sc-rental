@@ -5,28 +5,28 @@
     "greenville": {
       "aggregate": {
         "averageRent": {
-          "current": 1741.25,
+          "current": 1728.5,
           "changes": {
             "mom": {
               "reference_value": 1732.0,
-              "pct_change": 0.53,
-              "pct_change_raw": 0.53,
+              "pct_change": -0.2,
+              "pct_change_raw": -0.2,
               "direction": "flat",
-              "signal": "stable rents",
+              "signal": "mild softening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1388,
-              "pct_change": 25.45,
-              "pct_change_raw": 25.45,
+              "pct_change": 24.53,
+              "pct_change_raw": 24.53,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1418,
-              "pct_change": 22.8,
-              "pct_change_raw": 22.8,
+              "pct_change": 21.9,
+              "pct_change_raw": 21.9,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -34,28 +34,28 @@
           }
         },
         "medianRent": {
-          "current": 1562.5,
+          "current": 1562.25,
           "changes": {
             "mom": {
               "reference_value": 1573.5,
-              "pct_change": -0.7,
-              "pct_change_raw": -0.7,
+              "pct_change": -0.71,
+              "pct_change_raw": -0.71,
               "direction": "flat",
               "signal": "mild softening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1388,
-              "pct_change": 12.57,
-              "pct_change_raw": 12.57,
+              "pct_change": 12.55,
+              "pct_change_raw": 12.55,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1418,
-              "pct_change": 10.19,
-              "pct_change_raw": 10.19,
+              "pct_change": 10.17,
+              "pct_change_raw": 10.17,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -63,28 +63,28 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 47.99,
+          "current": 48.16,
           "changes": {
             "mom": {
               "reference_value": 46.43,
-              "pct_change": 3.36,
-              "pct_change_raw": 3.36,
+              "pct_change": 3.73,
+              "pct_change_raw": 3.73,
               "direction": "up",
               "signal": "market stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 38,
-              "pct_change": 26.29,
-              "pct_change_raw": 26.29,
+              "pct_change": 26.74,
+              "pct_change_raw": 26.74,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
             },
             "yoy": {
               "reference_value": 21,
-              "pct_change": 128.52,
-              "pct_change_raw": 128.52,
+              "pct_change": 129.33,
+              "pct_change_raw": 129.33,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -92,28 +92,28 @@
           }
         },
         "medianDaysOnMarket": {
-          "current": 7.25,
+          "current": 6.75,
           "changes": {
             "mom": {
               "reference_value": 5.75,
-              "pct_change": 26.09,
-              "pct_change_raw": 26.09,
+              "pct_change": 17.39,
+              "pct_change_raw": 17.39,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
             },
             "qoq": {
               "reference_value": 38,
-              "pct_change": -80.92,
-              "pct_change_raw": -80.92,
+              "pct_change": -82.24,
+              "pct_change_raw": -82.24,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "yoy": {
               "reference_value": 21,
-              "pct_change": -65.48,
-              "pct_change_raw": -65.48,
+              "pct_change": -67.86,
+              "pct_change_raw": -67.86,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
@@ -121,28 +121,28 @@
           }
         },
         "totalListings": {
-          "current": 126.25,
+          "current": 127.0,
           "changes": {
             "mom": {
               "reference_value": 124.75,
-              "pct_change": 1.2,
-              "pct_change_raw": 1.2,
+              "pct_change": 1.8,
+              "pct_change_raw": 1.8,
               "direction": "flat",
               "signal": "supply stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1900,
-              "pct_change": -93.36,
-              "pct_change_raw": -93.36,
+              "pct_change": -93.32,
+              "pct_change_raw": -93.32,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1380,
-              "pct_change": -90.85,
-              "pct_change_raw": -90.85,
+              "pct_change": -90.8,
+              "pct_change_raw": -90.8,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
@@ -150,7 +150,7 @@
           }
         },
         "newListings": {
-          "current": 24.0,
+          "current": 33.25,
           "changes": {
             "mom": {
               "reference_value": 124.75,
@@ -209,7 +209,7 @@
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
         "score": 2,
-        "rent_yoy_pct": 22.8,
+        "rent_yoy_pct": 21.9,
         "dom_mom_direction": "up",
         "inventory_mom_direction": "flat"
       }
@@ -217,28 +217,28 @@
     "spartanburg": {
       "aggregate": {
         "averageRent": {
-          "current": 1244.0,
+          "current": 1248.0,
           "changes": {
             "mom": {
               "reference_value": 1232.33,
-              "pct_change": 0.95,
-              "pct_change_raw": 0.95,
+              "pct_change": 1.27,
+              "pct_change_raw": 1.27,
               "direction": "flat",
               "signal": "stable rents",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1200,
-              "pct_change": 3.67,
-              "pct_change_raw": 3.67,
+              "pct_change": 4.0,
+              "pct_change_raw": 4.0,
               "direction": "up",
               "signal": "moderate rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1230,
-              "pct_change": 1.14,
-              "pct_change_raw": 1.14,
+              "pct_change": 1.46,
+              "pct_change_raw": 1.46,
               "direction": "flat",
               "signal": "stable rents",
               "reliable": true
@@ -246,28 +246,28 @@
           }
         },
         "medianRent": {
-          "current": 1131.67,
+          "current": 1141.67,
           "changes": {
             "mom": {
               "reference_value": 1136.67,
-              "pct_change": -0.44,
-              "pct_change_raw": -0.44,
+              "pct_change": 0.44,
+              "pct_change_raw": 0.44,
               "direction": "flat",
-              "signal": "mild softening",
+              "signal": "stable rents",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1200,
-              "pct_change": -5.69,
-              "pct_change_raw": -5.69,
+              "pct_change": -4.86,
+              "pct_change_raw": -4.86,
               "direction": "down",
               "signal": "notable rent decline",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1230,
-              "pct_change": -7.99,
-              "pct_change_raw": -7.99,
+              "pct_change": -7.18,
+              "pct_change_raw": -7.18,
               "direction": "down",
               "signal": "notable rent decline",
               "reliable": true
@@ -275,28 +275,28 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 34.31,
+          "current": 31.62,
           "changes": {
             "mom": {
               "reference_value": 33.72,
-              "pct_change": 1.75,
-              "pct_change_raw": 1.75,
-              "direction": "flat",
-              "signal": "market stable",
+              "pct_change": -6.23,
+              "pct_change_raw": -6.23,
+              "direction": "down",
+              "signal": "market tightening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 44,
-              "pct_change": -22.02,
-              "pct_change_raw": -22.02,
+              "pct_change": -28.14,
+              "pct_change_raw": -28.14,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "yoy": {
               "reference_value": 25,
-              "pct_change": 37.24,
-              "pct_change_raw": 37.24,
+              "pct_change": 26.48,
+              "pct_change_raw": 26.48,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -333,28 +333,28 @@
           }
         },
         "totalListings": {
-          "current": 105.33,
+          "current": 106.67,
           "changes": {
             "mom": {
               "reference_value": 108.0,
-              "pct_change": -2.47,
-              "pct_change_raw": -2.47,
-              "direction": "down",
+              "pct_change": -1.23,
+              "pct_change_raw": -1.23,
+              "direction": "flat",
               "signal": "supply stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 644,
-              "pct_change": -83.64,
-              "pct_change_raw": -83.64,
+              "pct_change": -83.44,
+              "pct_change_raw": -83.44,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
             },
             "yoy": {
               "reference_value": 466,
-              "pct_change": -77.4,
-              "pct_change_raw": -77.4,
+              "pct_change": -77.11,
+              "pct_change_raw": -77.11,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
@@ -362,7 +362,7 @@
           }
         },
         "newListings": {
-          "current": 20.33,
+          "current": 27.67,
           "changes": {
             "mom": {
               "reference_value": 108.0,
@@ -420,37 +420,37 @@
       "market_conditions": {
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
-        "score": 1,
-        "rent_yoy_pct": 1.14,
-        "dom_mom_direction": "flat",
-        "inventory_mom_direction": "down"
+        "score": 2,
+        "rent_yoy_pct": 1.46,
+        "dom_mom_direction": "down",
+        "inventory_mom_direction": "flat"
       }
     },
     "anderson": {
       "aggregate": {
         "averageRent": {
-          "current": 1347.5,
+          "current": 1360.0,
           "changes": {
             "mom": {
               "reference_value": 1305.5,
-              "pct_change": 3.22,
-              "pct_change_raw": 3.22,
+              "pct_change": 4.17,
+              "pct_change_raw": 4.17,
               "direction": "up",
               "signal": "moderate rent growth",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1070,
-              "pct_change": 25.93,
-              "pct_change_raw": 25.93,
+              "pct_change": 27.1,
+              "pct_change_raw": 27.1,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1094,
-              "pct_change": 23.17,
-              "pct_change_raw": 23.17,
+              "pct_change": 24.31,
+              "pct_change_raw": 24.31,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -458,28 +458,28 @@
           }
         },
         "medianRent": {
-          "current": 1345.0,
+          "current": 1372.5,
           "changes": {
             "mom": {
               "reference_value": 1262.5,
-              "pct_change": 6.53,
-              "pct_change_raw": 6.53,
+              "pct_change": 8.71,
+              "pct_change_raw": 8.71,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1070,
-              "pct_change": 25.7,
-              "pct_change_raw": 25.7,
+              "pct_change": 28.27,
+              "pct_change_raw": 28.27,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1094,
-              "pct_change": 22.94,
-              "pct_change_raw": 22.94,
+              "pct_change": 25.46,
+              "pct_change_raw": 25.46,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -487,28 +487,28 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 59.88,
+          "current": 61.21,
           "changes": {
             "mom": {
               "reference_value": 65.9,
-              "pct_change": -9.14,
-              "pct_change_raw": -9.14,
+              "pct_change": -7.12,
+              "pct_change_raw": -7.12,
               "direction": "down",
               "signal": "market tightening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 47,
-              "pct_change": 27.4,
-              "pct_change_raw": 27.4,
+              "pct_change": 30.23,
+              "pct_change_raw": 30.23,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
             },
             "yoy": {
               "reference_value": 26,
-              "pct_change": 130.31,
-              "pct_change_raw": 130.31,
+              "pct_change": 135.42,
+              "pct_change_raw": 135.42,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -516,28 +516,28 @@
           }
         },
         "medianDaysOnMarket": {
-          "current": 27.5,
+          "current": 29.0,
           "changes": {
             "mom": {
               "reference_value": 38.5,
-              "pct_change": -28.57,
-              "pct_change_raw": -28.57,
+              "pct_change": -24.68,
+              "pct_change_raw": -24.68,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "qoq": {
               "reference_value": 47,
-              "pct_change": -41.49,
-              "pct_change_raw": -41.49,
+              "pct_change": -38.3,
+              "pct_change_raw": -38.3,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "yoy": {
               "reference_value": 26,
-              "pct_change": 5.77,
-              "pct_change_raw": 5.77,
+              "pct_change": 11.54,
+              "pct_change_raw": 11.54,
               "direction": "up",
               "signal": "market loosening",
               "reliable": true
@@ -545,28 +545,28 @@
           }
         },
         "totalListings": {
-          "current": 47.5,
+          "current": 45.5,
           "changes": {
             "mom": {
               "reference_value": 45.5,
-              "pct_change": 4.4,
-              "pct_change_raw": 4.4,
-              "direction": "up",
+              "pct_change": 0.0,
+              "pct_change_raw": 0.0,
+              "direction": "flat",
               "signal": "supply stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 290,
-              "pct_change": -83.62,
-              "pct_change_raw": -83.62,
+              "pct_change": -84.31,
+              "pct_change_raw": -84.31,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
             },
             "yoy": {
               "reference_value": 210,
-              "pct_change": -77.38,
-              "pct_change_raw": -77.38,
+              "pct_change": -78.33,
+              "pct_change_raw": -78.33,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
@@ -633,36 +633,36 @@
         "temperature": "hot",
         "temperature_label": "Landlord's Market",
         "score": 3,
-        "rent_yoy_pct": 23.17,
+        "rent_yoy_pct": 24.31,
         "dom_mom_direction": "down",
-        "inventory_mom_direction": "up"
+        "inventory_mom_direction": "flat"
       }
     },
     "simpsonville": {
       "aggregate": {
         "averageRent": {
-          "current": 1995.5,
+          "current": 1995.0,
           "changes": {
             "mom": {
               "reference_value": 1943.5,
-              "pct_change": 2.68,
-              "pct_change_raw": 2.68,
+              "pct_change": 2.65,
+              "pct_change_raw": 2.65,
               "direction": "up",
               "signal": "moderate rent growth",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1437,
-              "pct_change": 38.87,
-              "pct_change_raw": 38.87,
+              "pct_change": 38.83,
+              "pct_change_raw": 38.83,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1466,
-              "pct_change": 36.12,
-              "pct_change_raw": 36.12,
+              "pct_change": 36.08,
+              "pct_change_raw": 36.08,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -699,28 +699,28 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 29.66,
+          "current": 30.37,
           "changes": {
             "mom": {
               "reference_value": 31.74,
-              "pct_change": -6.55,
-              "pct_change_raw": -6.55,
+              "pct_change": -4.32,
+              "pct_change_raw": -4.32,
               "direction": "down",
-              "signal": "market tightening",
+              "signal": "market stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 36,
-              "pct_change": -17.61,
-              "pct_change_raw": -17.61,
+              "pct_change": -15.64,
+              "pct_change_raw": -15.64,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "yoy": {
               "reference_value": 18,
-              "pct_change": 64.78,
-              "pct_change_raw": 64.78,
+              "pct_change": 68.72,
+              "pct_change_raw": 68.72,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -757,28 +757,28 @@
           }
         },
         "totalListings": {
-          "current": 104.0,
+          "current": 105.5,
           "changes": {
             "mom": {
               "reference_value": 90.0,
-              "pct_change": 15.56,
-              "pct_change_raw": 15.56,
+              "pct_change": 17.22,
+              "pct_change_raw": 17.22,
               "direction": "up",
               "signal": "supply building rapidly",
               "reliable": true
             },
             "qoq": {
               "reference_value": 320,
-              "pct_change": -67.5,
-              "pct_change_raw": -67.5,
+              "pct_change": -67.03,
+              "pct_change_raw": -67.03,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
             },
             "yoy": {
               "reference_value": 232,
-              "pct_change": -55.17,
-              "pct_change_raw": -55.17,
+              "pct_change": -54.53,
+              "pct_change_raw": -54.53,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
@@ -786,7 +786,7 @@
           }
         },
         "newListings": {
-          "current": 19.0,
+          "current": 29.5,
           "changes": {
             "mom": {
               "reference_value": 90.0,
@@ -844,8 +844,8 @@
       "market_conditions": {
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
-        "score": 2,
-        "rent_yoy_pct": 36.12,
+        "score": 1,
+        "rent_yoy_pct": 36.08,
         "dom_mom_direction": "down",
         "inventory_mom_direction": "up"
       }
@@ -853,28 +853,28 @@
     "greer": {
       "aggregate": {
         "averageRent": {
-          "current": 1807.0,
+          "current": 1787.5,
           "changes": {
             "mom": {
               "reference_value": 1833.5,
-              "pct_change": -1.45,
-              "pct_change_raw": -1.45,
-              "direction": "flat",
-              "signal": "mild softening",
+              "pct_change": -2.51,
+              "pct_change_raw": -2.51,
+              "direction": "down",
+              "signal": "notable rent decline",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1281,
-              "pct_change": 41.06,
-              "pct_change_raw": 41.06,
+              "pct_change": 39.54,
+              "pct_change_raw": 39.54,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1308,
-              "pct_change": 38.15,
-              "pct_change_raw": 38.15,
+              "pct_change": 36.66,
+              "pct_change_raw": 36.66,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -882,28 +882,28 @@
           }
         },
         "medianRent": {
-          "current": 1700.0,
+          "current": 1687.5,
           "changes": {
             "mom": {
               "reference_value": 1712.5,
-              "pct_change": -0.73,
-              "pct_change_raw": -0.73,
+              "pct_change": -1.46,
+              "pct_change_raw": -1.46,
               "direction": "flat",
               "signal": "mild softening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1281,
-              "pct_change": 32.71,
-              "pct_change_raw": 32.71,
+              "pct_change": 31.73,
+              "pct_change_raw": 31.73,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1308,
-              "pct_change": 29.97,
-              "pct_change_raw": 29.97,
+              "pct_change": 29.01,
+              "pct_change_raw": 29.01,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -911,28 +911,28 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 34.34,
+          "current": 35.43,
           "changes": {
             "mom": {
               "reference_value": 34.38,
-              "pct_change": -0.12,
-              "pct_change_raw": -0.12,
-              "direction": "flat",
+              "pct_change": 3.05,
+              "pct_change_raw": 3.05,
+              "direction": "up",
               "signal": "market stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 38,
-              "pct_change": -9.63,
-              "pct_change_raw": -9.63,
+              "pct_change": -6.76,
+              "pct_change_raw": -6.76,
               "direction": "down",
               "signal": "market tightening",
               "reliable": true
             },
             "yoy": {
               "reference_value": 20,
-              "pct_change": 71.7,
-              "pct_change_raw": 71.7,
+              "pct_change": 77.15,
+              "pct_change_raw": 77.15,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -998,7 +998,7 @@
           }
         },
         "newListings": {
-          "current": 34.0,
+          "current": 42.0,
           "changes": {
             "mom": {
               "reference_value": 117.5,
@@ -1057,36 +1057,36 @@
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
         "score": 2,
-        "rent_yoy_pct": 38.15,
-        "dom_mom_direction": "flat",
+        "rent_yoy_pct": 36.66,
+        "dom_mom_direction": "up",
         "inventory_mom_direction": "up"
       }
     },
     "easley": {
       "aggregate": {
         "averageRent": {
-          "current": 1690.0,
+          "current": 1692.0,
           "changes": {
             "mom": {
               "reference_value": 1617.5,
-              "pct_change": 4.48,
-              "pct_change_raw": 4.48,
+              "pct_change": 4.61,
+              "pct_change_raw": 4.61,
               "direction": "up",
               "signal": "moderate rent growth",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1086,
-              "pct_change": 55.62,
-              "pct_change_raw": 55.62,
+              "pct_change": 55.8,
+              "pct_change_raw": 55.8,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1108,
-              "pct_change": 52.53,
-              "pct_change_raw": 52.53,
+              "pct_change": 52.71,
+              "pct_change_raw": 52.71,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1094,28 +1094,28 @@
           }
         },
         "medianRent": {
-          "current": 1670.0,
+          "current": 1612.5,
           "changes": {
             "mom": {
               "reference_value": 1537.0,
-              "pct_change": 8.65,
-              "pct_change_raw": 8.65,
+              "pct_change": 4.91,
+              "pct_change_raw": 4.91,
               "direction": "up",
-              "signal": "strong rent growth",
+              "signal": "moderate rent growth",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1086,
-              "pct_change": 53.78,
-              "pct_change_raw": 53.78,
+              "pct_change": 48.48,
+              "pct_change_raw": 48.48,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1108,
-              "pct_change": 50.72,
-              "pct_change_raw": 50.72,
+              "pct_change": 45.53,
+              "pct_change_raw": 45.53,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1123,30 +1123,30 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 23.09,
+          "current": 24.21,
           "changes": {
             "mom": {
               "reference_value": 27.25,
-              "pct_change": -15.27,
-              "pct_change_raw": -15.27,
+              "pct_change": -11.16,
+              "pct_change_raw": -11.16,
               "direction": "down",
-              "signal": "market tightening sharply",
+              "signal": "market tightening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 49,
-              "pct_change": -52.88,
-              "pct_change_raw": -52.88,
+              "pct_change": -50.59,
+              "pct_change_raw": -50.59,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "yoy": {
               "reference_value": 28,
-              "pct_change": -17.54,
-              "pct_change_raw": -17.54,
+              "pct_change": -13.54,
+              "pct_change_raw": -13.54,
               "direction": "down",
-              "signal": "market tightening sharply",
+              "signal": "market tightening",
               "reliable": true
             }
           }
@@ -1210,7 +1210,7 @@
           }
         },
         "newListings": {
-          "current": 16.0,
+          "current": 17.5,
           "changes": {
             "mom": {
               "reference_value": 42.5,
@@ -1269,7 +1269,7 @@
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
         "score": 2,
-        "rent_yoy_pct": 52.53,
+        "rent_yoy_pct": 52.71,
         "dom_mom_direction": "down",
         "inventory_mom_direction": "up"
       }
@@ -1277,28 +1277,28 @@
     "piedmont": {
       "aggregate": {
         "averageRent": {
-          "current": 1887.0,
+          "current": 1889.0,
           "changes": {
             "mom": {
               "reference_value": 1825.0,
-              "pct_change": 3.4,
-              "pct_change_raw": 3.4,
+              "pct_change": 3.51,
+              "pct_change_raw": 3.51,
               "direction": "up",
               "signal": "moderate rent growth",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1057,
-              "pct_change": 78.52,
-              "pct_change_raw": 78.52,
+              "pct_change": 78.71,
+              "pct_change_raw": 78.71,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1078,
-              "pct_change": 75.05,
-              "pct_change_raw": 75.05,
+              "pct_change": 75.23,
+              "pct_change_raw": 75.23,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1335,30 +1335,30 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 30.18,
+          "current": 21.52,
           "changes": {
             "mom": {
               "reference_value": 26.24,
-              "pct_change": 15.02,
-              "pct_change_raw": 15.02,
-              "direction": "up",
-              "signal": "market loosening significantly",
+              "pct_change": -17.99,
+              "pct_change_raw": -17.99,
+              "direction": "down",
+              "signal": "market tightening sharply",
               "reliable": true
             },
             "qoq": {
               "reference_value": 50,
-              "pct_change": -39.64,
-              "pct_change_raw": -39.64,
+              "pct_change": -56.96,
+              "pct_change_raw": -56.96,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "yoy": {
               "reference_value": 29,
-              "pct_change": 4.07,
-              "pct_change_raw": 4.07,
-              "direction": "up",
-              "signal": "market stable",
+              "pct_change": -25.79,
+              "pct_change_raw": -25.79,
+              "direction": "down",
+              "signal": "market tightening sharply",
               "reliable": true
             }
           }
@@ -1393,28 +1393,28 @@
           }
         },
         "totalListings": {
-          "current": 35.0,
+          "current": 34.0,
           "changes": {
             "mom": {
               "reference_value": 36.0,
-              "pct_change": -2.78,
-              "pct_change_raw": -2.78,
+              "pct_change": -5.56,
+              "pct_change_raw": -5.56,
               "direction": "down",
-              "signal": "supply stable",
+              "signal": "supply tightening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 91,
-              "pct_change": -61.54,
-              "pct_change_raw": -61.54,
+              "pct_change": -62.64,
+              "pct_change_raw": -62.64,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
             },
             "yoy": {
               "reference_value": 66,
-              "pct_change": -46.97,
-              "pct_change_raw": -46.97,
+              "pct_change": -48.48,
+              "pct_change_raw": -48.48,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
@@ -1422,7 +1422,7 @@
           }
         },
         "newListings": {
-          "current": 7.0,
+          "current": 10.0,
           "changes": {
             "mom": {
               "reference_value": 36.0,
@@ -1478,39 +1478,39 @@
         }
       },
       "market_conditions": {
-        "temperature": "warm",
-        "temperature_label": "Slightly Landlord-Favored",
-        "score": 1,
-        "rent_yoy_pct": 75.05,
-        "dom_mom_direction": "up",
+        "temperature": "hot",
+        "temperature_label": "Landlord's Market",
+        "score": 4,
+        "rent_yoy_pct": 75.23,
+        "dom_mom_direction": "down",
         "inventory_mom_direction": "down"
       }
     },
     "liberty": {
       "aggregate": {
         "averageRent": {
-          "current": 1366.0,
+          "current": 1356.0,
           "changes": {
             "mom": {
               "reference_value": 1426.0,
-              "pct_change": -4.21,
-              "pct_change_raw": -4.21,
+              "pct_change": -4.91,
+              "pct_change_raw": -4.91,
               "direction": "down",
               "signal": "notable rent decline",
               "reliable": true
             },
             "qoq": {
               "reference_value": 913,
-              "pct_change": 49.62,
-              "pct_change_raw": 49.62,
+              "pct_change": 48.52,
+              "pct_change_raw": 48.52,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 931,
-              "pct_change": 46.72,
-              "pct_change_raw": 46.72,
+              "pct_change": 45.65,
+              "pct_change_raw": 45.65,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1518,28 +1518,28 @@
           }
         },
         "medianRent": {
-          "current": 1261.0,
+          "current": 1225.0,
           "changes": {
             "mom": {
               "reference_value": 1400.0,
-              "pct_change": -9.93,
-              "pct_change_raw": -9.93,
+              "pct_change": -12.5,
+              "pct_change_raw": -12.5,
               "direction": "down",
               "signal": "notable rent decline",
               "reliable": true
             },
             "qoq": {
               "reference_value": 913,
-              "pct_change": 38.12,
-              "pct_change_raw": 38.12,
+              "pct_change": 34.17,
+              "pct_change_raw": 34.17,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 931,
-              "pct_change": 35.45,
-              "pct_change_raw": 35.45,
+              "pct_change": 31.58,
+              "pct_change_raw": 31.58,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1547,28 +1547,28 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 61.67,
+          "current": 58.57,
           "changes": {
             "mom": {
               "reference_value": 59.08,
-              "pct_change": 4.38,
-              "pct_change_raw": 4.38,
-              "direction": "up",
+              "pct_change": -0.86,
+              "pct_change_raw": -0.86,
+              "direction": "flat",
               "signal": "market stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 58,
-              "pct_change": 6.33,
-              "pct_change_raw": 6.33,
-              "direction": "up",
-              "signal": "market loosening",
+              "pct_change": 0.98,
+              "pct_change_raw": 0.98,
+              "direction": "flat",
+              "signal": "market stable",
               "reliable": true
             },
             "yoy": {
               "reference_value": 34,
-              "pct_change": 81.38,
-              "pct_change_raw": 81.38,
+              "pct_change": 72.26,
+              "pct_change_raw": 72.26,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -1576,57 +1576,57 @@
           }
         },
         "medianDaysOnMarket": {
-          "current": 36.0,
+          "current": 31.0,
           "changes": {
             "mom": {
               "reference_value": 31.0,
-              "pct_change": 16.13,
-              "pct_change_raw": 16.13,
-              "direction": "up",
-              "signal": "market loosening significantly",
+              "pct_change": 0.0,
+              "pct_change_raw": 0.0,
+              "direction": "flat",
+              "signal": "market stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 58,
-              "pct_change": -37.93,
-              "pct_change_raw": -37.93,
+              "pct_change": -46.55,
+              "pct_change_raw": -46.55,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "yoy": {
               "reference_value": 34,
-              "pct_change": 5.88,
-              "pct_change_raw": 5.88,
-              "direction": "up",
-              "signal": "market loosening",
+              "pct_change": -8.82,
+              "pct_change_raw": -8.82,
+              "direction": "down",
+              "signal": "market tightening",
               "reliable": true
             }
           }
         },
         "totalListings": {
-          "current": 15.0,
+          "current": 14.0,
           "changes": {
             "mom": {
               "reference_value": 12.0,
-              "pct_change": 25.0,
-              "pct_change_raw": 25.0,
+              "pct_change": 16.67,
+              "pct_change_raw": 16.67,
               "direction": "up",
               "signal": "supply building rapidly",
               "reliable": true
             },
             "qoq": {
               "reference_value": 41,
-              "pct_change": -63.41,
-              "pct_change_raw": -63.41,
+              "pct_change": -65.85,
+              "pct_change_raw": -65.85,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
             },
             "yoy": {
               "reference_value": 29,
-              "pct_change": -48.28,
-              "pct_change_raw": -48.28,
+              "pct_change": -51.72,
+              "pct_change_raw": -51.72,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
@@ -1634,7 +1634,7 @@
           }
         },
         "newListings": {
-          "current": 0.0,
+          "current": 1.0,
           "changes": {
             "mom": {
               "reference_value": 12.0,
@@ -1693,36 +1693,36 @@
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
         "score": 1,
-        "rent_yoy_pct": 46.72,
-        "dom_mom_direction": "up",
+        "rent_yoy_pct": 45.65,
+        "dom_mom_direction": "flat",
         "inventory_mom_direction": "up"
       }
     },
     "clemson": {
       "aggregate": {
         "averageRent": {
-          "current": 1527.0,
+          "current": 1544.0,
           "changes": {
             "mom": {
               "reference_value": 1515.0,
-              "pct_change": 0.79,
-              "pct_change_raw": 0.79,
+              "pct_change": 1.91,
+              "pct_change_raw": 1.91,
               "direction": "flat",
               "signal": "stable rents",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1022,
-              "pct_change": 49.41,
-              "pct_change_raw": 49.41,
+              "pct_change": 51.08,
+              "pct_change_raw": 51.08,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 975,
-              "pct_change": 56.62,
-              "pct_change_raw": 56.62,
+              "pct_change": 58.36,
+              "pct_change_raw": 58.36,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1730,28 +1730,28 @@
           }
         },
         "medianRent": {
-          "current": 1200.0,
+          "current": 1250.0,
           "changes": {
             "mom": {
               "reference_value": 1250.0,
-              "pct_change": -4.0,
-              "pct_change_raw": -4.0,
-              "direction": "down",
-              "signal": "notable rent decline",
+              "pct_change": 0.0,
+              "pct_change_raw": 0.0,
+              "direction": "flat",
+              "signal": "stable rents",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1022,
-              "pct_change": 17.42,
-              "pct_change_raw": 17.42,
+              "pct_change": 22.31,
+              "pct_change_raw": 22.31,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 975,
-              "pct_change": 23.08,
-              "pct_change_raw": 23.08,
+              "pct_change": 28.21,
+              "pct_change_raw": 28.21,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1759,28 +1759,28 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 83.57,
+          "current": 86.22,
           "changes": {
             "mom": {
               "reference_value": 75.86,
-              "pct_change": 10.16,
-              "pct_change_raw": 10.16,
+              "pct_change": 13.66,
+              "pct_change_raw": 13.66,
               "direction": "up",
               "signal": "market loosening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 30,
-              "pct_change": 178.57,
-              "pct_change_raw": 178.57,
+              "pct_change": 187.4,
+              "pct_change_raw": 187.4,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
             },
             "yoy": {
               "reference_value": 38,
-              "pct_change": 119.92,
-              "pct_change_raw": 119.92,
+              "pct_change": 126.89,
+              "pct_change_raw": 126.89,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -1788,28 +1788,28 @@
           }
         },
         "medianDaysOnMarket": {
-          "current": 64.0,
+          "current": 56.0,
           "changes": {
             "mom": {
               "reference_value": 60.0,
-              "pct_change": 6.67,
-              "pct_change_raw": 6.67,
-              "direction": "up",
-              "signal": "market loosening",
+              "pct_change": -6.67,
+              "pct_change_raw": -6.67,
+              "direction": "down",
+              "signal": "market tightening",
               "reliable": true
             },
             "qoq": {
               "reference_value": 30,
-              "pct_change": 113.33,
-              "pct_change_raw": 113.33,
+              "pct_change": 86.67,
+              "pct_change_raw": 86.67,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
             },
             "yoy": {
               "reference_value": 38,
-              "pct_change": 68.42,
-              "pct_change_raw": 68.42,
+              "pct_change": 47.37,
+              "pct_change_raw": 47.37,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -1817,28 +1817,28 @@
           }
         },
         "totalListings": {
-          "current": 172.0,
+          "current": 177.0,
           "changes": {
             "mom": {
               "reference_value": 173.0,
-              "pct_change": -0.58,
-              "pct_change_raw": -0.58,
-              "direction": "flat",
+              "pct_change": 2.31,
+              "pct_change_raw": 2.31,
+              "direction": "up",
               "signal": "supply stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 241,
-              "pct_change": -28.63,
-              "pct_change_raw": -28.63,
+              "pct_change": -26.56,
+              "pct_change_raw": -26.56,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
             },
             "yoy": {
               "reference_value": 288,
-              "pct_change": -40.28,
-              "pct_change_raw": -40.28,
+              "pct_change": -38.54,
+              "pct_change_raw": -38.54,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
@@ -1846,7 +1846,7 @@
           }
         },
         "newListings": {
-          "current": 17.0,
+          "current": 23.0,
           "changes": {
             "mom": {
               "reference_value": 173.0,
@@ -1905,36 +1905,36 @@
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
         "score": 1,
-        "rent_yoy_pct": 56.62,
+        "rent_yoy_pct": 58.36,
         "dom_mom_direction": "up",
-        "inventory_mom_direction": "flat"
+        "inventory_mom_direction": "up"
       }
     },
     "seneca": {
       "aggregate": {
         "averageRent": {
-          "current": 1498.5,
+          "current": 1430.5,
           "changes": {
             "mom": {
               "reference_value": 1508.0,
-              "pct_change": -0.63,
-              "pct_change_raw": -0.63,
-              "direction": "flat",
-              "signal": "mild softening",
+              "pct_change": -5.14,
+              "pct_change_raw": -5.14,
+              "direction": "down",
+              "signal": "notable rent decline",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1042,
-              "pct_change": 43.81,
-              "pct_change_raw": 43.81,
+              "pct_change": 37.28,
+              "pct_change_raw": 37.28,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1062,
-              "pct_change": 41.1,
-              "pct_change_raw": 41.1,
+              "pct_change": 34.7,
+              "pct_change_raw": 34.7,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1942,28 +1942,28 @@
           }
         },
         "medianRent": {
-          "current": 1447.5,
+          "current": 1325.0,
           "changes": {
             "mom": {
               "reference_value": 1450.0,
-              "pct_change": -0.17,
-              "pct_change_raw": -0.17,
-              "direction": "flat",
-              "signal": "mild softening",
+              "pct_change": -8.62,
+              "pct_change_raw": -8.62,
+              "direction": "down",
+              "signal": "notable rent decline",
               "reliable": true
             },
             "qoq": {
               "reference_value": 1042,
-              "pct_change": 38.92,
-              "pct_change_raw": 38.92,
+              "pct_change": 27.16,
+              "pct_change_raw": 27.16,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
             },
             "yoy": {
               "reference_value": 1062,
-              "pct_change": 36.3,
-              "pct_change_raw": 36.3,
+              "pct_change": 24.76,
+              "pct_change_raw": 24.76,
               "direction": "up",
               "signal": "strong rent growth",
               "reliable": true
@@ -1971,28 +1971,28 @@
           }
         },
         "averageDaysOnMarket": {
-          "current": 57.59,
+          "current": 51.42,
           "changes": {
             "mom": {
               "reference_value": 47.92,
-              "pct_change": 20.18,
-              "pct_change_raw": 20.18,
-              "direction": "up",
-              "signal": "market loosening significantly",
-              "reliable": true
-            },
-            "qoq": {
-              "reference_value": 51,
-              "pct_change": 12.92,
-              "pct_change_raw": 12.92,
+              "pct_change": 7.3,
+              "pct_change_raw": 7.3,
               "direction": "up",
               "signal": "market loosening",
               "reliable": true
             },
+            "qoq": {
+              "reference_value": 51,
+              "pct_change": 0.82,
+              "pct_change_raw": 0.82,
+              "direction": "flat",
+              "signal": "market stable",
+              "reliable": true
+            },
             "yoy": {
               "reference_value": 30,
-              "pct_change": 91.97,
-              "pct_change_raw": 91.97,
+              "pct_change": 71.4,
+              "pct_change_raw": 71.4,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
@@ -2000,28 +2000,28 @@
           }
         },
         "medianDaysOnMarket": {
-          "current": 17.5,
+          "current": 22.0,
           "changes": {
             "mom": {
               "reference_value": 10.0,
-              "pct_change": 75.0,
-              "pct_change_raw": 75.0,
+              "pct_change": 120.0,
+              "pct_change_raw": 120.0,
               "direction": "up",
               "signal": "market loosening significantly",
               "reliable": true
             },
             "qoq": {
               "reference_value": 51,
-              "pct_change": -65.69,
-              "pct_change_raw": -65.69,
+              "pct_change": -56.86,
+              "pct_change_raw": -56.86,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
             },
             "yoy": {
               "reference_value": 30,
-              "pct_change": -41.67,
-              "pct_change_raw": -41.67,
+              "pct_change": -26.67,
+              "pct_change_raw": -26.67,
               "direction": "down",
               "signal": "market tightening sharply",
               "reliable": true
@@ -2029,28 +2029,28 @@
           }
         },
         "totalListings": {
-          "current": 47.5,
+          "current": 50.0,
           "changes": {
             "mom": {
               "reference_value": 48.5,
-              "pct_change": -2.06,
-              "pct_change_raw": -2.06,
-              "direction": "down",
+              "pct_change": 3.09,
+              "pct_change_raw": 3.09,
+              "direction": "up",
               "signal": "supply stable",
               "reliable": true
             },
             "qoq": {
               "reference_value": 174,
-              "pct_change": -72.7,
-              "pct_change_raw": -72.7,
+              "pct_change": -71.26,
+              "pct_change_raw": -71.26,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
             },
             "yoy": {
               "reference_value": 126,
-              "pct_change": -62.3,
-              "pct_change_raw": -62.3,
+              "pct_change": -60.32,
+              "pct_change_raw": -60.32,
               "direction": "down",
               "signal": "supply very tight",
               "reliable": true
@@ -2058,7 +2058,7 @@
           }
         },
         "newListings": {
-          "current": 5.5,
+          "current": 9.0,
           "changes": {
             "mom": {
               "reference_value": 48.5,
@@ -2117,14 +2117,14 @@
         "temperature": "warm",
         "temperature_label": "Slightly Landlord-Favored",
         "score": 1,
-        "rent_yoy_pct": 41.1,
+        "rent_yoy_pct": 34.7,
         "dom_mom_direction": "up",
-        "inventory_mom_direction": "down"
+        "inventory_mom_direction": "up"
       }
     }
   },
   "regional_summary": {
-    "avg_rent_yoy_pct": 39.34,
+    "avg_rent_yoy_pct": 38.71,
     "markets_with_rent_growth": 10,
     "markets_declining": 0,
     "hottest_market": "piedmont",
