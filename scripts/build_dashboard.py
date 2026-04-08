@@ -68,18 +68,18 @@ def pct_class(v):
 def temp_color(temp):
     return {
         "hot": "#e07a6a", "warm": "#f4a235",
-        "neutral": "#86b96e", "cool": "#7eb3d4", "cold": "#b99ddb"
-    }.get(temp, "#86b96e")
+        "neutral": "#4b4f7a", "cool": "#7eb3d4", "cold": "#b99ddb"
+    }.get(temp, "#4b4f7a")
 
 
 def confidence_color(level: str) -> str:
     return {
-        "high": "#86b96e",
+        "high": "#4b4f7a",
         "solid": "#7eb3d4",
         "moderate": "#f4a235",
         "directional": "#d4845a",
         "low": "#e07a6a",
-    }.get(level, "#86b96e")
+    }.get(level, "#4b4f7a")
 
 
 def fmt_date(ts: str, fallback: str = "n/a") -> str:
@@ -299,7 +299,7 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
     group = GROUPS[group_key]
     metrics = aggregate_group_metrics(group["markets"], history, trends)
     confidence = group_confidence(group["markets"], history, supplemental)
-    color = "#86b96e" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
+    color = "#4b4f7a" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
     tc = temp_color(metrics["temperature"])
     cc = confidence_color(confidence["level"])
 
@@ -561,7 +561,7 @@ def build_html(trends, insights, history, supplemental):
 <title>Upstate SC Rental Market — {as_of_display}</title>
 <style>
 :root{{
-  --brand-green:#5ac763;
+  --brand-blue:#4b4f7a;
   --brand-orange:#fd5315;
   --brand-charcoal:#2d2e30;
   --brand-charcoal-deep:#1e1e1e;
@@ -574,17 +574,17 @@ def build_html(trends, insights, history, supplemental):
 *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
 html{{font-size:15px;scroll-behavior:smooth}}
 body{{background:linear-gradient(180deg,#f7f7f3,#eef3eb);color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.6}}
-a{{color:var(--brand-green);text-decoration:none}}
+a{{color:var(--brand-blue);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 
-.site-header{{background:linear-gradient(135deg,var(--brand-charcoal),var(--brand-charcoal-deep));border-bottom:4px solid var(--brand-green);padding:32px 40px 24px}}
+.site-header{{background:linear-gradient(135deg,var(--brand-charcoal),var(--brand-charcoal-deep));border-bottom:4px solid var(--brand-blue);padding:32px 40px 24px}}
 .eyebrow{{font-size:10px;color:var(--brand-orange);letter-spacing:2.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:8px}}
 h1{{font-size:32px;font-weight:700;color:#fff;margin-bottom:6px;font-family:'Montserrat',sans-serif}}
-h1 em{{color:var(--brand-green);font-style:normal}}
+h1 em{{color:var(--brand-blue);font-style:normal}}
 .subtitle{{font-size:11px;color:#d1d6d1;font-family:'Montserrat',sans-serif;margin-bottom:20px}}
 
 .nav-bar{{font-size:12px;color:var(--brand-muted);font-family:'Montserrat',sans-serif;padding:12px 40px;background:#ffffff;border-bottom:1px solid var(--brand-border)}}
-.nav-bar a{{color:var(--brand-green);margin-right:4px}}
+.nav-bar a{{color:var(--brand-blue);margin-right:4px}}
 
 .hero-stats{{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}}
 .hero-stat{{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 18px;min-width:110px;text-align:center;border:1px solid rgba(255,255,255,.08)}}
@@ -593,11 +593,11 @@ h1 em{{color:var(--brand-green);font-style:normal}}
 
 .main{{max-width:1100px;margin:0 auto;padding:32px 40px 60px}}
 
-.section-header{{font-size:11px;color:var(--brand-green);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin:40px 0 20px;padding-bottom:8px;border-bottom:1px solid var(--brand-border)}}
+.section-header{{font-size:11px;color:var(--brand-blue);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin:40px 0 20px;padding-bottom:8px;border-bottom:1px solid var(--brand-border)}}
 
 .regional-block{{background:var(--brand-surface);border:1px solid var(--brand-border);border-radius:14px;padding:28px;margin-bottom:36px}}
 .regional-title{{font-size:16px;color:var(--brand-charcoal);margin-bottom:16px;font-family:'Montserrat',sans-serif}}
-.insight-header{{font-size:11px;color:var(--brand-green);letter-spacing:1.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin:20px 0 8px}}
+.insight-header{{font-size:11px;color:var(--brand-blue);letter-spacing:1.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin:20px 0 8px}}
 .insight-block p{{font-size:14px;color:var(--brand-charcoal);line-height:1.75;margin-bottom:14px;font-family:'Roboto',sans-serif}}
 
 .market-section{{background:var(--brand-surface);border:1px solid var(--brand-border);border-radius:14px;padding:28px;margin-bottom:28px;box-shadow:0 10px 30px rgba(45,46,48,.05)}}
@@ -608,7 +608,7 @@ h1 em{{color:var(--brand-green);font-style:normal}}
 
 .temp-badge{{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:'Montserrat',sans-serif}}
 .tier-badge{{font-size:9px;padding:2px 8px;border-radius:8px;font-family:'Montserrat',sans-serif;letter-spacing:.5px;vertical-align:middle}}
-.tier-full{{background:rgba(90,199,99,.12);color:var(--brand-green);border:1px solid rgba(90,199,99,.25)}}
+.tier-full{{background:rgba(75,79,122,.12);color:var(--brand-blue);border:1px solid rgba(75,79,122,.25)}}
 .tier-snap{{background:rgba(253,83,21,.10);color:var(--brand-orange);border:1px solid rgba(253,83,21,.25)}}
 
 .metrics-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}}
@@ -617,7 +617,7 @@ h1 em{{color:var(--brand-green);font-style:normal}}
 .metric-val{{font-size:24px;font-weight:800;color:var(--brand-charcoal);font-family:'Montserrat',sans-serif;margin-bottom:8px}}
 .trend-row{{display:flex;flex-wrap:wrap;gap:6px;align-items:center}}
 .trend-item{{font-size:11px;font-family:'Montserrat',sans-serif;padding:2px 7px;border-radius:6px;font-weight:600}}
-.trend-item.up{{background:rgba(90,199,99,.14);color:var(--brand-green)}}
+.trend-item.up{{background:rgba(75,79,122,.14);color:var(--brand-blue)}}
 .trend-item.down{{background:rgba(253,83,21,.12);color:var(--brand-orange)}}
 .trend-item:not(.up):not(.down){{background:#eef1ed;color:var(--brand-muted)}}
 .trend-note{{font-size:10px;color:var(--brand-muted);font-family:'Roboto',sans-serif;font-style:italic}}
@@ -628,11 +628,11 @@ h1 em{{color:var(--brand-green);font-style:normal}}
 .bedroom-table th:first-child{{text-align:left}}
 .bedroom-table td{{padding:9px 12px;text-align:right;border-bottom:1px solid #eef1ed}}
 .bedroom-table td:first-child{{text-align:left;font-weight:600;color:var(--brand-charcoal)}}
-.bedroom-table td.up{{color:var(--brand-green);font-weight:700}}
+.bedroom-table td.up{{color:var(--brand-blue);font-weight:700}}
 .bedroom-table td.down{{color:var(--brand-orange);font-weight:700}}
 
 .insight-block{{background:#fbfcfa;border-radius:10px;padding:22px 24px;border-left:3px solid rgba(90,199,99,.35)}}
-.insight-label{{font-size:10px;color:var(--brand-green);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:14px;font-weight:700}}
+.insight-label{{font-size:10px;color:var(--brand-blue);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:14px;font-weight:700}}
 .source-block{{background:#fbfcfa;border:1px solid var(--brand-border);border-radius:10px;padding:14px 16px;margin-bottom:18px}}
 .source-label{{font-size:10px;color:var(--brand-orange);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:10px;font-weight:700}}
 .source-text{{font-size:12px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.7}}
@@ -644,7 +644,7 @@ h1 em{{color:var(--brand-green);font-style:normal}}
 
 .legend-block{{background:#ffffff;border:1px solid var(--brand-border);border-left:4px solid var(--brand-orange);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.7}}
 .legend-title{{font-size:10px;color:var(--brand-orange);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:8px}}
-.data-note{{background:#ffffff;border:1px solid var(--brand-border);border-left:4px solid var(--brand-green);border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.6}}
+.data-note{{background:#ffffff;border:1px solid var(--brand-border);border-left:4px solid var(--brand-blue);border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.6}}
 
 .footer{{text-align:center;font-size:11px;color:var(--brand-muted);font-family:'Montserrat',sans-serif;margin-top:60px;padding-top:20px;border-top:1px solid var(--brand-border)}}
 
@@ -663,11 +663,11 @@ h1 em{{color:var(--brand-green);font-style:normal}}
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="hs-label">Report Period</div>
-      <div class="hs-val" style="color:#86b96e;font-size:15px">{as_of_display}</div>
+      <div class="hs-val" style="color:#4b4f7a;font-size:15px">{as_of_display}</div>
     </div>
     <div class="hero-stat">
       <div class="hs-label">Avg MoM Rent</div>
-      <div class="hs-val" style="color:{'#86b96e' if (avg_mom_rent or 0) >= 0 else '#e07a6a'}">{fmt_pct(avg_mom_rent)}</div>
+      <div class="hs-val" style="color:{'#4b4f7a' if (avg_mom_rent or 0) >= 0 else '#e07a6a'}">{fmt_pct(avg_mom_rent)}</div>
     </div>
     <div class="hero-stat">
       <div class="hs-label">Hottest Market</div>

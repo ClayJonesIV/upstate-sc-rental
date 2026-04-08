@@ -77,13 +77,13 @@ def temp_color(temp):
     return {
         "hot": "#e07a6a",
         "warm": "#f4a235",
-        "neutral": "#86b96e",
+        "neutral": "#4b4f7a",
         "cool": "#7eb3d4",
         "cold": "#b99ddb",
-    }.get(temp, "#86b96e")
+    }.get(temp, "#4b4f7a")
 
 
-def insight_html(text, color="#86b96e", headers=None):
+def insight_html(text, color="#4b4f7a", headers=None):
     headers = headers or [
         "MARKET CONDITIONS",
         "IMPLICATIONS FOR CURRENT OWNERS",
@@ -192,7 +192,7 @@ def build_other_markets_rows(trends):
 def build_group_section(group_key, trends, insights):
     group = GROUPS[group_key]
     metrics = aggregate_group_metrics(group["markets"], trends)
-    color = "#86b96e" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
+    color = "#4b4f7a" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
     tc = temp_color(metrics["temperature"])
     dom_trend_html = ""
 
@@ -206,7 +206,7 @@ def build_group_section(group_key, trends, insights):
     if group_key == "headline":
         body = f"""
         <div style="background:#0a1a10;border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:18px 20px;margin-top:16px">
-          {insight_html(insights.get("regional", ""), color="#86b96e", headers=["UPSTATE SC MACRO VIEW", "OUTLOOK AND RISKS"])}
+          {insight_html(insights.get("regional", ""), color="#4b4f7a", headers=["UPSTATE SC MACRO VIEW", "OUTLOOK AND RISKS"])}
         </div>"""
     elif group_key in {"greenville", "spartanburg"}:
         market_key = group["markets"][0]
@@ -288,9 +288,9 @@ def build_email_html(trends, insights):
 <head><meta charset="UTF-8"/></head>
 <body style="background:#f7f7f3;color:#2d2e30;font-family:Roboto,sans-serif;margin:0;padding:0">
 <div style="max-width:900px;margin:0 auto;padding:0 0 40px">
-  <div style="background:linear-gradient(135deg,#2d2e30,#1e1e1e);padding:32px 36px;border-bottom:4px solid #5ac763">
+  <div style="background:linear-gradient(135deg,#2d2e30,#1e1e1e);padding:32px 36px;border-bottom:4px solid #4b4f7a">
     <div style="font-size:10px;color:#fd5315;letter-spacing:2.5px;text-transform:uppercase;font-family:Montserrat,sans-serif;font-weight:700;margin-bottom:8px">Jones Assurance Property Management | Upstate South Carolina</div>
-    <h1 style="font-size:28px;font-weight:700;color:#ffffff;margin-bottom:6px;font-family:Montserrat,sans-serif">Rental Market <em style="color:#5ac763;font-style:normal">Intelligence</em></h1>
+    <h1 style="font-size:28px;font-weight:700;color:#ffffff;margin-bottom:6px;font-family:Montserrat,sans-serif">Rental Market <em style="color:#4b4f7a;font-style:normal">Intelligence</em></h1>
     <div style="font-size:12px;color:#d1d6d1;font-family:Montserrat,sans-serif">{as_of_display} | 10 Markets | RentCast + Claude AI</div>
   </div>
 
@@ -301,12 +301,12 @@ def build_email_html(trends, insights):
   </div>
 
   <div style="padding:28px 36px">
-    <div style="background:#ffffff;border:1px solid #d9ded7;border-left:4px solid #5ac763;border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;font-family:Roboto,sans-serif">
-      <strong style="color:#5ac763">View interactive dashboard:</strong>
+    <div style="background:#ffffff;border:1px solid #d9ded7;border-left:4px solid #4b4f7a;border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;font-family:Roboto,sans-serif">
+      <strong style="color:#4b4f7a">View interactive dashboard:</strong>
       <a href="{PAGES_URL}" style="color:#5f8fb5">{PAGES_URL}</a>
     </div>
 
-    <h2 style="font-size:16px;font-weight:700;color:#5ac763;letter-spacing:1px;margin-bottom:18px;border-bottom:1px solid #d9ded7;padding-bottom:8px;font-family:Montserrat,sans-serif">TIERED MARKET VIEW</h2>
+    <h2 style="font-size:16px;font-weight:700;color:#4b4f7a;letter-spacing:1px;margin-bottom:18px;border-bottom:1px solid #d9ded7;padding-bottom:8px;font-family:Montserrat,sans-serif">TIERED MARKET VIEW</h2>
     {headline_section}
     {greenville_section}
     {spartanburg_section}
