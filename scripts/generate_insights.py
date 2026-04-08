@@ -36,6 +36,8 @@ Use only the provided data and source notes. Do not invent outside facts.
 Do not use bullet points. Write in paragraphs only.
 Do not use quarter-over-quarter or year-over-year data in any analysis or recommendation."""
 
+LOW_CONFIDENCE_MARKETS = {"liberty", "clemson", "seneca"}
+
 
 def sanitize_market_text(mkt_key: str, text: str) -> str:
     if not text:
@@ -44,6 +46,10 @@ def sanitize_market_text(mkt_key: str, text: str) -> str:
     if mkt_key == "greenville":
         cleaned = cleaned.replace("Greenville-Anderson-Mauldin rental market", "Greenville rental market")
         cleaned = cleaned.replace("Greenville-Anderson-Mauldin market", "Greenville market")
+    if mkt_key in {"clemson", "seneca"}:
+        cleaned = cleaned.replace("86 days", "an elevated leasing timeline")
+        cleaned = cleaned.replace("86-day", "elevated")
+        cleaned = cleaned.replace("86 day", "elevated")
     return cleaned
 
 
@@ -51,6 +57,12 @@ def sanitize_regional_text(text: str) -> str:
     if not text:
         return text
     cleaned = text
+    cleaned = cleaned.replace("Clemson and Seneca", "some smaller seasonal and outlying markets")
+    cleaned = cleaned.replace("Seneca and Clemson", "some smaller seasonal and outlying markets")
+    cleaned = cleaned.replace("Clemson, Seneca", "some smaller seasonal and outlying markets")
+    cleaned = cleaned.replace("Seneca, Clemson", "some smaller seasonal and outlying markets")
+    cleaned = cleaned.replace("Clemson", "a smaller seasonal market")
+    cleaned = cleaned.replace("Seneca", "a smaller outlying market")
     cleaned = cleaned.replace("Liberty and Seneca", "some smaller outlying markets and Seneca")
     cleaned = cleaned.replace("Seneca and Liberty", "Seneca and some smaller outlying markets")
     cleaned = cleaned.replace("like Liberty and Seneca", "like some smaller outlying markets and Seneca")
@@ -78,6 +90,20 @@ def source_context(supplemental: dict | None, history: list) -> str:
         f"- Apartment List and Zillow supplemental data: {supp_date}\n"
         f"When writing Outlook and Risks, cite the available sources in plain text like "
         f"'(Sources: RentCast {rentcast_date}; Apartment List/Zillow {supp_date})'."
+    )
+
+
+def low_confidence_guidance(mkt_key: str) -> str:
+    if mkt_key not in LOW_CONFIDENCE_MARKETS:
+        return ""
+    return (
+        "CONFIDENCE GUARDRAILS:\n"
+        "- This market has lower-confidence signal because the local sample is thinner and/or more seasonal.\n"
+        "- Do not anchor the narrative on exact days-on-market values or exact vacancy timing.\n"
+        "- Do not cite a specific days-on-market number in the prose.\n"
+        "- Use generic wording such as 'leasing pace appears softer,' 'marketing may require more patience,' or "
+        "'conditions look more variable than the core markets.'\n"
+        "- Keep conclusions modest and emphasize uncertainty where appropriate.\n"
     )
 
 def market_prompt(mkt_key: str, mkt_cfg: dict, mkt_trends: dict, month: str, history: list, supplemental: dict | None) -> str:
@@ -108,6 +134,12 @@ def market_prompt(mkt_key: str, mkt_cfg: dict, mkt_trends: dict, month: str, his
     notes = mkt_cfg.get("notes", "")
     notes_line = f"\nMarket notes: {notes}" if notes else ""
 
+    dom_line = f"{dom_cur:.0f}" if dom_cur else "N/A"
+    vacancy_proxy_line = str(vacancy_proxy)
+    if mkt_key in LOW_CONFIDENCE_MARKETS:
+        dom_line = "lower-confidence directional signal only"
+        vacancy_proxy_line = "Use only as a loose directional read; do not quote exact values in prose."
+
     return f"""Write a deep narrative analysis for the {mkt_cfg['name']} rental market for {month}.
 {notes_line}
 
@@ -118,16 +150,17 @@ CURRENT DATA:
 - Market temperature: {cond['temperature_label']} (score: {cond['score']})
 - Average rent: {f'${rent_cur:,.0f}' if rent_cur else 'N/A'}
   - MoM: {f'{rent_mom:+.1f}%' if rent_mom is not None else 'N/A'}
-- Days on market: {f'{dom_cur:.0f}' if dom_cur else 'N/A'} days
+- Days on market: {dom_line}
   - MoM: {f'{dom_mom:+.1f}%' if dom_mom is not None else 'N/A'}
 - Active listings: {f'{inv_cur:,.0f}' if inv_cur else 'N/A'}
   - MoM: {f'{inv_mom:+.1f}%' if inv_mom is not None else 'N/A'}
 - By bedroom:{bed_summary}
-- Recent 4-month days-on-market series: {vacancy_proxy}
+- Recent 4-month days-on-market series: {vacancy_proxy_line}
 - Recent 4-month active listings series: {listing_proxy}
 
 SOURCE NOTES:
 {source_context(supplemental, history)}
+{low_confidence_guidance(mkt_key)}
 
 Write exactly FOUR paragraphs with these headers on their own line before each:
 
@@ -155,7 +188,7 @@ def regional_prompt(trends: dict, month: str, history: list, supplemental: dict 
     rs = trends.get("regional_summary", {})
     mkt_summaries = []
     for mkt_key, mkt_cfg in MARKETS.items():
-        if mkt_key == "liberty":
+        if mkt_key in LOW_CONFIDENCE_MARKETS:
             continue
         t = trends["markets"].get(mkt_key, {})
         rent = t.get("aggregate", {}).get("averageRent", {}).get("current")
@@ -168,10 +201,12 @@ def regional_prompt(trends: dict, month: str, history: list, supplemental: dict 
     dom_series = {
         mkt: recent_series(history, mkt, "averageDaysOnMarket", months=4)
         for mkt in MARKETS
+        if mkt not in LOW_CONFIDENCE_MARKETS
     }
     listing_series = {
         mkt: recent_series(history, mkt, "totalListings", months=4)
         for mkt in MARKETS
+        if mkt not in LOW_CONFIDENCE_MARKETS
     }
 
     return f"""Write the REGIONAL EXECUTIVE SUMMARY for the Upstate South Carolina rental market for {month}.
@@ -195,7 +230,9 @@ UPSTATE SC MACRO VIEW
 Open with a short sentence that sounds expert, then explain the takeaway in plain English.
 Synthesize the regional story using only the current month and recent short trends provided.
 Do not mention quarter-over-quarter or year-over-year data.
-Do not mention Liberty by name in the regional summary.
+Do not mention Clemson, Seneca, or Liberty by name in the regional summary.
+Do not anchor the regional narrative on low-confidence outlier metrics from smaller or more seasonal markets.
+If needed, refer to them only generically as smaller seasonal or outlying markets.
 
 OUTLOOK AND RISKS
 What should owners watch over the next 3–6 months?
