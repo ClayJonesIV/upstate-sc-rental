@@ -5,80 +5,93 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Upstate SC Rental Market — April 2026</title>
 <style>
+:root{
+  --brand-green:#5ac763;
+  --brand-orange:#fd5315;
+  --brand-charcoal:#2d2e30;
+  --brand-charcoal-deep:#1e1e1e;
+  --brand-cream:#f7f7f3;
+  --brand-surface:#ffffff;
+  --brand-border:#d9ded7;
+  --brand-muted:#6b716c;
+  --brand-blue:#5f8fb5;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;scroll-behavior:smooth}
-body{background:#0d1a14;color:#e8efe0;font-family:'Georgia',serif;line-height:1.6}
-a{color:#86b96e;text-decoration:none}
+body{background:linear-gradient(180deg,#f7f7f3,#eef3eb);color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.6}
+a{color:var(--brand-green);text-decoration:none}
 a:hover{text-decoration:underline}
 
-.site-header{background:linear-gradient(170deg,#0a1f10,#0d1a14);border-bottom:1px solid rgba(134,185,110,.18);padding:32px 40px 24px}
-.eyebrow{font-size:10px;color:#86b96e;letter-spacing:2.5px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:8px}
-h1{font-size:30px;font-weight:400;color:#f0f5e8;margin-bottom:6px}
-h1 em{color:#86b96e;font-style:italic}
-.subtitle{font-size:11px;color:#4a6040;font-family:'Courier New',monospace;margin-bottom:20px}
+.site-header{background:linear-gradient(135deg,var(--brand-charcoal),var(--brand-charcoal-deep));border-bottom:4px solid var(--brand-green);padding:32px 40px 24px}
+.eyebrow{font-size:10px;color:var(--brand-orange);letter-spacing:2.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:8px}
+h1{font-size:32px;font-weight:700;color:#fff;margin-bottom:6px;font-family:'Montserrat',sans-serif}
+h1 em{color:var(--brand-green);font-style:normal}
+.subtitle{font-size:11px;color:#d1d6d1;font-family:'Montserrat',sans-serif;margin-bottom:20px}
 
-.nav-bar{font-size:12px;color:#4a6040;font-family:sans-serif;padding:12px 40px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.04)}
-.nav-bar a{color:#86b96e;margin-right:4px}
+.nav-bar{font-size:12px;color:var(--brand-muted);font-family:'Montserrat',sans-serif;padding:12px 40px;background:#ffffff;border-bottom:1px solid var(--brand-border)}
+.nav-bar a{color:var(--brand-green);margin-right:4px}
 
 .hero-stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
-.hero-stat{background:rgba(255,255,255,.04);border-radius:10px;padding:12px 18px;min-width:110px;text-align:center}
-.hs-label{font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:'Courier New',monospace}
-.hs-val{font-size:20px;font-weight:800;margin-top:3px;font-family:sans-serif}
+.hero-stat{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 18px;min-width:110px;text-align:center;border:1px solid rgba(255,255,255,.08)}
+.hs-label{font-size:10px;color:#d1d6d1;text-transform:uppercase;letter-spacing:1px;font-family:'Montserrat',sans-serif}
+.hs-val{font-size:20px;font-weight:800;margin-top:3px;font-family:'Montserrat',sans-serif}
 
 .main{max-width:1100px;margin:0 auto;padding:32px 40px 60px}
 
-.section-header{font-size:11px;color:#86b96e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin:40px 0 20px;padding-bottom:8px;border-bottom:1px solid rgba(134,185,110,.2)}
+.section-header{font-size:11px;color:var(--brand-green);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin:40px 0 20px;padding-bottom:8px;border-bottom:1px solid var(--brand-border)}
 
-.regional-block{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px;margin-bottom:36px}
-.regional-title{font-size:16px;color:#f0f5e8;margin-bottom:16px}
-.insight-header{font-size:11px;color:#86b96e;letter-spacing:1.5px;text-transform:uppercase;font-family:'Courier New',monospace;margin:20px 0 8px}
-.insight-block p{font-size:14px;color:#b8c8b0;line-height:1.75;margin-bottom:14px;font-family:sans-serif}
+.regional-block{background:var(--brand-surface);border:1px solid var(--brand-border);border-radius:14px;padding:28px;margin-bottom:36px}
+.regional-title{font-size:16px;color:var(--brand-charcoal);margin-bottom:16px;font-family:'Montserrat',sans-serif}
+.insight-header{font-size:11px;color:var(--brand-green);letter-spacing:1.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin:20px 0 8px}
+.insight-block p{font-size:14px;color:var(--brand-charcoal);line-height:1.75;margin-bottom:14px;font-family:'Roboto',sans-serif}
 
-.market-section{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;margin-bottom:28px}
+.market-section{background:var(--brand-surface);border:1px solid var(--brand-border);border-radius:14px;padding:28px;margin-bottom:28px;box-shadow:0 10px 30px rgba(45,46,48,.05)}
 .market-header{margin-bottom:20px}
 .market-title-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}
-.market-title-row h2{font-size:20px;font-weight:400}
-.market-label{font-size:11px;color:#4a6040;font-family:'Courier New',monospace}
+.market-title-row h2{font-size:20px;font-weight:700;font-family:'Montserrat',sans-serif}
+.market-label{font-size:11px;color:var(--brand-muted);font-family:'Montserrat',sans-serif}
 
-.temp-badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:sans-serif}
-.tier-badge{font-size:9px;padding:2px 8px;border-radius:8px;font-family:'Courier New',monospace;letter-spacing:.5px;vertical-align:middle}
-.tier-full{background:rgba(134,185,110,.15);color:#86b96e;border:1px solid rgba(134,185,110,.3)}
-.tier-snap{background:rgba(196,163,110,.15);color:#c4a36e;border:1px solid rgba(196,163,110,.3)}
+.temp-badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:'Montserrat',sans-serif}
+.tier-badge{font-size:9px;padding:2px 8px;border-radius:8px;font-family:'Montserrat',sans-serif;letter-spacing:.5px;vertical-align:middle}
+.tier-full{background:rgba(90,199,99,.12);color:var(--brand-green);border:1px solid rgba(90,199,99,.25)}
+.tier-snap{background:rgba(253,83,21,.10);color:var(--brand-orange);border:1px solid rgba(253,83,21,.25)}
 
 .metrics-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}
-.metric-card{background:rgba(0,0,0,.2);border-radius:10px;padding:14px 16px;border-top:2px solid transparent}
-.metric-label{font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:'Courier New',monospace;margin-bottom:4px}
-.metric-val{font-size:24px;font-weight:800;color:#f0f5e8;font-family:sans-serif;margin-bottom:8px}
+.metric-card{background:var(--brand-cream);border-radius:10px;padding:14px 16px;border-top:3px solid transparent}
+.metric-label{font-size:10px;color:var(--brand-muted);text-transform:uppercase;letter-spacing:1px;font-family:'Montserrat',sans-serif;margin-bottom:4px}
+.metric-val{font-size:24px;font-weight:800;color:var(--brand-charcoal);font-family:'Montserrat',sans-serif;margin-bottom:8px}
 .trend-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.trend-item{font-size:11px;font-family:sans-serif;padding:2px 7px;border-radius:6px;font-weight:600}
-.trend-item.up{background:rgba(134,185,110,.15);color:#86b96e}
-.trend-item.down{background:rgba(224,122,106,.15);color:#e07a6a}
-.trend-item:not(.up):not(.down){background:rgba(255,255,255,.05);color:#6a8060}
-.trend-note{font-size:10px;color:#4a6040;font-family:sans-serif;font-style:italic}
+.trend-item{font-size:11px;font-family:'Montserrat',sans-serif;padding:2px 7px;border-radius:6px;font-weight:600}
+.trend-item.up{background:rgba(90,199,99,.14);color:var(--brand-green)}
+.trend-item.down{background:rgba(253,83,21,.12);color:var(--brand-orange)}
+.trend-item:not(.up):not(.down){background:#eef1ed;color:var(--brand-muted)}
+.trend-note{font-size:10px;color:var(--brand-muted);font-family:'Roboto',sans-serif;font-style:italic}
 
 .bedroom-table-wrap{overflow-x:auto;margin-bottom:20px}
-.bedroom-table{width:100%;border-collapse:collapse;font-size:13px;font-family:sans-serif}
-.bedroom-table th{padding:8px 12px;text-align:right;color:#4a6040;font-weight:600;font-size:10px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.07)}
+.bedroom-table{width:100%;border-collapse:collapse;font-size:13px;font-family:'Roboto',sans-serif}
+.bedroom-table th{padding:8px 12px;text-align:right;color:var(--brand-muted);font-weight:600;font-size:10px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--brand-border)}
 .bedroom-table th:first-child{text-align:left}
-.bedroom-table td{padding:9px 12px;text-align:right;border-bottom:1px solid rgba(255,255,255,.03)}
-.bedroom-table td:first-child{text-align:left;font-weight:600;color:#9abf80}
-.bedroom-table td.up{color:#86b96e;font-weight:700}
-.bedroom-table td.down{color:#e07a6a;font-weight:700}
+.bedroom-table td{padding:9px 12px;text-align:right;border-bottom:1px solid #eef1ed}
+.bedroom-table td:first-child{text-align:left;font-weight:600;color:var(--brand-charcoal)}
+.bedroom-table td.up{color:var(--brand-green);font-weight:700}
+.bedroom-table td.down{color:var(--brand-orange);font-weight:700}
 
-.insight-block{background:rgba(0,0,0,.15);border-radius:10px;padding:22px 24px;border-left:3px solid rgba(134,185,110,.25)}
-.insight-label{font-size:10px;color:#86b96e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:14px}
-.source-block{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;margin-bottom:18px}
-.source-label{font-size:10px;color:#c4a36e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:10px}
-.source-text{font-size:12px;color:#9fb19a;font-family:sans-serif;line-height:1.7}
-.source-refresh{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:24px}
-.source-refresh-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px 16px}
-.source-refresh-name{font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:'Courier New',monospace;margin-bottom:6px}
-.source-refresh-date{font-size:16px;color:#f0f5e8;font-family:sans-serif;font-weight:700}
-.source-refresh-note{font-size:12px;color:#8da18a;font-family:sans-serif;margin-top:4px}
+.insight-block{background:#fbfcfa;border-radius:10px;padding:22px 24px;border-left:3px solid rgba(90,199,99,.35)}
+.insight-label{font-size:10px;color:var(--brand-green);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:14px;font-weight:700}
+.source-block{background:#fbfcfa;border:1px solid var(--brand-border);border-radius:10px;padding:14px 16px;margin-bottom:18px}
+.source-label{font-size:10px;color:var(--brand-orange);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:10px;font-weight:700}
+.source-text{font-size:12px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.7}
+.source-refresh{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}
+.source-refresh-card{background:#ffffff;border:1px solid var(--brand-border);border-radius:10px;padding:14px 16px}
+.source-refresh-name{font-size:10px;color:var(--brand-muted);text-transform:uppercase;letter-spacing:1px;font-family:'Montserrat',sans-serif;margin-bottom:6px}
+.source-refresh-date{font-size:16px;color:var(--brand-charcoal);font-family:'Montserrat',sans-serif;font-weight:700}
+.source-refresh-note{font-size:12px;color:var(--brand-muted);font-family:'Roboto',sans-serif;margin-top:4px}
 
-.data-note{background:rgba(126,179,212,.07);border:1px solid rgba(126,179,212,.18);border-left:3px solid #7eb3d4;border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:#8ab8d0;font-family:sans-serif;line-height:1.6}
+.legend-block{background:#ffffff;border:1px solid var(--brand-border);border-left:4px solid var(--brand-orange);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.7}
+.legend-title{font-size:10px;color:var(--brand-orange);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:8px}
+.data-note{background:#ffffff;border:1px solid var(--brand-border);border-left:4px solid var(--brand-green);border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.6}
 
-.footer{text-align:center;font-size:11px;color:#2a4030;font-family:'Courier New',monospace;margin-top:60px;padding-top:20px;border-top:1px solid rgba(255,255,255,.04)}
+.footer{text-align:center;font-size:11px;color:var(--brand-muted);font-family:'Montserrat',sans-serif;margin-top:60px;padding-top:20px;border-top:1px solid var(--brand-border)}
 
 @media(max-width:600px){
   .site-header,.main,.nav-bar{padding-left:20px;padding-right:20px}
@@ -89,7 +102,7 @@ h1 em{color:#86b96e;font-style:italic}
 <body>
 
 <div class="site-header">
-  <div class="eyebrow">🏠 Upstate South Carolina · 10 Markets · RentCast Live Data</div>
+  <div class="eyebrow">Jones Assurance Property Management · Upstate South Carolina</div>
   <h1>Rental Market <em>Intelligence</em></h1>
   <p class="subtitle">Auto-refreshed monthly · Last updated 2026-04-08</p>
   <div class="hero-stats">
@@ -116,7 +129,7 @@ h1 em{color:#86b96e;font-style:italic}
 
 <div class="main">
   <div class="data-note">
-    <strong>📊 Live Data:</strong> Market data pulled monthly from
+    <strong>Jones Assurance PM Market View:</strong> Market data pulled monthly from
     <strong>RentCast API</strong> (rentcast.io) covering 18 zip codes across 10 Upstate SC markets.
     Analysis generated by <strong>Claude AI</strong>. Data reflects active rental listings only.
     <strong>Not financial advice.</strong>
@@ -140,14 +153,23 @@ h1 em{color:#86b96e;font-style:italic}
     </div>
   </div>
 
+  <div class="legend-block">
+    <div class="legend-title">Confidence Guide</div>
+    <div>Confidence scores combine listing depth, source specificity, and how much fallback estimation was needed.</div>
+    <div>Higher scores mean stronger local support. Lower scores should be read as directional rather than precise.</div>
+  </div>
+
   <div class="section-header">Tiered Market View</div>
   
 <div class="market-section" id="group-headline">
   <div class="market-header" style="border-left: 4px solid #86b96e">
     <div class="market-title-row">
       <h2 style="color:#86b96e">Upstate Headline</h2>
-      <span class="temp-badge" style="background:#f4a23522;color:#f4a235;border:1px solid #f4a23555">
-        Slightly Landlord-Favored
+      <span class="temp-badge" style="background:#86b96e22;color:#86b96e;border:1px solid #86b96e55">
+        Mixed but Balanced
+      </span>
+      <span class="temp-badge" title="Confidence combines listing depth, source specificity, and how much fallback estimation was needed." style="background:#7eb3d422;color:#7eb3d4;border:1px solid #7eb3d455">
+        72 · Solid Confidence
       </span>
     </div>
     <div class="market-label">High-level regional view across all tracked Upstate markets.</div>
@@ -179,9 +201,9 @@ h1 em{color:#86b96e;font-style:italic}
   <div class="insight-block">
     <div class="insight-label">Regional AI Analysis</div>
     <h4 class="insight-header">UPSTATE SC MACRO VIEW</h4>
-<p>The Upstate South Carolina rental market in April 2026 demonstrates the characteristic fragmentation we expect across this diverse region. While the regional average rent change held steady at positive 0.5% for the month, individual markets tell distinctly different stories that reflect local economic conditions and housing supply dynamics. Easley and Piedmont emerged as the strongest performers with rent gains of 4.6% and 3.5% respectively, while Seneca and Liberty experienced notable softening with declines exceeding 5%. The days-on-market data reveals particularly tight conditions in Piedmont at just 21.52 days and Easley at 24.21 days, contrasting sharply with Clemson's extended 86.22 days and Liberty's 58.57 days. Greenville, the region's largest market, showed modest rental weakness with a slight 0.2% decline but maintained reasonable velocity at 48.16 days on market.</p>
+<p>The Upstate South Carolina rental market shows clear geographic divergence in April 2026, with momentum concentrated in smaller markets while major metros face headwinds. The regional story breaks into two distinct patterns: Anderson, Easley, and Piedmont are driving the strongest rent growth at 4.2%, 4.6%, and 3.5% respectively, while Greenville experienced a modest decline of 0.2% and Greer saw a sharper 2.5% drop. Days on market data reinforces this divide, with hot markets like Spartanburg and Simpsonville keeping properties moving quickly at around 30 days, while Greenville properties now sit for 48 days and Clemson units take over 86 days to lease. The regional average rent increase of just 0.5% masks significant variation, suggesting owners should focus on hyperlocal conditions rather than assuming uniform market strength across the Upstate.</p>
 <h4 class="insight-header">OUTLOOK AND RISKS</h4>
-<p>Property owners should monitor the diverging trends between university-adjacent markets and employment-driven submarkets over the next three to six months. Clemson's extended days-on-market at 86.22 days combined with high listing volumes suggests potential seasonal or structural challenges that could spread to other college-influenced areas. The rent volatility in smaller markets like Liberty and Seneca, both experiencing sharp monthly declines, indicates these areas may be more susceptible to economic headwinds or oversupply conditions. Conversely, the strong performance in Easley and Piedmont may not be sustainable if listing volumes continue to increase, as evidenced by Easley's rising inventory from 42.5 to 50.5 units. Owners should prioritize retention strategies this month, particularly in markets showing days-on-market expansion, rather than pursuing aggressive rent increases that could extend vacancy periods in an increasingly selective tenant environment (Sources: RentCast 2026-04-08; Apartment List/Zillow 2026-04-08).</p>
+<p>Property owners should monitor inventory levels closely over the next three to six months, as several markets show concerning patterns that could pressure rents downward. Greenville's rising days on market combined with declining rents signals oversupply relative to demand, while Greer's 2.5% monthly rent drop alongside increasing inventory suggests similar pressure building. Clemson presents the most acute risk with days on market jumping to 86 days, indicating potential seasonal or structural challenges that could spread to nearby markets. The sharp contrast between strong performers like Anderson and Easley versus struggling markets like Seneca, which dropped 5.1% in April, suggests owners in weaker markets may need to adjust expectations quickly if trends persist. This month, owners should conduct competitive rent surveys in their immediate submarket and consider modest concessions rather than extended vacancy periods, particularly in markets where days on market exceed 50 days (Sources: RentCast 2026-04-08; Apartment List/Zillow 2026-04-08).</p>
   </div>
 
 </div>
@@ -191,8 +213,11 @@ h1 em{color:#86b96e;font-style:italic}
   <div class="market-header" style="border-left: 4px solid #86b96e">
     <div class="market-title-row">
       <h2 style="color:#86b96e">Greenville</h2>
-      <span class="temp-badge" style="background:#f4a23522;color:#f4a235;border:1px solid #f4a23555">
-        Slightly Landlord-Favored
+      <span class="temp-badge" style="background:#7eb3d422;color:#7eb3d4;border:1px solid #7eb3d455">
+        Softer Leasing Conditions
+      </span>
+      <span class="temp-badge" title="Confidence combines listing depth, source specificity, and how much fallback estimation was needed." style="background:#86b96e22;color:#86b96e;border:1px solid #86b96e55">
+        93 · High Confidence
       </span>
     </div>
     <div class="market-label">Highest-confidence core market view with the cleanest direct source coverage.</div>
@@ -231,16 +256,23 @@ h1 em{color:#86b96e;font-style:italic}
     <div class="source-label">Bedroom Source Notes</div>
     <div class="source-text"><div>1BR: Apartment List (Greenville, SC)</div><div>2BR: Apartment List (Greenville, SC)</div><div>3BR: Zillow-derived (Greenville-Anderson, SC)</div><div>4BR: Zillow-derived (Greenville-Anderson, SC)</div></div>
   </div>
+  <div class="source-block">
+    <div class="source-label">Confidence Notes</div>
+    <div class="source-text">
+      <div>This score reflects listing depth, source specificity, and how much fallback logic was needed.</div>
+      <div>Higher confidence means more direct local support and less metro-level estimation.</div>
+    </div>
+  </div>
   <div class="insight-block">
     <div class="insight-label">AI Market Analysis</div>
     <h4 class="insight-header">MARKET CONDITIONS</h4>
-<p>The Greenville-Anderson-Mauldin rental market currently operates in a slightly landlord-favored environment, though momentum appears to be shifting toward more balanced conditions. Properties are taking longer to lease, with days on market extending to 48 days in April compared to the mid-30s range seen in early 2025. The supply side shows modest expansion, with active listings growing to 127 units, while average rents have pulled back slightly to $1,728. This combination of increasing marketing time and stable inventory suggests demand has cooled from the more aggressive pace witnessed over a year ago, creating a more measured leasing environment where tenants have additional options to consider.</p>
+<p>The Greenville rental market has shifted into slightly renter-favored territory this April, with landlords facing a more selective tenant pool. Average rents declined modestly to $1,728 this month while properties are taking longer to lease, with days on market climbing to 48 days compared to the mid-40s range seen recently. The uptick in active listings to 127 units, combined with the extended marketing periods, signals that supply has caught up with demand enough to give prospective renters more options and negotiating leverage. This represents a notable cooling from the tighter conditions landlords enjoyed through early 2025, when properties moved significantly faster at 36-38 days on market.</p>
 <h4 class="insight-header">IMPLICATIONS FOR CURRENT OWNERS</h4>
-<p>Property owners should feel cautiously optimistic but avoid complacency in their leasing approach. While the market still leans in favor of landlords, the recent trends toward longer marketing periods indicate tenants are becoming more selective and have greater negotiating leverage than they possessed previously. Owners should expect a more deliberate leasing process that may require additional showings and potentially some flexibility on terms. The slight rent decline suggests the market is finding its natural pricing equilibrium after a period of rapid growth, meaning owners who price competitively and maintain their properties well should continue to achieve solid occupancy rates without dramatic concessions.</p>
+<p>Current property owners should adopt a cautiously optimistic stance while recognizing that the easy rental gains of recent years have moderated. The market remains fundamentally healthy with solid rent levels across all unit types, from $1,270 for one-bedrooms up to $2,105 for four-bedroom properties, but tenants now have more time to shop around and compare options. This environment calls for patience rather than panic, as properties are still leasing within reasonable timeframes, just not as quickly as before. Owners should focus on maintaining competitive properties and realistic pricing rather than expecting the rapid turnover and premium rents that characterized tighter market conditions.</p>
 <h4 class="insight-header">VACANCY MARKETING STRATEGY</h4>
-<p>Given the recent extension in marketing time and the modest increase in available inventory, pricing should be positioned at or slightly below comparable properties to minimize vacancy exposure. The trend from 36 days on market in early 2025 to 48 days currently demonstrates that properties priced aggressively are likely to sit longer, creating carrying costs that outweigh any rental premium achieved. Owners should research recent lease signings in their immediate area and price their units competitively within that range, erring toward the lower end of comparable rents when the property has any limitations in condition, location, or amenities. The goal should be securing qualified tenants within 45 days rather than testing the upper bounds of market pricing in an environment where tenant options are expanding.</p>
+<p>Given the recent trend toward longer marketing periods and increased inventory, pricing should lean conservative to minimize vacancy risk rather than testing the top of the market. With days on market climbing from the mid-30s to 48 days over recent months, properties priced at or slightly below comparable units will likely secure tenants more reliably than those pushing for premium rents. The growing pool of active listings means prospective tenants can afford to be selective, making competitive pricing the prudent approach. When setting rents for vacant units, consider positioning 2-3% below the strongest comparable properties in your immediate area to ensure steady occupancy, as the cost of extended vacancy typically outweighs modest rent premiums in this environment.</p>
 <h4 class="insight-header">RENEWAL PRICING STRATEGY</h4>
-<p>Current market conditions support holding existing rents steady or implementing only modest increases for quality tenants seeking renewal. The slight monthly rent decline and extended marketing times indicate the market is not supporting aggressive rent pushes at turnover, making tenant retention increasingly valuable from both a financial and operational standpoint. Owners should prioritize keeping good tenants in place rather than risking vacancy costs and longer re-leasing periods by pursuing maximum rent increases. When increases are warranted based on property improvements or significantly below-market existing rents, they should be implemented gradually and with adequate notice to maintain positive tenant relationships in a market where replacement tenants may take longer to secure. (Sources: RentCast 2026-04-08; Apartment List/Zillow 2026-04-08)</p>
+<p>Renewal negotiations should prioritize tenant retention over aggressive rent increases, particularly given the extended marketing periods new landlords are experiencing. With the market showing signs of increased tenant leverage, holding current rents or implementing only modest increases of 2-4% will likely prove more profitable than risking turnover to chase higher rents. The slight decline in average market rents suggests that pushing existing tenants too hard could backfire, leading to costly vacancy periods that exceed any potential rent gains. Focus on maintaining good tenant relationships and steady cash flow rather than testing their price sensitivity in a market where they have more options than before (Sources: RentCast 2026-04-08; Apartment List/Zillow 2026-04-08).</p>
   </div>
 
 </div>
@@ -250,8 +282,11 @@ h1 em{color:#86b96e;font-style:italic}
   <div class="market-header" style="border-left: 4px solid #7eb3d4">
     <div class="market-title-row">
       <h2 style="color:#7eb3d4">Spartanburg</h2>
-      <span class="temp-badge" style="background:#f4a23522;color:#f4a235;border:1px solid #f4a23555">
-        Slightly Landlord-Favored
+      <span class="temp-badge" style="background:#e07a6a22;color:#e07a6a;border:1px solid #e07a6a55">
+        Landlord-Leaning
+      </span>
+      <span class="temp-badge" title="Confidence combines listing depth, source specificity, and how much fallback estimation was needed." style="background:#86b96e22;color:#86b96e;border:1px solid #86b96e55">
+        93 · High Confidence
       </span>
     </div>
     <div class="market-label">High-confidence market view with direct source coverage and steadier inventory depth.</div>
@@ -290,16 +325,23 @@ h1 em{color:#86b96e;font-style:italic}
     <div class="source-label">Bedroom Source Notes</div>
     <div class="source-text"><div>1BR: Apartment List (Spartanburg, SC)</div><div>2BR: Apartment List (Spartanburg, SC)</div><div>3BR: Zillow-derived (Spartanburg, SC)</div><div>4BR: Zillow-derived (Spartanburg, SC)</div></div>
   </div>
+  <div class="source-block">
+    <div class="source-label">Confidence Notes</div>
+    <div class="source-text">
+      <div>This score reflects listing depth, source specificity, and how much fallback logic was needed.</div>
+      <div>Higher confidence means more direct local support and less metro-level estimation.</div>
+    </div>
+  </div>
   <div class="insight-block">
     <div class="insight-label">AI Market Analysis</div>
     <h4 class="insight-header">MARKET CONDITIONS</h4>
-<p>The Spartanburg rental market has shifted into slightly landlord-favored territory, signaling healthy but measured demand conditions. Properties are moving faster than they have in recent months, with the average time to lease dropping to 32 days in April, down from nearly 34 days the prior month. This acceleration comes alongside steady rent growth of 1.3 percent, bringing the market average to $1,248. The combination of faster absorption and modest rent increases suggests demand is outpacing supply without creating the kind of heated competition that leads to pricing volatility. Active inventory remains tight at just 107 available units, down slightly from March, indicating landlords are finding tenants efficiently in this environment.</p>
+<p>The Spartanburg rental market is operating in landlord-favorable territory with solid fundamentals across key metrics. Average rents reached $1,248 in April, climbing 1.3% from March, while properties are moving faster with days on market dropping to 32 days, down 6.2% from the previous month. The supply side remains tight with only 107 active listings, representing a slight 1.2% decline from March. This combination of rising rents, faster absorption, and constrained inventory signals a market where demand continues to outpace available supply, creating favorable conditions for property owners.</p>
 <h4 class="insight-header">IMPLICATIONS FOR CURRENT OWNERS</h4>
-<p>Current property owners should feel cautiously optimistic about market conditions while maintaining realistic expectations about rental growth. The faster lease-up times suggest your vacant units should find qualified tenants more quickly than earlier in the year, reducing the carrying costs that eat into profitability. However, the "slightly landlord-favored" designation means this is not a market where you can push rents aggressively or become selective to the point of extending vacancies. The data shows a healthy market where good properties at reasonable prices will perform well, but owners who price too optimistically or delay necessary improvements may still struggle to compete effectively.</p>
+<p>Current owners should feel confident about their position in this market environment. The faster lease-up times and steady rent growth indicate tenant demand remains robust, which translates to reduced vacancy risk and reliable income streams. With properties moving off the market more quickly, owners can expect shorter gaps between tenants and less carrying cost from vacant units. The tight inventory levels suggest competition among prospective tenants rather than among landlords, putting owners in a stronger negotiating position. This market dynamic supports stable cash flows and reduces the stress typically associated with tenant turnover.</p>
 <h4 class="insight-header">VACANCY MARKETING STRATEGY</h4>
-<p>For vacant units, pricing at or slightly below the strongest comparable properties represents the most prudent approach in the current market. While days on market have improved consistently over recent months, dropping from the low 40s to the low 30s, this timeframe still requires careful attention to competitive positioning. The limited inventory of 107 active listings suggests well-priced units should lease quickly, but pushing rents above market comps could easily extend your marketing period and increase vacancy costs. Given the trend toward faster absorption, properties priced within 5 percent of similar units should capture tenant interest efficiently, making conservative pricing the wise choice over attempting to capture premium rents that might sit vacant longer.</p>
+<p>Given the accelerating pace of leasing activity and shrinking inventory, owners can price confidently at current market rates without excessive vacancy risk. The days on market trend shows consistent improvement from 44 days in early 2025 to the current 32 days, indicating tenant demand is strengthening relative to available options. With active listings remaining constrained around 107 units, new vacancy listings should attract attention quickly when priced appropriately. However, owners should still price at or slightly below the strongest comparable properties rather than testing the upper limits, as maintaining occupancy remains more valuable than capturing peak rents in this relatively small market.</p>
 <h4 class="insight-header">RENEWAL PRICING STRATEGY</h4>
-<p>Existing tenants should see modest rent adjustments that reflect the market's gradual strengthening without risking turnover that leads to vacancy periods. The 1.3 percent monthly rent growth suggests the market can absorb reasonable increases, but owners should prioritize tenant retention over maximizing rental income on renewals. Consider increases in the 3 to 5 percent range for quality tenants, which allows you to participate in the market's upward trajectory while maintaining the certainty of continued occupancy. Given that new leases are taking over a month to complete, the cost of turnover still outweighs the potential gains from pushing renewal rates too aggressively, making tenant retention the higher priority in most situations. (Sources: RentCast 2026-04-08; Apartment List/Zillow 2026-04-08)</p>
+<p>The current market conditions support modest rent increases for existing tenants, but owners should approach renewals conservatively to maintain high retention rates. With market rents showing steady upward movement and faster absorption times, sitting tenants represent valuable stability that typically outweighs the potential for aggressive increases. A measured approach that captures some of the market's upward momentum while preserving tenant relationships will serve most owners well. The strong demand fundamentals provide cushion for reasonable increases, but pushing too hard risks losing quality tenants in favor of potentially less reliable new prospects, which rarely proves worthwhile in markets of Spartanburg's size. (Sources: RentCast 2026-04-08; Apartment List/Zillow 2026-04-08)</p>
   </div>
 
 </div>
@@ -309,24 +351,27 @@ h1 em{color:#86b96e;font-style:italic}
   <div class="market-header" style="border-left: 4px solid #c4a36e">
     <div class="market-title-row">
       <h2 style="color:#c4a36e">Other Markets</h2>
-      <span class="temp-badge" style="background:#f4a23522;color:#f4a235;border:1px solid #f4a23555">
-        Slightly Landlord-Favored
+      <span class="temp-badge" style="background:#86b96e22;color:#86b96e;border:1px solid #86b96e55">
+        Mixed but Balanced
+      </span>
+      <span class="temp-badge" title="Confidence combines listing depth, source specificity, and how much fallback estimation was needed." style="background:#f4a23522;color:#f4a235;border:1px solid #f4a23555">
+        65 · Moderate Confidence
       </span>
     </div>
-    <div class="market-label">Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.</div>
+    <div class="market-label">Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.</div>
   </div>
 
   <div class="metrics-row">
     <div class="metric-card" style="border-top-color:#c4a36e">
       <div class="metric-label">Avg Rent</div>
-      <div class="metric-val">$1,677</div>
+      <div class="metric-val">$1,685</div>
       <div class="trend-row">
-        <span class="trend-item up">MoM +0.9%</span>
+        <span class="trend-item up">MoM +1.0%</span>
       </div>
     </div>
     <div class="metric-card" style="border-top-color:#c4a36e">
       <div class="metric-label">Days on Market</div>
-      <div class="metric-val">52d</div>
+      <div class="metric-val">51d</div>
       <div class="trend-row">
         
         <span class="trend-note">(lower is better)</span>
@@ -334,7 +379,7 @@ h1 em{color:#86b96e;font-style:italic}
     </div>
     <div class="metric-card" style="border-top-color:#c4a36e">
       <div class="metric-label">Active Listings</div>
-      <div class="metric-val">599</div>
+      <div class="metric-val">585</div>
       <div class="trend-row"><span class="trend-note">(tier-level summary)</span></div>
     </div>
   </div>
@@ -343,14 +388,15 @@ h1 em{color:#86b96e;font-style:italic}
     <div class="source-label">Confidence Note</div>
     <div class="source-text">
       <div>These markets are best read as directional rather than highly precise.</div>
-      <div>Examples included: Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.</div>
+      <div>Examples included: Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.</div>
       <div>Smaller-market bedroom data often relies on metro-level Apartment List fallback or Zillow-derived support.</div>
+      <div>The confidence score helps separate stronger ring-market signals from thinner special-case markets.</div>
     </div>
   </div>
   <div class="bedroom-table-wrap">
     <table class="bedroom-table">
-      <thead><tr><th>Market</th><th>Avg Rent</th><th>MoM</th><th>Temp</th><th>Source Context</th></tr></thead>
-      <tbody><tr><td>Anderson</td><td>$1,360</td><td class='up'>+4.2%</td><td>Landlord's Market</td><td>zip-level average across 29621, 29624 + Greenville-Anderson, SC</td></tr><tr><td>Simpsonville</td><td>$1,995</td><td class='up'>+2.6%</td><td>Slightly Landlord-Favored</td><td>zip-level average across 29680, 29681 + Greenville-Anderson, SC</td></tr><tr><td>Greer</td><td>$1,788</td><td class='down'>-2.5%</td><td>Slightly Landlord-Favored</td><td>zip-level average across 29650, 29651 + Greenville-Anderson, SC</td></tr><tr><td>Easley</td><td>$1,692</td><td class='up'>+4.6%</td><td>Slightly Landlord-Favored</td><td>zip-level average across 29640, 29642 + Greenville-Anderson, SC</td></tr><tr><td>Piedmont</td><td>$1,889</td><td class='up'>+3.5%</td><td>Landlord's Market</td><td>zip-level average across 29673 + Greenville-Anderson, SC</td></tr><tr><td>Liberty</td><td>$1,356</td><td class='down'>-4.9%</td><td>Slightly Landlord-Favored</td><td>mixed source coverage</td></tr><tr><td>Clemson</td><td>$1,544</td><td class='up'>+1.9%</td><td>Slightly Landlord-Favored</td><td>zip-level average across 29631 + Greenville-Anderson, SC</td></tr><tr><td>Seneca</td><td>$1,430</td><td class='down'>-5.1%</td><td>Slightly Landlord-Favored</td><td>zip-level average across 29678, 29672 + Seneca, SC</td></tr></tbody>
+      <thead><tr><th>Market</th><th>Avg Rent</th><th>MoM</th><th>Temp</th><th>Confidence</th><th>Source Context</th></tr></thead>
+      <tbody><tr><td>Anderson</td><td>$1,360</td><td class='up'>+4.2%</td><td>Landlord-Favored</td><td><span style='background:#f4a23522;color:#f4a235;border:1px solid #f4a23555;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>57 · Moderate Confidence</span></td><td>zip-level average across 29621, 29624 + Greenville-Anderson, SC</td></tr><tr><td>Simpsonville</td><td>$1,995</td><td class='up'>+2.6%</td><td>Slightly Landlord-Favored</td><td><span style='background:#7eb3d422;color:#7eb3d4;border:1px solid #7eb3d455;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>71 · Solid Confidence</span></td><td>zip-level average across 29680, 29681 + Greenville-Anderson, SC</td></tr><tr><td>Greer</td><td>$1,788</td><td class='down'>-2.5%</td><td>Renter's Market</td><td><span style='background:#7eb3d422;color:#7eb3d4;border:1px solid #7eb3d455;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>71 · Solid Confidence</span></td><td>zip-level average across 29650, 29651 + Greenville-Anderson, SC</td></tr><tr><td>Easley</td><td>$1,692</td><td class='up'>+4.6%</td><td>Slightly Landlord-Favored</td><td><span style='background:#f4a23522;color:#f4a235;border:1px solid #f4a23555;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>65 · Moderate Confidence</span></td><td>zip-level average across 29640, 29642 + Greenville-Anderson, SC</td></tr><tr><td>Piedmont</td><td>$1,889</td><td class='up'>+3.5%</td><td>Landlord-Favored</td><td><span style='background:#f4a23522;color:#f4a235;border:1px solid #f4a23555;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>57 · Moderate Confidence</span></td><td>zip-level average across 29673 + Greenville-Anderson, SC</td></tr><tr><td>Clemson</td><td>$1,544</td><td class='up'>+1.9%</td><td>Balanced Market</td><td><span style='background:#f4a23522;color:#f4a235;border:1px solid #f4a23555;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>61 · Moderate Confidence</span></td><td>zip-level average across 29631 + Greenville-Anderson, SC</td></tr><tr><td>Seneca</td><td>$1,430</td><td class='down'>-5.1%</td><td>Renter's Market</td><td><span style='background:#f4a23522;color:#f4a235;border:1px solid #f4a23555;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>63 · Moderate Confidence</span></td><td>zip-level average across 29678, 29672 + Seneca, SC</td></tr></tbody>
     </table>
   </div>
 
@@ -358,7 +404,7 @@ h1 em{color:#86b96e;font-style:italic}
 
 
   <div class="footer">
-    Upstate SC Rental Market Intelligence · Data: RentCast API · Analysis: Claude AI ·
+    Jones Assurance Property Management · Rental Market Intelligence · Data: RentCast API · Analysis: Claude AI ·
     Auto-refreshed 1st of each month via GitHub Actions · April 2026
   </div>
 </div>

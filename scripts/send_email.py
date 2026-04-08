@@ -37,8 +37,8 @@ GROUPS = {
     },
     "other": {
         "title": "Other Markets",
-        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "liberty", "clemson", "seneca"],
-        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.",
+        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "clemson", "seneca"],
+        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.",
     },
 }
 
@@ -217,7 +217,7 @@ def build_group_section(group_key, trends, insights):
     else:
         body = f"""
         <div style="margin-top:16px;font-size:13px;color:#b8c8b0;line-height:1.7">
-          Directional read for Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.
+          Directional read for Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.
           These smaller markets should be read more cautiously because some bedroom support uses metro-level fallback data.
         </div>
         <div style="overflow-x:auto;margin-top:16px">
@@ -286,34 +286,34 @@ def build_email_html(trends, insights):
     return f"""<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"/></head>
-<body style="background:#0d1a14;color:#e8efe0;font-family:Georgia,serif;margin:0;padding:0">
+<body style="background:#f7f7f3;color:#2d2e30;font-family:Roboto,sans-serif;margin:0;padding:0">
 <div style="max-width:900px;margin:0 auto;padding:0 0 40px">
-  <div style="background:linear-gradient(170deg,#0a1f10,#0d1a14);padding:32px 36px;border-bottom:1px solid rgba(134,185,110,.2)">
-    <div style="font-size:10px;color:#86b96e;letter-spacing:2.5px;text-transform:uppercase;font-family:Courier New,monospace;margin-bottom:8px">Upstate SC Rental Market | Monthly Report</div>
-    <h1 style="font-size:26px;font-weight:400;color:#f0f5e8;margin-bottom:6px">Rental Market <em style="color:#86b96e">Intelligence</em></h1>
-    <div style="font-size:12px;color:#4a6040;font-family:Courier New,monospace">{as_of_display} | 10 Markets | RentCast + Claude AI</div>
+  <div style="background:linear-gradient(135deg,#2d2e30,#1e1e1e);padding:32px 36px;border-bottom:4px solid #5ac763">
+    <div style="font-size:10px;color:#fd5315;letter-spacing:2.5px;text-transform:uppercase;font-family:Montserrat,sans-serif;font-weight:700;margin-bottom:8px">Jones Assurance Property Management | Upstate South Carolina</div>
+    <h1 style="font-size:28px;font-weight:700;color:#ffffff;margin-bottom:6px;font-family:Montserrat,sans-serif">Rental Market <em style="color:#5ac763;font-style:normal">Intelligence</em></h1>
+    <div style="font-size:12px;color:#d1d6d1;font-family:Montserrat,sans-serif">{as_of_display} | 10 Markets | RentCast + Claude AI</div>
   </div>
 
-  <div style="background:#0a1a10;padding:20px 36px;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:24px;flex-wrap:wrap">
-    <div><div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Avg MoM Rent</div><div style="font-size:22px;font-weight:800;color:{mom_color};font-family:sans-serif">{fmt_pct(avg_mom)}</div></div>
-    <div><div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Hottest Market</div><div style="font-size:22px;font-weight:800;color:#f4a235;font-family:sans-serif">{hottest}</div></div>
-    <div><div style="font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:Courier New,monospace">Softest Market</div><div style="font-size:22px;font-weight:800;color:#7eb3d4;font-family:sans-serif">{softest}</div></div>
+  <div style="background:#ffffff;padding:20px 36px;border-bottom:1px solid #d9ded7;display:flex;gap:24px;flex-wrap:wrap">
+    <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Avg MoM Rent</div><div style="font-size:22px;font-weight:800;color:{mom_color};font-family:Montserrat,sans-serif">{fmt_pct(avg_mom)}</div></div>
+    <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Hottest Market</div><div style="font-size:22px;font-weight:800;color:#fd5315;font-family:Montserrat,sans-serif">{hottest}</div></div>
+    <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Softest Market</div><div style="font-size:22px;font-weight:800;color:#5f8fb5;font-family:Montserrat,sans-serif">{softest}</div></div>
   </div>
 
   <div style="padding:28px 36px">
-    <div style="background:rgba(134,185,110,.08);border:1px solid rgba(134,185,110,.2);border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;font-family:sans-serif">
-      <strong style="color:#86b96e">View interactive dashboard:</strong>
-      <a href="{PAGES_URL}" style="color:#7eb3d4">{PAGES_URL}</a>
+    <div style="background:#ffffff;border:1px solid #d9ded7;border-left:4px solid #5ac763;border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;font-family:Roboto,sans-serif">
+      <strong style="color:#5ac763">View interactive dashboard:</strong>
+      <a href="{PAGES_URL}" style="color:#5f8fb5">{PAGES_URL}</a>
     </div>
 
-    <h2 style="font-size:16px;font-weight:400;color:#86b96e;letter-spacing:1px;margin-bottom:18px;border-bottom:1px solid rgba(134,185,110,.2);padding-bottom:8px">TIERED MARKET VIEW</h2>
+    <h2 style="font-size:16px;font-weight:700;color:#5ac763;letter-spacing:1px;margin-bottom:18px;border-bottom:1px solid #d9ded7;padding-bottom:8px;font-family:Montserrat,sans-serif">TIERED MARKET VIEW</h2>
     {headline_section}
     {greenville_section}
     {spartanburg_section}
     {other_section}
 
-    <div style="margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:#2a4030;font-family:Courier New,monospace;text-align:center">
-      Upstate SC Rental Market Intelligence | Data: RentCast API | Analysis: Claude AI<br>
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid #d9ded7;font-size:11px;color:#6b716c;font-family:Montserrat,sans-serif;text-align:center">
+      Jones Assurance Property Management | Rental Market Intelligence | Data: RentCast API | Analysis: Claude AI<br>
       Auto-generated {datetime.utcnow().strftime('%Y-%m-%d')} | Not financial advice
     </div>
   </div>

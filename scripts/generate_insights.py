@@ -37,6 +37,30 @@ Do not use bullet points. Write in paragraphs only.
 Do not use quarter-over-quarter or year-over-year data in any analysis or recommendation."""
 
 
+def sanitize_market_text(mkt_key: str, text: str) -> str:
+    if not text:
+        return text
+    cleaned = text
+    if mkt_key == "greenville":
+        cleaned = cleaned.replace("Greenville-Anderson-Mauldin rental market", "Greenville rental market")
+        cleaned = cleaned.replace("Greenville-Anderson-Mauldin market", "Greenville market")
+    return cleaned
+
+
+def sanitize_regional_text(text: str) -> str:
+    if not text:
+        return text
+    cleaned = text
+    cleaned = cleaned.replace("Liberty and Seneca", "some smaller outlying markets and Seneca")
+    cleaned = cleaned.replace("Seneca and Liberty", "Seneca and some smaller outlying markets")
+    cleaned = cleaned.replace("like Liberty and Seneca", "like some smaller outlying markets and Seneca")
+    cleaned = cleaned.replace("Liberty's", "one smaller outlying market's")
+    cleaned = cleaned.replace(" Liberty ", " a smaller outlying market ")
+    cleaned = cleaned.replace(" and Liberty", "")
+    cleaned = cleaned.replace("Liberty, ", "")
+    return cleaned
+
+
 def recent_series(history: list, mkt_key: str, metric: str, months: int = 4) -> list[dict]:
     series = []
     for record in history[-months:]:
@@ -84,10 +108,13 @@ def market_prompt(mkt_key: str, mkt_cfg: dict, mkt_trends: dict, month: str, his
     notes = mkt_cfg.get("notes", "")
     notes_line = f"\nMarket notes: {notes}" if notes else ""
 
-    return f"""Write a deep narrative analysis for the {mkt_cfg['name']} rental market ({mkt_cfg['label']}) for {month}.
+    return f"""Write a deep narrative analysis for the {mkt_cfg['name']} rental market for {month}.
 {notes_line}
 
 CURRENT DATA:
+- Use the exact market name "{mkt_cfg['name']}" when referring to this market.
+- Do not rename it to a metro, county, or MSA label.
+- Context label for orientation only: {mkt_cfg['label']}
 - Market temperature: {cond['temperature_label']} (score: {cond['score']})
 - Average rent: {f'${rent_cur:,.0f}' if rent_cur else 'N/A'}
   - MoM: {f'{rent_mom:+.1f}%' if rent_mom is not None else 'N/A'}
@@ -128,6 +155,8 @@ def regional_prompt(trends: dict, month: str, history: list, supplemental: dict 
     rs = trends.get("regional_summary", {})
     mkt_summaries = []
     for mkt_key, mkt_cfg in MARKETS.items():
+        if mkt_key == "liberty":
+            continue
         t = trends["markets"].get(mkt_key, {})
         rent = t.get("aggregate", {}).get("averageRent", {}).get("current")
         mom  = t.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
@@ -166,6 +195,7 @@ UPSTATE SC MACRO VIEW
 Open with a short sentence that sounds expert, then explain the takeaway in plain English.
 Synthesize the regional story using only the current month and recent short trends provided.
 Do not mention quarter-over-quarter or year-over-year data.
+Do not mention Liberty by name in the regional summary.
 
 OUTLOOK AND RISKS
 What should owners watch over the next 3–6 months?
@@ -211,7 +241,9 @@ def main():
     # Regional summary first (gives context for per-market analysis)
     print("\nGenerating regional summary...")
     try:
-        insights["regional"] = call_claude(regional_prompt(trends, month_display, history, supplemental))
+        insights["regional"] = sanitize_regional_text(
+            call_claude(regional_prompt(trends, month_display, history, supplemental))
+        )
         print("  OK Regional summary done")
     except Exception as e:
         print(f"  ERROR Regional summary failed: {e}")
@@ -219,6 +251,8 @@ def main():
 
     # Per-market analysis
     for mkt_key, mkt_cfg in MARKETS.items():
+        if mkt_key == "liberty":
+            continue
         print(f"  Analyzing {mkt_cfg['name']}...")
         mkt_trends = trends["markets"].get(mkt_key, {})
         if not mkt_trends:
@@ -226,11 +260,13 @@ def main():
             continue
         try:
             prompt = market_prompt(mkt_key, mkt_cfg, mkt_trends, month_display, history, supplemental)
-            insights["markets"][mkt_key] = call_claude(prompt)
+            insights["markets"][mkt_key] = sanitize_market_text(mkt_key, call_claude(prompt))
             print(f"  OK {mkt_cfg['name']}")
         except Exception as e:
             print(f"  ERROR {mkt_cfg['name']}: {e}")
             insights["markets"][mkt_key] = f"Analysis unavailable: {e}"
+
+    insights["markets"]["liberty"] = "Hidden from dashboard due to low confidence and thin local signal."
 
     INSIGHTS_FILE.parent.mkdir(parents=True, exist_ok=True)
     INSIGHTS_FILE.write_text(json.dumps(insights, indent=2))

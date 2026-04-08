@@ -40,8 +40,8 @@ GROUPS = {
     },
     "other": {
         "title": "Other Markets",
-        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "liberty", "clemson", "seneca"],
-        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.",
+        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "clemson", "seneca"],
+        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.",
         "show_bedrooms": False,
     },
 }
@@ -72,6 +72,16 @@ def temp_color(temp):
     }.get(temp, "#86b96e")
 
 
+def confidence_color(level: str) -> str:
+    return {
+        "high": "#86b96e",
+        "solid": "#7eb3d4",
+        "moderate": "#f4a235",
+        "directional": "#d4845a",
+        "low": "#e07a6a",
+    }.get(level, "#86b96e")
+
+
 def fmt_date(ts: str, fallback: str = "n/a") -> str:
     if not ts:
         return fallback
@@ -93,6 +103,115 @@ def source_note_for_bedroom(bedroom: str, supp_market: dict | None) -> str:
     if source == "zillow_derived":
         return f"{bedroom}BR: Zillow-derived ({detail})" if detail else f"{bedroom}BR: Zillow-derived"
     return f"{bedroom}BR: unavailable"
+
+
+def market_confidence(mkt_key: str, latest_market: dict | None, supp_market: dict | None) -> dict:
+    score = 35
+    reasons = []
+
+    listings = (latest_market or {}).get("totalListings")
+    if listings is not None:
+        if listings >= 100:
+            score += 22
+            reasons.append("deep listing volume")
+        elif listings >= 50:
+            score += 16
+            reasons.append("good listing volume")
+        elif listings >= 25:
+            score += 8
+            reasons.append("moderate listing volume")
+        else:
+            reasons.append("thin listing volume")
+
+    z_source = (supp_market or {}).get("zillow_source")
+    if z_source == "zip+city_blend":
+        score += 14
+        reasons.append("zip and city Zillow support")
+    elif z_source == "city":
+        score += 6
+        reasons.append("city-only Zillow support")
+    else:
+        score -= 6
+        reasons.append("limited Zillow support")
+
+    beds = (supp_market or {}).get("bedrooms", {})
+    for bedroom in ["1", "2"]:
+        detail = (beds.get(bedroom) or {}).get("source_detail") or ""
+        if detail == f"{MARKETS[mkt_key]['name']}, SC":
+            score += 8
+        elif detail:
+            score += 2
+    for bedroom in ["3", "4"]:
+        if (beds.get(bedroom) or {}).get("source") == "zillow_derived":
+            score += 3
+
+    fallback_details = {
+        (beds.get("1") or {}).get("source_detail"),
+        (beds.get("2") or {}).get("source_detail"),
+    }
+    if "Greenville-Anderson, SC" in fallback_details and mkt_key != "greenville":
+        score -= 10
+        reasons.append("metro fallback for 1BR/2BR")
+
+    notes = (MARKETS[mkt_key].get("notes") or "").lower()
+    if "college market" in notes:
+        score -= 10
+        reasons.append("college seasonality")
+    if "lake" in notes:
+        score -= 8
+        reasons.append("lake-market volatility")
+    if (supp_market or {}).get("zillow_avg") is None:
+        score -= 12
+        reasons.append("missing blended Zillow average")
+
+    score = max(20, min(95, score))
+    if score >= 85:
+        level = "high"
+        label = "High Confidence"
+    elif score >= 70:
+        level = "solid"
+        label = "Solid Confidence"
+    elif score >= 55:
+        level = "moderate"
+        label = "Moderate Confidence"
+    elif score >= 40:
+        level = "directional"
+        label = "Directional"
+    else:
+        level = "low"
+        label = "Low Confidence"
+
+    return {"score": score, "level": level, "label": label, "reasons": reasons[:3]}
+
+
+def group_confidence(group_keys: list[str], history: list, supplemental: dict) -> dict:
+    latest_history = history[-1] if history else {"markets": {}}
+    weighted_scores = []
+    for key in group_keys:
+        latest_market = latest_history.get("markets", {}).get(key, {})
+        supp_market = supplemental.get("markets", {}).get(key, {}) if supplemental else {}
+        confidence = market_confidence(key, latest_market, supp_market)
+        weight = latest_market.get("totalListings") or 1
+        weighted_scores.append((confidence["score"], weight))
+
+    weighted_score = round(sum(score * weight for score, weight in weighted_scores) / sum(weight for _, weight in weighted_scores), 1) if weighted_scores else 0
+    if weighted_score >= 85:
+        level = "high"
+        label = "High Confidence"
+    elif weighted_score >= 70:
+        level = "solid"
+        label = "Solid Confidence"
+    elif weighted_score >= 55:
+        level = "moderate"
+        label = "Moderate Confidence"
+    elif weighted_score >= 40:
+        level = "directional"
+        label = "Directional"
+    else:
+        level = "low"
+        label = "Low Confidence"
+
+    return {"score": weighted_score, "level": level, "label": label}
 
 
 def aggregate_group_metrics(group_keys: list[str], history: list, trends: dict) -> dict:
@@ -161,12 +280,15 @@ def build_other_markets_table(group_keys: list[str], history: list, trends: dict
         temp = trend_market.get("market_conditions", {}).get("temperature_label", "n/a")
         supp_market = supplemental.get("markets", {}).get(key, {}) if supplemental else {}
         source_detail = supp_market.get("zillow_source_detail") or "mixed source coverage"
+        confidence = market_confidence(key, market, supp_market)
+        conf_color = confidence_color(confidence["level"])
         rows.append(
             f"<tr>"
             f"<td>{MARKETS[key]['name']}</td>"
             f"<td>{fmt_rent(market.get('averageRent'))}</td>"
             f"<td class='{pct_class(mom)}'>{fmt_pct(mom)}</td>"
             f"<td>{temp}</td>"
+            f"<td><span style='background:{conf_color}22;color:{conf_color};border:1px solid {conf_color}55;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>{confidence['score']:.0f} · {confidence['label']}</span></td>"
             f"<td>{source_detail}</td>"
             f"</tr>"
         )
@@ -176,8 +298,10 @@ def build_other_markets_table(group_keys: list[str], history: list, trends: dict
 def build_group_section(group_key: str, trends: dict, insights: dict, history: list, supplemental: dict) -> str:
     group = GROUPS[group_key]
     metrics = aggregate_group_metrics(group["markets"], history, trends)
+    confidence = group_confidence(group["markets"], history, supplemental)
     color = "#86b96e" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
     tc = temp_color(metrics["temperature"])
+    cc = confidence_color(confidence["level"])
 
     content = ""
     if group_key == "headline":
@@ -208,6 +332,13 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
     <div class="source-label">Bedroom Source Notes</div>
     <div class="source-text">{''.join(f'<div>{line}</div>' for line in source_lines)}</div>
   </div>
+  <div class="source-block">
+    <div class="source-label">Confidence Notes</div>
+    <div class="source-text">
+      <div>This score reflects listing depth, source specificity, and how much fallback logic was needed.</div>
+      <div>Higher confidence means more direct local support and less metro-level estimation.</div>
+    </div>
+  </div>
   <div class="insight-block">
     <div class="insight-label">AI Market Analysis</div>
     {insight_paragraphs(insights.get('markets', {}).get(market_key, 'Analysis not available.'))}
@@ -219,13 +350,14 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
     <div class="source-label">Confidence Note</div>
     <div class="source-text">
       <div>These markets are best read as directional rather than highly precise.</div>
-      <div>Examples included: Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.</div>
+      <div>Examples included: Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.</div>
       <div>Smaller-market bedroom data often relies on metro-level Apartment List fallback or Zillow-derived support.</div>
+      <div>The confidence score helps separate stronger ring-market signals from thinner special-case markets.</div>
     </div>
   </div>
   <div class="bedroom-table-wrap">
     <table class="bedroom-table">
-      <thead><tr><th>Market</th><th>Avg Rent</th><th>MoM</th><th>Temp</th><th>Source Context</th></tr></thead>
+      <thead><tr><th>Market</th><th>Avg Rent</th><th>MoM</th><th>Temp</th><th>Confidence</th><th>Source Context</th></tr></thead>
       <tbody>{build_other_markets_table(group['markets'], history, trends, supplemental)}</tbody>
     </table>
   </div>
@@ -238,6 +370,9 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
       <h2 style="color:{color}">{group['title']}</h2>
       <span class="temp-badge" style="background:{tc}22;color:{tc};border:1px solid {tc}55">
         {metrics['temperature_label']}
+      </span>
+      <span class="temp-badge" title="Confidence combines listing depth, source specificity, and how much fallback estimation was needed." style="background:{cc}22;color:{cc};border:1px solid {cc}55">
+        {confidence['score']:.0f} · {confidence['label']}
       </span>
     </div>
     <div class="market-label">{group['description']}</div>
@@ -425,80 +560,93 @@ def build_html(trends, insights, history, supplemental):
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Upstate SC Rental Market — {as_of_display}</title>
 <style>
+:root{{
+  --brand-green:#5ac763;
+  --brand-orange:#fd5315;
+  --brand-charcoal:#2d2e30;
+  --brand-charcoal-deep:#1e1e1e;
+  --brand-cream:#f7f7f3;
+  --brand-surface:#ffffff;
+  --brand-border:#d9ded7;
+  --brand-muted:#6b716c;
+  --brand-blue:#5f8fb5;
+}}
 *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
 html{{font-size:15px;scroll-behavior:smooth}}
-body{{background:#0d1a14;color:#e8efe0;font-family:'Georgia',serif;line-height:1.6}}
-a{{color:#86b96e;text-decoration:none}}
+body{{background:linear-gradient(180deg,#f7f7f3,#eef3eb);color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.6}}
+a{{color:var(--brand-green);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 
-.site-header{{background:linear-gradient(170deg,#0a1f10,#0d1a14);border-bottom:1px solid rgba(134,185,110,.18);padding:32px 40px 24px}}
-.eyebrow{{font-size:10px;color:#86b96e;letter-spacing:2.5px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:8px}}
-h1{{font-size:30px;font-weight:400;color:#f0f5e8;margin-bottom:6px}}
-h1 em{{color:#86b96e;font-style:italic}}
-.subtitle{{font-size:11px;color:#4a6040;font-family:'Courier New',monospace;margin-bottom:20px}}
+.site-header{{background:linear-gradient(135deg,var(--brand-charcoal),var(--brand-charcoal-deep));border-bottom:4px solid var(--brand-green);padding:32px 40px 24px}}
+.eyebrow{{font-size:10px;color:var(--brand-orange);letter-spacing:2.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:8px}}
+h1{{font-size:32px;font-weight:700;color:#fff;margin-bottom:6px;font-family:'Montserrat',sans-serif}}
+h1 em{{color:var(--brand-green);font-style:normal}}
+.subtitle{{font-size:11px;color:#d1d6d1;font-family:'Montserrat',sans-serif;margin-bottom:20px}}
 
-.nav-bar{{font-size:12px;color:#4a6040;font-family:sans-serif;padding:12px 40px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.04)}}
-.nav-bar a{{color:#86b96e;margin-right:4px}}
+.nav-bar{{font-size:12px;color:var(--brand-muted);font-family:'Montserrat',sans-serif;padding:12px 40px;background:#ffffff;border-bottom:1px solid var(--brand-border)}}
+.nav-bar a{{color:var(--brand-green);margin-right:4px}}
 
 .hero-stats{{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}}
-.hero-stat{{background:rgba(255,255,255,.04);border-radius:10px;padding:12px 18px;min-width:110px;text-align:center}}
-.hs-label{{font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:'Courier New',monospace}}
-.hs-val{{font-size:20px;font-weight:800;margin-top:3px;font-family:sans-serif}}
+.hero-stat{{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 18px;min-width:110px;text-align:center;border:1px solid rgba(255,255,255,.08)}}
+.hs-label{{font-size:10px;color:#d1d6d1;text-transform:uppercase;letter-spacing:1px;font-family:'Montserrat',sans-serif}}
+.hs-val{{font-size:20px;font-weight:800;margin-top:3px;font-family:'Montserrat',sans-serif}}
 
 .main{{max-width:1100px;margin:0 auto;padding:32px 40px 60px}}
 
-.section-header{{font-size:11px;color:#86b96e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin:40px 0 20px;padding-bottom:8px;border-bottom:1px solid rgba(134,185,110,.2)}}
+.section-header{{font-size:11px;color:var(--brand-green);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin:40px 0 20px;padding-bottom:8px;border-bottom:1px solid var(--brand-border)}}
 
-.regional-block{{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px;margin-bottom:36px}}
-.regional-title{{font-size:16px;color:#f0f5e8;margin-bottom:16px}}
-.insight-header{{font-size:11px;color:#86b96e;letter-spacing:1.5px;text-transform:uppercase;font-family:'Courier New',monospace;margin:20px 0 8px}}
-.insight-block p{{font-size:14px;color:#b8c8b0;line-height:1.75;margin-bottom:14px;font-family:sans-serif}}
+.regional-block{{background:var(--brand-surface);border:1px solid var(--brand-border);border-radius:14px;padding:28px;margin-bottom:36px}}
+.regional-title{{font-size:16px;color:var(--brand-charcoal);margin-bottom:16px;font-family:'Montserrat',sans-serif}}
+.insight-header{{font-size:11px;color:var(--brand-green);letter-spacing:1.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin:20px 0 8px}}
+.insight-block p{{font-size:14px;color:var(--brand-charcoal);line-height:1.75;margin-bottom:14px;font-family:'Roboto',sans-serif}}
 
-.market-section{{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;margin-bottom:28px}}
+.market-section{{background:var(--brand-surface);border:1px solid var(--brand-border);border-radius:14px;padding:28px;margin-bottom:28px;box-shadow:0 10px 30px rgba(45,46,48,.05)}}
 .market-header{{margin-bottom:20px}}
 .market-title-row{{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}}
-.market-title-row h2{{font-size:20px;font-weight:400}}
-.market-label{{font-size:11px;color:#4a6040;font-family:'Courier New',monospace}}
+.market-title-row h2{{font-size:20px;font-weight:700;font-family:'Montserrat',sans-serif}}
+.market-label{{font-size:11px;color:var(--brand-muted);font-family:'Montserrat',sans-serif}}
 
-.temp-badge{{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:sans-serif}}
-.tier-badge{{font-size:9px;padding:2px 8px;border-radius:8px;font-family:'Courier New',monospace;letter-spacing:.5px;vertical-align:middle}}
-.tier-full{{background:rgba(134,185,110,.15);color:#86b96e;border:1px solid rgba(134,185,110,.3)}}
-.tier-snap{{background:rgba(196,163,110,.15);color:#c4a36e;border:1px solid rgba(196,163,110,.3)}}
+.temp-badge{{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:'Montserrat',sans-serif}}
+.tier-badge{{font-size:9px;padding:2px 8px;border-radius:8px;font-family:'Montserrat',sans-serif;letter-spacing:.5px;vertical-align:middle}}
+.tier-full{{background:rgba(90,199,99,.12);color:var(--brand-green);border:1px solid rgba(90,199,99,.25)}}
+.tier-snap{{background:rgba(253,83,21,.10);color:var(--brand-orange);border:1px solid rgba(253,83,21,.25)}}
 
 .metrics-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}}
-.metric-card{{background:rgba(0,0,0,.2);border-radius:10px;padding:14px 16px;border-top:2px solid transparent}}
-.metric-label{{font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:'Courier New',monospace;margin-bottom:4px}}
-.metric-val{{font-size:24px;font-weight:800;color:#f0f5e8;font-family:sans-serif;margin-bottom:8px}}
+.metric-card{{background:var(--brand-cream);border-radius:10px;padding:14px 16px;border-top:3px solid transparent}}
+.metric-label{{font-size:10px;color:var(--brand-muted);text-transform:uppercase;letter-spacing:1px;font-family:'Montserrat',sans-serif;margin-bottom:4px}}
+.metric-val{{font-size:24px;font-weight:800;color:var(--brand-charcoal);font-family:'Montserrat',sans-serif;margin-bottom:8px}}
 .trend-row{{display:flex;flex-wrap:wrap;gap:6px;align-items:center}}
-.trend-item{{font-size:11px;font-family:sans-serif;padding:2px 7px;border-radius:6px;font-weight:600}}
-.trend-item.up{{background:rgba(134,185,110,.15);color:#86b96e}}
-.trend-item.down{{background:rgba(224,122,106,.15);color:#e07a6a}}
-.trend-item:not(.up):not(.down){{background:rgba(255,255,255,.05);color:#6a8060}}
-.trend-note{{font-size:10px;color:#4a6040;font-family:sans-serif;font-style:italic}}
+.trend-item{{font-size:11px;font-family:'Montserrat',sans-serif;padding:2px 7px;border-radius:6px;font-weight:600}}
+.trend-item.up{{background:rgba(90,199,99,.14);color:var(--brand-green)}}
+.trend-item.down{{background:rgba(253,83,21,.12);color:var(--brand-orange)}}
+.trend-item:not(.up):not(.down){{background:#eef1ed;color:var(--brand-muted)}}
+.trend-note{{font-size:10px;color:var(--brand-muted);font-family:'Roboto',sans-serif;font-style:italic}}
 
 .bedroom-table-wrap{{overflow-x:auto;margin-bottom:20px}}
-.bedroom-table{{width:100%;border-collapse:collapse;font-size:13px;font-family:sans-serif}}
-.bedroom-table th{{padding:8px 12px;text-align:right;color:#4a6040;font-weight:600;font-size:10px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.07)}}
+.bedroom-table{{width:100%;border-collapse:collapse;font-size:13px;font-family:'Roboto',sans-serif}}
+.bedroom-table th{{padding:8px 12px;text-align:right;color:var(--brand-muted);font-weight:600;font-size:10px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--brand-border)}}
 .bedroom-table th:first-child{{text-align:left}}
-.bedroom-table td{{padding:9px 12px;text-align:right;border-bottom:1px solid rgba(255,255,255,.03)}}
-.bedroom-table td:first-child{{text-align:left;font-weight:600;color:#9abf80}}
-.bedroom-table td.up{{color:#86b96e;font-weight:700}}
-.bedroom-table td.down{{color:#e07a6a;font-weight:700}}
+.bedroom-table td{{padding:9px 12px;text-align:right;border-bottom:1px solid #eef1ed}}
+.bedroom-table td:first-child{{text-align:left;font-weight:600;color:var(--brand-charcoal)}}
+.bedroom-table td.up{{color:var(--brand-green);font-weight:700}}
+.bedroom-table td.down{{color:var(--brand-orange);font-weight:700}}
 
-.insight-block{{background:rgba(0,0,0,.15);border-radius:10px;padding:22px 24px;border-left:3px solid rgba(134,185,110,.25)}}
-.insight-label{{font-size:10px;color:#86b96e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:14px}}
-.source-block{{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;margin-bottom:18px}}
-.source-label{{font-size:10px;color:#c4a36e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:10px}}
-.source-text{{font-size:12px;color:#9fb19a;font-family:sans-serif;line-height:1.7}}
-.source-refresh{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:24px}}
-.source-refresh-card{{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px 16px}}
-.source-refresh-name{{font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:'Courier New',monospace;margin-bottom:6px}}
-.source-refresh-date{{font-size:16px;color:#f0f5e8;font-family:sans-serif;font-weight:700}}
-.source-refresh-note{{font-size:12px;color:#8da18a;font-family:sans-serif;margin-top:4px}}
+.insight-block{{background:#fbfcfa;border-radius:10px;padding:22px 24px;border-left:3px solid rgba(90,199,99,.35)}}
+.insight-label{{font-size:10px;color:var(--brand-green);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:14px;font-weight:700}}
+.source-block{{background:#fbfcfa;border:1px solid var(--brand-border);border-radius:10px;padding:14px 16px;margin-bottom:18px}}
+.source-label{{font-size:10px;color:var(--brand-orange);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:10px;font-weight:700}}
+.source-text{{font-size:12px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.7}}
+.source-refresh{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}}
+.source-refresh-card{{background:#ffffff;border:1px solid var(--brand-border);border-radius:10px;padding:14px 16px}}
+.source-refresh-name{{font-size:10px;color:var(--brand-muted);text-transform:uppercase;letter-spacing:1px;font-family:'Montserrat',sans-serif;margin-bottom:6px}}
+.source-refresh-date{{font-size:16px;color:var(--brand-charcoal);font-family:'Montserrat',sans-serif;font-weight:700}}
+.source-refresh-note{{font-size:12px;color:var(--brand-muted);font-family:'Roboto',sans-serif;margin-top:4px}}
 
-.data-note{{background:rgba(126,179,212,.07);border:1px solid rgba(126,179,212,.18);border-left:3px solid #7eb3d4;border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:#8ab8d0;font-family:sans-serif;line-height:1.6}}
+.legend-block{{background:#ffffff;border:1px solid var(--brand-border);border-left:4px solid var(--brand-orange);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.7}}
+.legend-title{{font-size:10px;color:var(--brand-orange);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:8px}}
+.data-note{{background:#ffffff;border:1px solid var(--brand-border);border-left:4px solid var(--brand-green);border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--brand-charcoal);font-family:'Roboto',sans-serif;line-height:1.6}}
 
-.footer{{text-align:center;font-size:11px;color:#2a4030;font-family:'Courier New',monospace;margin-top:60px;padding-top:20px;border-top:1px solid rgba(255,255,255,.04)}}
+.footer{{text-align:center;font-size:11px;color:var(--brand-muted);font-family:'Montserrat',sans-serif;margin-top:60px;padding-top:20px;border-top:1px solid var(--brand-border)}}
 
 @media(max-width:600px){{
   .site-header,.main,.nav-bar{{padding-left:20px;padding-right:20px}}
@@ -509,7 +657,7 @@ h1 em{{color:#86b96e;font-style:italic}}
 <body>
 
 <div class="site-header">
-  <div class="eyebrow">🏠 Upstate South Carolina · 10 Markets · RentCast Live Data</div>
+  <div class="eyebrow">Jones Assurance Property Management · Upstate South Carolina</div>
   <h1>Rental Market <em>Intelligence</em></h1>
   <p class="subtitle">Auto-refreshed monthly · Last updated {generated}</p>
   <div class="hero-stats">
@@ -536,7 +684,7 @@ h1 em{{color:#86b96e;font-style:italic}}
 
 <div class="main">
   <div class="data-note">
-    <strong>📊 Live Data:</strong> Market data pulled monthly from
+    <strong>Jones Assurance PM Market View:</strong> Market data pulled monthly from
     <strong>RentCast API</strong> (rentcast.io) covering 18 zip codes across 10 Upstate SC markets.
     Analysis generated by <strong>Claude AI</strong>. Data reflects active rental listings only.
     <strong>Not financial advice.</strong>
@@ -560,6 +708,12 @@ h1 em{{color:#86b96e;font-style:italic}}
     </div>
   </div>
 
+  <div class="legend-block">
+    <div class="legend-title">Confidence Guide</div>
+    <div>Confidence scores combine listing depth, source specificity, and how much fallback estimation was needed.</div>
+    <div>Higher scores mean stronger local support. Lower scores should be read as directional rather than precise.</div>
+  </div>
+
   <div class="section-header">Tiered Market View</div>
   {headline_section}
   {greenville_section}
@@ -567,7 +721,7 @@ h1 em{{color:#86b96e;font-style:italic}}
   {other_section}
 
   <div class="footer">
-    Upstate SC Rental Market Intelligence · Data: RentCast API · Analysis: Claude AI ·
+    Jones Assurance Property Management · Rental Market Intelligence · Data: RentCast API · Analysis: Claude AI ·
     Auto-refreshed 1st of each month via GitHub Actions · {as_of_display}
   </div>
 </div>
