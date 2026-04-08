@@ -68,18 +68,18 @@ def pct_class(v):
 def temp_color(temp):
     return {
         "hot": "#e07a6a", "warm": "#f4a235",
-        "neutral": "#4b4f7a", "cool": "#7eb3d4", "cold": "#b99ddb"
-    }.get(temp, "#4b4f7a")
+        "neutral": "#2f355d", "cool": "#5d729a", "cold": "#8b84b2"
+    }.get(temp, "#2f355d")
 
 
 def confidence_color(level: str) -> str:
     return {
-        "high": "#4b4f7a",
-        "solid": "#7eb3d4",
+        "high": "#2f355d",
+        "solid": "#5d729a",
         "moderate": "#f4a235",
         "directional": "#d4845a",
         "low": "#e07a6a",
-    }.get(level, "#4b4f7a")
+    }.get(level, "#2f355d")
 
 
 def fmt_date(ts: str, fallback: str = "n/a") -> str:
@@ -299,7 +299,7 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
     group = GROUPS[group_key]
     metrics = aggregate_group_metrics(group["markets"], history, trends)
     confidence = group_confidence(group["markets"], history, supplemental)
-    color = "#4b4f7a" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
+    color = "#2f355d" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
     tc = temp_color(metrics["temperature"])
     cc = confidence_color(confidence["level"])
 
@@ -307,7 +307,7 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
     if group_key == "headline":
         content = f"""
   <div class="insight-block">
-    <div class="insight-label">Regional AI Analysis</div>
+    <div class="insight-label">Regional Market Analysis</div>
     {insight_paragraphs(insights.get('regional', 'Analysis not available.'))}
   </div>
 """
@@ -340,7 +340,7 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
     </div>
   </div>
   <div class="insight-block">
-    <div class="insight-label">AI Market Analysis</div>
+    <div class="insight-label">Market Analysis</div>
     {insight_paragraphs(insights.get('markets', {}).get(market_key, 'Analysis not available.'))}
   </div>
 """
@@ -514,7 +514,7 @@ def build_market_card(mkt_key, trends, insights, supp_market):
   </div>
 
   <div class="insight-block">
-    <div class="insight-label">AI Market Analysis</div>
+    <div class="insight-label">Market Analysis</div>
     {insight_html}
   </div>
 </div>
@@ -561,9 +561,9 @@ def build_html(trends, insights, history, supplemental):
 <title>Upstate SC Rental Market — {as_of_display}</title>
 <style>
 :root{{
-  --brand-blue:#4b4f7a;
-  --brand-blue-deep:#43476f;
-  --brand-blue-soft:#5f8fb5;
+  --brand-blue:#2f355d;
+  --brand-blue-deep:#232845;
+  --brand-blue-soft:#46507d;
   --brand-orange:#fd5315;
   --brand-charcoal:#2d2e30;
   --brand-charcoal-deep:#1e1e1e;
@@ -609,7 +609,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
 
 .temp-badge{{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:'Montserrat',sans-serif}}
 .tier-badge{{font-size:9px;padding:2px 8px;border-radius:8px;font-family:'Montserrat',sans-serif;letter-spacing:.5px;vertical-align:middle}}
-.tier-full{{background:rgba(75,79,122,.12);color:var(--brand-blue);border:1px solid rgba(75,79,122,.25)}}
+.tier-full{{background:rgba(47,53,93,.12);color:var(--brand-blue);border:1px solid rgba(47,53,93,.25)}}
 .tier-snap{{background:rgba(253,83,21,.10);color:var(--brand-orange);border:1px solid rgba(253,83,21,.25)}}
 
 .metrics-row{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:18px}}
@@ -618,7 +618,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
 .metric-val{{font-size:24px;font-weight:800;color:var(--brand-charcoal);font-family:'Montserrat',sans-serif;margin-bottom:8px}}
 .trend-row{{display:flex;flex-wrap:wrap;gap:6px;align-items:center}}
 .trend-item{{font-size:11px;font-family:'Montserrat',sans-serif;padding:2px 7px;border-radius:6px;font-weight:600}}
-.trend-item.up{{background:rgba(75,79,122,.14);color:var(--brand-blue)}}
+.trend-item.up{{background:rgba(47,53,93,.14);color:var(--brand-blue)}}
 .trend-item.down{{background:rgba(253,83,21,.12);color:var(--brand-orange)}}
 .trend-item:not(.up):not(.down){{background:#eef1ed;color:var(--brand-muted)}}
 .trend-note{{font-size:10px;color:var(--brand-muted);font-family:'Roboto',sans-serif;font-style:italic}}
@@ -632,7 +632,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
 .bedroom-table td.up{{color:var(--brand-blue);font-weight:700}}
 .bedroom-table td.down{{color:var(--brand-orange);font-weight:700}}
 
-.insight-block{{background:#fbfcfa;border-radius:10px;padding:22px 24px;border-left:3px solid rgba(90,199,99,.35)}}
+.insight-block{{background:#fbfcfa;border-radius:10px;padding:22px 24px;border-left:3px solid rgba(47,53,93,.28)}}
 .insight-label{{font-size:10px;color:var(--brand-blue);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:14px;font-weight:700}}
 .source-block{{background:#fbfcfa;border:1px solid var(--brand-border);border-radius:10px;padding:14px 16px;margin-bottom:18px}}
 .source-label{{font-size:10px;color:var(--brand-orange);letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;margin-bottom:10px;font-weight:700}}
@@ -664,11 +664,11 @@ h1 em{{color:#d7e4f2;font-style:normal}}
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="hs-label">Report Period</div>
-      <div class="hs-val" style="color:#4b4f7a;font-size:15px">{as_of_display}</div>
+      <div class="hs-val" style="color:#2f355d;font-size:15px">{as_of_display}</div>
     </div>
     <div class="hero-stat">
       <div class="hs-label">Avg MoM Rent</div>
-      <div class="hs-val" style="color:{'#4b4f7a' if (avg_mom_rent or 0) >= 0 else '#e07a6a'}">{fmt_pct(avg_mom_rent)}</div>
+      <div class="hs-val" style="color:{'#2f355d' if (avg_mom_rent or 0) >= 0 else '#e07a6a'}">{fmt_pct(avg_mom_rent)}</div>
     </div>
     <div class="hero-stat">
       <div class="hs-label">Hottest Market</div>
@@ -676,7 +676,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
     </div>
     <div class="hero-stat">
       <div class="hs-label">Softest Market</div>
-      <div class="hs-val" style="color:#7eb3d4;font-size:15px">{softest}</div>
+      <div class="hs-val" style="color:#5d729a;font-size:15px">{softest}</div>
     </div>
   </div>
 </div>
@@ -684,10 +684,26 @@ h1 em{{color:#d7e4f2;font-style:normal}}
 <div class="nav-bar">Jump to: {nav_links}</div>
 
 <div class="main">
+  <div class="legend-block">
+    <div style="margin-bottom:14px">
+      <p style="margin:0 0 10px 0">This dashboard combines core market metrics with supplemental rent support to give a practical view of leasing conditions across the Upstate.</p>
+      <p style="margin:0">The confidence framework helps show which markets are backed by stronger local data and which ones should be read more cautiously as directional signals.</p>
+    </div>
+    <div class="legend-title">Confidence Guide</div>
+    <div>Confidence scores combine listing depth, source specificity, and how much fallback estimation was needed.</div>
+    <div>Higher scores mean stronger local support. Lower scores should be read as directional rather than precise.</div>
+  </div>
+
+  <div class="section-header">Tiered Market View</div>
+  {headline_section}
+  {greenville_section}
+  {spartanburg_section}
+  {other_section}
+
   <div class="data-note">
     <strong>Jones Assurance PM Market View:</strong> Market data pulled monthly from
     <strong>RentCast API</strong> (rentcast.io) covering 18 zip codes across 10 Upstate SC markets.
-    Analysis generated by <strong>Claude AI</strong>. Data reflects active rental listings only.
+    Supplemental rent support comes from Apartment List and Zillow public data. Data reflects active rental listings only.
     <strong>Not financial advice.</strong>
   </div>
 
@@ -703,26 +719,14 @@ h1 em{{color:#d7e4f2;font-style:normal}}
       <div class="source-refresh-note">Apartment List 1BR/2BR and Zillow-derived bedroom support</div>
     </div>
     <div class="source-refresh-card">
-      <div class="source-refresh-name">AI Insight Refresh</div>
+      <div class="source-refresh-name">Report Refresh</div>
       <div class="source-refresh-date">{generated or 'n/a'}</div>
-      <div class="source-refresh-note">Latest Claude narrative generation date</div>
+      <div class="source-refresh-note">Latest narrative and dashboard update date</div>
     </div>
   </div>
 
-  <div class="legend-block">
-    <div class="legend-title">Confidence Guide</div>
-    <div>Confidence scores combine listing depth, source specificity, and how much fallback estimation was needed.</div>
-    <div>Higher scores mean stronger local support. Lower scores should be read as directional rather than precise.</div>
-  </div>
-
-  <div class="section-header">Tiered Market View</div>
-  {headline_section}
-  {greenville_section}
-  {spartanburg_section}
-  {other_section}
-
   <div class="footer">
-    Jones Assurance Property Management · Rental Market Intelligence · Data: RentCast API · Analysis: Claude AI ·
+    Jones Assurance Property Management · Rental Market Intelligence · Data: RentCast API · Supplemental data: Apartment List and Zillow ·
     Auto-refreshed 1st of each month via GitHub Actions · {as_of_display}
   </div>
 </div>
