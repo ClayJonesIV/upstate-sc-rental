@@ -501,7 +501,7 @@ h1 em{{color:#86b96e;font-style:italic}}
 <div class="site-header">
   <div class="eyebrow">🏠 Upstate South Carolina · 10 Markets · RentCast Live Data</div>
   <h1>Rental Market <em>Intelligence</em></h1>
-  <p class="subtitle">Auto-refreshed monthly · {months_count} months of history · Last updated {generated}</p>
+  <p class="subtitle">Auto-refreshed monthly · Last updated {generated}</p>
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="hs-label">Report Period</div>
