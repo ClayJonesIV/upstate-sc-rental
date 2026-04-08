@@ -13,6 +13,7 @@ HISTORY_FILE = Path(__file__).parent.parent / "data" / "history.json"
 TRENDS_FILE  = Path(__file__).parent.parent / "data" / "trends.json"
 
 WINDOWS = {"mom": 1, "qoq": 3, "yoy": 12}
+HIGH_CONFIDENCE_MARKETS = ["greenville", "spartanburg"]
 
 # Minimum months of history required before a window is considered reliable.
 # Values below the threshold are calculated and stored but flagged as unreliable.
@@ -69,6 +70,15 @@ def signal(metric, pct):
         if pct >= -15: return "supply tightening"
         return "supply very tight"
     return "changed"
+
+def weighted_average(pairs):
+    usable = [(value, weight) for value, weight in pairs if value is not None and weight is not None and weight > 0]
+    if not usable:
+        return None
+    total_weight = sum(weight for _, weight in usable)
+    if total_weight == 0:
+        return None
+    return round(sum(value * weight for value, weight in usable) / total_weight, 2)
 
 def compute_trends(history: list) -> dict:
     latest = history[-1] if history else None
@@ -186,15 +196,39 @@ def compute_trends(history: list) -> dict:
         for m in MARKETS
         if trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] is not None
     ]
+    all_dom_mom = [
+        (
+            trends["markets"][m]["aggregate"]["averageDaysOnMarket"]["changes"]["mom"]["pct_change"],
+            trends["markets"][m]["aggregate"]["totalListings"]["current"],
+        )
+        for m in MARKETS
+    ]
+    all_dom_qoq = [
+        (
+            trends["markets"][m]["aggregate"]["averageDaysOnMarket"]["changes"]["qoq"]["pct_change"],
+            trends["markets"][m]["aggregate"]["totalListings"]["current"],
+        )
+        for m in MARKETS
+    ]
     trends["regional_summary"] = {
         "avg_rent_mom_pct": round(sum(all_mom) / len(all_mom), 2) if all_mom else None,
         "avg_rent_yoy_pct": round(sum(all_yoy) / len(all_yoy), 2) if all_yoy else None,
+        "avg_rent_qoq_pct": weighted_average([
+            (
+                trends["markets"][m]["aggregate"]["averageRent"]["changes"]["qoq"]["pct_change"],
+                trends["markets"][m]["aggregate"]["totalListings"]["current"],
+            )
+            for m in MARKETS
+        ]),
+        "avg_dom_mom_pct": weighted_average(all_dom_mom),
+        "avg_dom_qoq_pct": weighted_average(all_dom_qoq),
         "markets_with_rent_growth": sum(1 for v in all_yoy if v > 0),
         "markets_declining": sum(1 for v in all_yoy if v < 0),
-        "hottest_market": max(MARKETS.keys(), key=lambda m:
+        "hottest_market": max(HIGH_CONFIDENCE_MARKETS, key=lambda m:
             trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] or -999),
-        "softest_market": min(MARKETS.keys(), key=lambda m:
+        "softest_market": min(HIGH_CONFIDENCE_MARKETS, key=lambda m:
             trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] or 999),
+        "top_market_scope": "high_confidence_only",
     }
 
     return trends

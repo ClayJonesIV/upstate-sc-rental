@@ -5446,9 +5446,13 @@
   "regional_summary": {
     "avg_rent_mom_pct": 0.54,
     "avg_rent_yoy_pct": 38.71,
+    "avg_rent_qoq_pct": 36.98,
+    "avg_dom_mom_pct": 1.2,
+    "avg_dom_qoq_pct": 33.66,
     "markets_with_rent_growth": 10,
     "markets_declining": 0,
-    "hottest_market": "easley",
-    "softest_market": "seneca"
+    "hottest_market": "spartanburg",
+    "softest_market": "greenville",
+    "top_market_scope": "high_confidence_only"
   }
 }

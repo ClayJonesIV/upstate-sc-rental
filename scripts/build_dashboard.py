@@ -97,21 +97,33 @@ def source_note_for_bedroom(bedroom: str, supp_market: dict | None) -> str:
 
 def aggregate_group_metrics(group_keys: list[str], history: list, trends: dict) -> dict:
     latest_history = history[-1] if history else {"markets": {}}
-    rent_vals, dom_vals, listing_vals, mom_vals = [], [], [], []
+    rent_vals, dom_vals, listing_vals = [], [], []
+    weighted_rent_mom, weighted_rent_qoq = [], []
+    weighted_dom_mom, weighted_dom_qoq = [], []
     temps = []
     for key in group_keys:
         hist_market = latest_history.get("markets", {}).get(key)
         trend_market = trends.get("markets", {}).get(key, {})
+        listings_weight = trend_market.get("aggregate", {}).get("totalListings", {}).get("current")
         if hist_market:
             if hist_market.get("averageRent") is not None:
-                rent_vals.append(hist_market["averageRent"])
+                rent_vals.append((hist_market["averageRent"], listings_weight or 1))
             if hist_market.get("averageDaysOnMarket") is not None:
-                dom_vals.append(hist_market["averageDaysOnMarket"])
+                dom_vals.append((hist_market["averageDaysOnMarket"], listings_weight or 1))
             if hist_market.get("totalListings") is not None:
                 listing_vals.append(hist_market["totalListings"])
         mom = trend_market.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
+        qoq = trend_market.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("qoq", {}).get("pct_change")
+        dom_mom = trend_market.get("aggregate", {}).get("averageDaysOnMarket", {}).get("changes", {}).get("mom", {}).get("pct_change")
+        dom_qoq = trend_market.get("aggregate", {}).get("averageDaysOnMarket", {}).get("changes", {}).get("qoq", {}).get("pct_change")
         if mom is not None:
-            mom_vals.append(mom)
+            weighted_rent_mom.append((mom, listings_weight or 1))
+        if qoq is not None:
+            weighted_rent_qoq.append((qoq, listings_weight or 1))
+        if dom_mom is not None:
+            weighted_dom_mom.append((dom_mom, listings_weight or 1))
+        if dom_qoq is not None:
+            weighted_dom_qoq.append((dom_qoq, listings_weight or 1))
         temp = trend_market.get("market_conditions", {}).get("temperature")
         if temp:
             temps.append(temp)
@@ -135,10 +147,13 @@ def aggregate_group_metrics(group_keys: list[str], history: list, trends: dict) 
         temp_label = "Renter-Leaning"
 
     return {
-        "average_rent": round(sum(rent_vals) / len(rent_vals), 2) if rent_vals else None,
-        "average_dom": round(sum(dom_vals) / len(dom_vals), 2) if dom_vals else None,
+        "average_rent": round(sum(value * weight for value, weight in rent_vals) / sum(weight for _, weight in rent_vals), 2) if rent_vals else None,
+        "average_dom": round(sum(value * weight for value, weight in dom_vals) / sum(weight for _, weight in dom_vals), 2) if dom_vals else None,
         "total_listings": round(sum(listing_vals), 2) if listing_vals else None,
-        "average_mom": round(sum(mom_vals) / len(mom_vals), 2) if mom_vals else None,
+        "average_mom": round(sum(value * weight for value, weight in weighted_rent_mom) / sum(weight for _, weight in weighted_rent_mom), 2) if weighted_rent_mom else None,
+        "average_qoq": round(sum(value * weight for value, weight in weighted_rent_qoq) / sum(weight for _, weight in weighted_rent_qoq), 2) if weighted_rent_qoq else None,
+        "average_dom_mom": round(sum(value * weight for value, weight in weighted_dom_mom) / sum(weight for _, weight in weighted_dom_mom), 2) if weighted_dom_mom else None,
+        "average_dom_qoq": round(sum(value * weight for value, weight in weighted_dom_qoq) / sum(weight for _, weight in weighted_dom_qoq), 2) if weighted_dom_qoq else None,
         "temperature": temp,
         "temperature_label": temp_label,
     }
@@ -242,12 +257,17 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
       <div class="metric-val">{fmt_rent(metrics['average_rent'])}</div>
       <div class="trend-row">
         <span class="trend-item {pct_class(metrics['average_mom'])}">MoM {fmt_pct(metrics['average_mom'])}</span>
+        {f'<span class="trend-item {pct_class(metrics["average_qoq"])}">QoQ {fmt_pct(metrics["average_qoq"])}</span>' if group_key != "other" else ''}
       </div>
     </div>
     <div class="metric-card" style="border-top-color:{color}">
       <div class="metric-label">Days on Market</div>
       <div class="metric-val">{fmt_days(metrics['average_dom'])}</div>
-      <div class="trend-row"><span class="trend-note">(high-level tier view only)</span></div>
+      <div class="trend-row">
+        {f'<span class="trend-item {pct_class(-metrics["average_dom_mom"]) if metrics["average_dom_mom"] is not None else ""}">MoM {fmt_pct(metrics["average_dom_mom"])}</span>' if group_key != "other" else ''}
+        {f'<span class="trend-item {pct_class(-metrics["average_dom_qoq"]) if metrics["average_dom_qoq"] is not None else ""}">QoQ {fmt_pct(metrics["average_dom_qoq"])}</span>' if group_key != "other" else ''}
+        <span class="trend-note">(lower is better)</span>
+      </div>
     </div>
     <div class="metric-card" style="border-top-color:{color}">
       <div class="metric-label">Active Listings</div>
