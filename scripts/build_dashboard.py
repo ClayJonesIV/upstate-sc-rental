@@ -19,6 +19,33 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from config import MARKETS
 
+GROUPS = {
+    "headline": {
+        "title": "Upstate Headline",
+        "markets": list(MARKETS.keys()),
+        "description": "High-level regional view across all tracked Upstate markets.",
+        "show_bedrooms": False,
+    },
+    "greenville": {
+        "title": "Greenville",
+        "markets": ["greenville"],
+        "description": "Highest-confidence core market view with the cleanest direct source coverage.",
+        "show_bedrooms": True,
+    },
+    "spartanburg": {
+        "title": "Spartanburg",
+        "markets": ["spartanburg"],
+        "description": "High-confidence market view with direct source coverage and steadier inventory depth.",
+        "show_bedrooms": True,
+    },
+    "other": {
+        "title": "Other Markets",
+        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "liberty", "clemson", "seneca"],
+        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.",
+        "show_bedrooms": False,
+    },
+}
+
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
 def fmt_rent(v):
@@ -66,6 +93,171 @@ def source_note_for_bedroom(bedroom: str, supp_market: dict | None) -> str:
     if source == "zillow_derived":
         return f"{bedroom}BR: Zillow-derived ({detail})" if detail else f"{bedroom}BR: Zillow-derived"
     return f"{bedroom}BR: unavailable"
+
+
+def aggregate_group_metrics(group_keys: list[str], history: list, trends: dict) -> dict:
+    latest_history = history[-1] if history else {"markets": {}}
+    rent_vals, dom_vals, listing_vals, mom_vals = [], [], [], []
+    temps = []
+    for key in group_keys:
+        hist_market = latest_history.get("markets", {}).get(key)
+        trend_market = trends.get("markets", {}).get(key, {})
+        if hist_market:
+            if hist_market.get("averageRent") is not None:
+                rent_vals.append(hist_market["averageRent"])
+            if hist_market.get("averageDaysOnMarket") is not None:
+                dom_vals.append(hist_market["averageDaysOnMarket"])
+            if hist_market.get("totalListings") is not None:
+                listing_vals.append(hist_market["totalListings"])
+        mom = trend_market.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
+        if mom is not None:
+            mom_vals.append(mom)
+        temp = trend_market.get("market_conditions", {}).get("temperature")
+        if temp:
+            temps.append(temp)
+
+    temp_order = {"hot": 2, "warm": 1, "neutral": 0, "cool": -1, "cold": -2}
+    avg_temp = round(sum(temp_order[t] for t in temps) / len(temps), 2) if temps else 0
+    if avg_temp >= 1.5:
+        temp = "hot"
+        temp_label = "Landlord-Leaning"
+    elif avg_temp >= 0.5:
+        temp = "warm"
+        temp_label = "Slightly Landlord-Favored"
+    elif avg_temp > -0.5:
+        temp = "neutral"
+        temp_label = "Mixed but Balanced"
+    elif avg_temp > -1.5:
+        temp = "cool"
+        temp_label = "Softer Leasing Conditions"
+    else:
+        temp = "cold"
+        temp_label = "Renter-Leaning"
+
+    return {
+        "average_rent": round(sum(rent_vals) / len(rent_vals), 2) if rent_vals else None,
+        "average_dom": round(sum(dom_vals) / len(dom_vals), 2) if dom_vals else None,
+        "total_listings": round(sum(listing_vals), 2) if listing_vals else None,
+        "average_mom": round(sum(mom_vals) / len(mom_vals), 2) if mom_vals else None,
+        "temperature": temp,
+        "temperature_label": temp_label,
+    }
+
+
+def build_other_markets_table(group_keys: list[str], history: list, trends: dict, supplemental: dict) -> str:
+    latest_history = history[-1] if history else {"markets": {}}
+    rows = []
+    for key in group_keys:
+        market = latest_history.get("markets", {}).get(key, {})
+        trend_market = trends.get("markets", {}).get(key, {})
+        mom = trend_market.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
+        temp = trend_market.get("market_conditions", {}).get("temperature_label", "n/a")
+        supp_market = supplemental.get("markets", {}).get(key, {}) if supplemental else {}
+        source_detail = supp_market.get("zillow_source_detail") or "mixed source coverage"
+        rows.append(
+            f"<tr>"
+            f"<td>{MARKETS[key]['name']}</td>"
+            f"<td>{fmt_rent(market.get('averageRent'))}</td>"
+            f"<td class='{pct_class(mom)}'>{fmt_pct(mom)}</td>"
+            f"<td>{temp}</td>"
+            f"<td>{source_detail}</td>"
+            f"</tr>"
+        )
+    return "".join(rows)
+
+
+def build_group_section(group_key: str, trends: dict, insights: dict, history: list, supplemental: dict) -> str:
+    group = GROUPS[group_key]
+    metrics = aggregate_group_metrics(group["markets"], history, trends)
+    color = "#86b96e" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
+    tc = temp_color(metrics["temperature"])
+
+    content = ""
+    if group_key == "headline":
+        content = f"""
+  <div class="insight-block">
+    <div class="insight-label">Regional AI Analysis</div>
+    {insight_paragraphs(insights.get('regional', 'Analysis not available.'))}
+  </div>
+"""
+    elif group_key in {"greenville", "spartanburg"}:
+        market_key = group["markets"][0]
+        supp_market = supplemental.get("markets", {}).get(market_key, {}) if supplemental else {}
+        beds = trends.get("markets", {}).get(market_key, {}).get("bedrooms", {})
+        bed_rows = ""
+        for b in ["1", "2", "3", "4"]:
+            bd = beds.get(b, {})
+            r = bd.get("averageRent", {}).get("current")
+            bed_rows += f"<tr><td>{b}BR</td><td>{fmt_rent(r)}</td></tr>"
+        source_lines = [source_note_for_bedroom(b, supp_market) for b in ["1", "2", "3", "4"]]
+        content = f"""
+  <div class="bedroom-table-wrap">
+    <table class="bedroom-table">
+      <thead><tr><th>Size</th><th>Avg Rent</th></tr></thead>
+      <tbody>{bed_rows}</tbody>
+    </table>
+  </div>
+  <div class="source-block">
+    <div class="source-label">Bedroom Source Notes</div>
+    <div class="source-text">{''.join(f'<div>{line}</div>' for line in source_lines)}</div>
+  </div>
+  <div class="insight-block">
+    <div class="insight-label">AI Market Analysis</div>
+    {insight_paragraphs(insights.get('markets', {}).get(market_key, 'Analysis not available.'))}
+  </div>
+"""
+    else:
+        content = f"""
+  <div class="source-block">
+    <div class="source-label">Confidence Note</div>
+    <div class="source-text">
+      <div>These markets are best read as directional rather than highly precise.</div>
+      <div>Examples included: Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.</div>
+      <div>Smaller-market bedroom data often relies on metro-level Apartment List fallback or Zillow-derived support.</div>
+    </div>
+  </div>
+  <div class="bedroom-table-wrap">
+    <table class="bedroom-table">
+      <thead><tr><th>Market</th><th>Avg Rent</th><th>MoM</th><th>Temp</th><th>Source Context</th></tr></thead>
+      <tbody>{build_other_markets_table(group['markets'], history, trends, supplemental)}</tbody>
+    </table>
+  </div>
+"""
+
+    return f"""
+<div class="market-section" id="group-{group_key}">
+  <div class="market-header" style="border-left: 4px solid {color}">
+    <div class="market-title-row">
+      <h2 style="color:{color}">{group['title']}</h2>
+      <span class="temp-badge" style="background:{tc}22;color:{tc};border:1px solid {tc}55">
+        {metrics['temperature_label']}
+      </span>
+    </div>
+    <div class="market-label">{group['description']}</div>
+  </div>
+
+  <div class="metrics-row">
+    <div class="metric-card" style="border-top-color:{color}">
+      <div class="metric-label">Avg Rent</div>
+      <div class="metric-val">{fmt_rent(metrics['average_rent'])}</div>
+      <div class="trend-row">
+        <span class="trend-item {pct_class(metrics['average_mom'])}">MoM {fmt_pct(metrics['average_mom'])}</span>
+      </div>
+    </div>
+    <div class="metric-card" style="border-top-color:{color}">
+      <div class="metric-label">Days on Market</div>
+      <div class="metric-val">{fmt_days(metrics['average_dom'])}</div>
+      <div class="trend-row"><span class="trend-note">(high-level tier view only)</span></div>
+    </div>
+    <div class="metric-card" style="border-top-color:{color}">
+      <div class="metric-label">Active Listings</div>
+      <div class="metric-val">{f"{metrics['total_listings']:,.0f}" if metrics['total_listings'] is not None else '—'}</div>
+      <div class="trend-row"><span class="trend-note">(tier-level summary)</span></div>
+    </div>
+  </div>
+  {content}
+</div>
+"""
 
 def insight_paragraphs(text: str) -> str:
     """Convert insight text with HEADER\nParagraph format to HTML."""
@@ -201,21 +393,17 @@ def build_html(trends, insights, history, supplemental):
     regional_insight = insights.get("regional", "")
     regional_html = insight_paragraphs(regional_insight) if regional_insight else ""
 
-    # Build market sections — primary markets first, then foothills
-    primary_sections = ""
-    foothills_sections = ""
-    for mkt_key, mkt_cfg in MARKETS.items():
-        supp_market = supplemental.get("markets", {}).get(mkt_key, {}) if supplemental else {}
-        card = build_market_card(mkt_key, trends, insights, supp_market)
-        if mkt_cfg["tier"] == "primary":
-            primary_sections += card
-        else:
-            foothills_sections += card
+    headline_section = build_group_section("headline", trends, insights, history, supplemental)
+    greenville_section = build_group_section("greenville", trends, insights, history, supplemental)
+    spartanburg_section = build_group_section("spartanburg", trends, insights, history, supplemental)
+    other_section = build_group_section("other", trends, insights, history, supplemental)
 
-    # Nav links
-    nav_links = " · ".join(
-        f'<a href="#mkt-{k}">{v["name"]}</a>' for k, v in MARKETS.items()
-    )
+    nav_links = " · ".join([
+        '<a href="#group-headline">Upstate</a>',
+        '<a href="#group-greenville">Greenville</a>',
+        '<a href="#group-spartanburg">Spartanburg</a>',
+        '<a href="#group-other">Other Markets</a>',
+    ])
 
     hottest = MARKETS.get(rs.get("hottest_market", ""), {}).get("name", "—")
     softest = MARKETS.get(rs.get("softest_market", ""), {}).get("name", "—")
@@ -362,20 +550,11 @@ h1 em{{color:#86b96e;font-style:italic}}
     </div>
   </div>
 
-  <div class="section-header">Regional Executive Summary</div>
-  <div class="regional-block">
-    <div class="regional-title">Upstate South Carolina · {as_of_display}</div>
-    <div class="insight-block">
-      <div class="insight-label">AI Regional Analysis</div>
-      {regional_html}
-    </div>
-  </div>
-
-  <div class="section-header">Primary Markets</div>
-  {primary_sections}
-
-  <div class="section-header">Foothills &amp; Lakes Markets</div>
-  {foothills_sections}
+  <div class="section-header">Tiered Market View</div>
+  {headline_section}
+  {greenville_section}
+  {spartanburg_section}
+  {other_section}
 
   <div class="footer">
     Upstate SC Rental Market Intelligence · Data: RentCast API · Analysis: Claude AI ·
