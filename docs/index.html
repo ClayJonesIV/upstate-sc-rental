@@ -7,6 +7,8 @@
 <style>
 :root{
   --brand-blue:#4b4f7a;
+  --brand-blue-deep:#43476f;
+  --brand-blue-soft:#5f8fb5;
   --brand-orange:#fd5315;
   --brand-charcoal:#2d2e30;
   --brand-charcoal-deep:#1e1e1e;
@@ -14,7 +16,6 @@
   --brand-surface:#ffffff;
   --brand-border:#d9ded7;
   --brand-muted:#6b716c;
-  --brand-blue:#5f8fb5;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px;scroll-behavior:smooth}
@@ -22,18 +23,18 @@ body{background:linear-gradient(180deg,#f7f7f3,#eef3eb);color:var(--brand-charco
 a{color:var(--brand-blue);text-decoration:none}
 a:hover{text-decoration:underline}
 
-.site-header{background:linear-gradient(135deg,var(--brand-charcoal),var(--brand-charcoal-deep));border-bottom:4px solid var(--brand-blue);padding:32px 40px 24px}
-.eyebrow{font-size:10px;color:var(--brand-orange);letter-spacing:2.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:8px}
+.site-header{background:linear-gradient(135deg,var(--brand-blue),var(--brand-blue-deep));border-bottom:4px solid var(--brand-blue-soft);padding:32px 40px 24px}
+.eyebrow{font-size:10px;color:#ffffff;letter-spacing:2.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;margin-bottom:8px}
 h1{font-size:32px;font-weight:700;color:#fff;margin-bottom:6px;font-family:'Montserrat',sans-serif}
-h1 em{color:var(--brand-blue);font-style:normal}
+h1 em{color:#d7e4f2;font-style:normal}
 .subtitle{font-size:11px;color:#d1d6d1;font-family:'Montserrat',sans-serif;margin-bottom:20px}
 
 .nav-bar{font-size:12px;color:var(--brand-muted);font-family:'Montserrat',sans-serif;padding:12px 40px;background:#ffffff;border-bottom:1px solid var(--brand-border)}
 .nav-bar a{color:var(--brand-blue);margin-right:4px}
 
 .hero-stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
-.hero-stat{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 18px;min-width:110px;text-align:center;border:1px solid rgba(255,255,255,.08)}
-.hs-label{font-size:10px;color:#d1d6d1;text-transform:uppercase;letter-spacing:1px;font-family:'Montserrat',sans-serif}
+.hero-stat{background:var(--brand-cream);border-radius:10px;padding:12px 18px;min-width:110px;text-align:center;border:1px solid var(--brand-border);box-shadow:0 8px 18px rgba(45,46,48,.08)}
+.hs-label{font-size:10px;color:var(--brand-muted);text-transform:uppercase;letter-spacing:1px;font-family:'Montserrat',sans-serif}
 .hs-val{font-size:20px;font-weight:800;margin-top:3px;font-family:'Montserrat',sans-serif}
 
 .main{max-width:1100px;margin:0 auto;padding:32px 40px 60px}
