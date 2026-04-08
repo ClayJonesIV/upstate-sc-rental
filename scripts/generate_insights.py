@@ -46,6 +46,10 @@ def sanitize_market_text(mkt_key: str, text: str) -> str:
     if mkt_key == "greenville":
         cleaned = cleaned.replace("Greenville-Anderson-Mauldin rental market", "Greenville rental market")
         cleaned = cleaned.replace("Greenville-Anderson-Mauldin market", "Greenville market")
+        cleaned = cleaned.replace("compared to the mid-to-high 30s seen in early 2025", "relative to the recent trend")
+        cleaned = cleaned.replace("from the mid-30s to 48 days in recent months", "modestly above the recent trend")
+        cleaned = cleaned.replace("nearly 50% longer to lease", "taking modestly longer to lease")
+        cleaned = cleaned.replace("extended marketing periods", "slightly longer marketing periods")
     if mkt_key in {"clemson", "seneca"}:
         cleaned = cleaned.replace("86 days", "an elevated leasing timeline")
         cleaned = cleaned.replace("86-day", "elevated")
@@ -70,6 +74,9 @@ def sanitize_regional_text(text: str) -> str:
     cleaned = cleaned.replace(" Liberty ", " a smaller outlying market ")
     cleaned = cleaned.replace(" and Liberty", "")
     cleaned = cleaned.replace("Liberty, ", "")
+    cleaned = cleaned.replace("nearly 50% longer to lease", "taking modestly longer to lease")
+    cleaned = cleaned.replace("earliest signs of tenant leverage returning", "early signs of a softer leasing backdrop")
+    cleaned = cleaned.replace("early signs of tenant leverage returning", "early signs of a softer leasing backdrop")
     return cleaned
 
 
@@ -168,6 +175,8 @@ MARKET CONDITIONS
 Open with a short sentence that sounds expert, then explain the takeaway in plain English.
 Describe what the latest month and recent short trend reveal about supply, demand, and pricing pressure.
 Do not mention quarter-over-quarter or year-over-year data.
+Do not compare current conditions to last year or older periods outside the recent 3-month window.
+Do not use dramatic phrasing like "50% longer to lease" unless that exact change is supported by the recent short-term data provided.
 
 IMPLICATIONS FOR CURRENT OWNERS
 Explain what this means for a typical owner in practical, non-jargon terms.
@@ -233,6 +242,8 @@ Do not mention quarter-over-quarter or year-over-year data.
 Do not mention Clemson, Seneca, or Liberty by name in the regional summary.
 Do not anchor the regional narrative on low-confidence outlier metrics from smaller or more seasonal markets.
 If needed, refer to them only generically as smaller seasonal or outlying markets.
+Do not compare leasing pace to last year or older periods outside the recent 3-month window.
+Do not use dramatic relative phrases like "50% longer to lease" unless the current short-term data explicitly supports that statement.
 
 OUTLOOK AND RISKS
 What should owners watch over the next 3–6 months?
