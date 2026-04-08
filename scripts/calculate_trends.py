@@ -254,8 +254,8 @@ def main():
     # Print quick summary
     print(f"\nRegional Summary - {trends.get('as_of')}:")
     rs = trends.get("regional_summary", {})
-    print(f"  Avg YoY rent change: {rs.get('avg_rent_yoy_pct')}%")
-    print(f"  Markets growing: {rs.get('markets_with_rent_growth')} | Declining: {rs.get('markets_declining')}")
+    print(f"  Avg MoM rent change: {rs.get('avg_rent_mom_pct')}%")
+    print(f"  Avg MoM DOM change: {rs.get('avg_dom_mom_pct')}%")
     print(f"  Hottest: {rs.get('hottest_market')} | Softest: {rs.get('softest_market')}\n")
 
 if __name__ == "__main__":
