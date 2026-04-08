@@ -199,7 +199,7 @@ def main():
     print(f"{'='*55}")
 
     if not HISTORY_FILE.exists():
-        print("✗ history.json not found — run fetch_data.py first")
+        print("ERROR history.json not found - run fetch_data.py first")
         return
 
     history = json.loads(HISTORY_FILE.read_text())
@@ -209,10 +209,10 @@ def main():
 
     TRENDS_FILE.parent.mkdir(parents=True, exist_ok=True)
     TRENDS_FILE.write_text(json.dumps(trends, indent=2))
-    print(f"✅ Trends saved → {TRENDS_FILE.name}")
+    print(f"OK Trends saved -> {TRENDS_FILE.name}")
 
     # Print quick summary
-    print(f"\nRegional Summary — {trends.get('as_of')}:")
+    print(f"\nRegional Summary - {trends.get('as_of')}:")
     rs = trends.get("regional_summary", {})
     print(f"  Avg YoY rent change: {rs.get('avg_rent_yoy_pct')}%")
     print(f"  Markets growing: {rs.get('markets_with_rent_growth')} | Declining: {rs.get('markets_declining')}")

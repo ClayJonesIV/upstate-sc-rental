@@ -12,6 +12,7 @@ from datetime import datetime
 HISTORY_FILE  = Path(__file__).parent.parent / "data" / "history.json"
 TRENDS_FILE   = Path(__file__).parent.parent / "data" / "trends.json"
 INSIGHTS_FILE = Path(__file__).parent.parent / "data" / "insights.json"
+SUPP_FILE     = Path(__file__).parent.parent / "data" / "supplemental_latest.json"
 OUTPUT_FILE   = Path(__file__).parent.parent / "docs" / "index.html"
 
 import sys
@@ -43,6 +44,29 @@ def temp_color(temp):
         "neutral": "#86b96e", "cool": "#7eb3d4", "cold": "#b99ddb"
     }.get(temp, "#86b96e")
 
+
+def fmt_date(ts: str, fallback: str = "n/a") -> str:
+    if not ts:
+        return fallback
+    try:
+        return datetime.fromisoformat(ts.replace("Z", "+00:00")).strftime("%Y-%m-%d")
+    except ValueError:
+        return ts[:10] if len(ts) >= 10 else ts
+
+
+def source_note_for_bedroom(bedroom: str, supp_market: dict | None) -> str:
+    if not supp_market:
+        return f"{bedroom}BR: unavailable"
+
+    bd = supp_market.get("bedrooms", {}).get(bedroom, {})
+    source = bd.get("source")
+    detail = bd.get("source_detail")
+    if source == "apartment_list":
+        return f"{bedroom}BR: Apartment List ({detail})" if detail else f"{bedroom}BR: Apartment List"
+    if source == "zillow_derived":
+        return f"{bedroom}BR: Zillow-derived ({detail})" if detail else f"{bedroom}BR: Zillow-derived"
+    return f"{bedroom}BR: unavailable"
+
 def insight_paragraphs(text: str) -> str:
     """Convert insight text with HEADER\nParagraph format to HTML."""
     headers = ["MARKET CONDITIONS", "IMPLICATIONS FOR CURRENT OWNERS",
@@ -64,7 +88,7 @@ def insight_paragraphs(text: str) -> str:
 
 # ─── HTML sections ────────────────────────────────────────────────────────────
 
-def build_market_card(mkt_key, trends, insights):
+def build_market_card(mkt_key, trends, insights, supp_market):
     mkt_cfg  = MARKETS[mkt_key]
     mt       = trends["markets"].get(mkt_key, {})
     agg      = mt.get("aggregate", {})
@@ -77,7 +101,8 @@ def build_market_card(mkt_key, trends, insights):
     rent_mom = agg.get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
     rent_qoq = None  # withheld until sufficient history
     rent_yoy = None  # withheld until sufficient history
-    dom_yoy  = aNone  # withheld until sufficient history
+    dom_cur  = agg.get("averageDaysOnMarket", {}).get("current")
+    dom_yoy  = None  # withheld until sufficient history
     inv_cur  = agg.get("totalListings", {}).get("current")
     inv_yoy  = None  # withheld until sufficient history
 
@@ -93,6 +118,16 @@ def build_market_card(mkt_key, trends, insights):
             f"<td class='{pct_class(ry)}'>{fmt_pct(ry)}</td>"
             f"<td>{fmt_days(d)}</td></tr>"
         )
+
+    market_source_lines = []
+    zillow_detail = supp_market.get("zillow_source_detail") if supp_market else None
+    if zillow_detail:
+        market_source_lines.append(f"Overall cross-check: Zillow ({zillow_detail})")
+    else:
+        market_source_lines.append("Overall cross-check: Zillow unavailable")
+    for b in ["1", "2", "3", "4"]:
+        market_source_lines.append(source_note_for_bedroom(b, supp_market))
+    source_html = "".join(f"<div>{line}</div>" for line in market_source_lines)
 
     insight_text = insights.get("markets", {}).get(mkt_key, "")
     insight_html = insight_paragraphs(insight_text) if insight_text else "<p>Analysis not available.</p>"
@@ -150,6 +185,11 @@ def build_market_card(mkt_key, trends, insights):
     </table>
   </div>
 
+  <div class="source-block">
+    <div class="source-label">Market Data Sources</div>
+    <div class="source-text">{source_html}</div>
+  </div>
+
   <div class="insight-block">
     <div class="insight-label">AI Market Analysis</div>
     {insight_html}
@@ -157,10 +197,12 @@ def build_market_card(mkt_key, trends, insights):
 </div>
 """
 
-def build_html(trends, insights, history):
+def build_html(trends, insights, history, supplemental):
     as_of = trends.get("as_of", "")
     as_of_display = datetime.strptime(as_of, "%Y-%m").strftime("%B %Y") if as_of else "—"
     generated = insights.get("generated_at", "")[:10]
+    rentcast_fetched = history[-1].get("fetched_at", "") if history else ""
+    supplemental_fetched = supplemental.get("fetched_at", "") if supplemental else ""
     months_count = len(history)
     rs = trends.get("regional_summary", {})
 
@@ -171,7 +213,8 @@ def build_html(trends, insights, history):
     primary_sections = ""
     foothills_sections = ""
     for mkt_key, mkt_cfg in MARKETS.items():
-        card = build_market_card(mkt_key, trends, insights)
+        supp_market = supplemental.get("markets", {}).get(mkt_key, {}) if supplemental else {}
+        card = build_market_card(mkt_key, trends, insights, supp_market)
         if mkt_cfg["tier"] == "primary":
             primary_sections += card
         else:
@@ -254,6 +297,14 @@ h1 em{{color:#86b96e;font-style:italic}}
 
 .insight-block{{background:rgba(0,0,0,.15);border-radius:10px;padding:22px 24px;border-left:3px solid rgba(134,185,110,.25)}}
 .insight-label{{font-size:10px;color:#86b96e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:14px}}
+.source-block{{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;margin-bottom:18px}}
+.source-label{{font-size:10px;color:#c4a36e;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;margin-bottom:10px}}
+.source-text{{font-size:12px;color:#9fb19a;font-family:sans-serif;line-height:1.7}}
+.source-refresh{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:24px}}
+.source-refresh-card{{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px 16px}}
+.source-refresh-name{{font-size:10px;color:#4a6040;text-transform:uppercase;letter-spacing:1px;font-family:'Courier New',monospace;margin-bottom:6px}}
+.source-refresh-date{{font-size:16px;color:#f0f5e8;font-family:sans-serif;font-weight:700}}
+.source-refresh-note{{font-size:12px;color:#8da18a;font-family:sans-serif;margin-top:4px}}
 
 .data-note{{background:rgba(126,179,212,.07);border:1px solid rgba(126,179,212,.18);border-left:3px solid #7eb3d4;border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:#8ab8d0;font-family:sans-serif;line-height:1.6}}
 
@@ -309,6 +360,24 @@ h1 em{{color:#86b96e;font-style:italic}}
     <strong>Not financial advice.</strong>
   </div>
 
+  <div class="source-refresh">
+    <div class="source-refresh-card">
+      <div class="source-refresh-name">RentCast Refresh</div>
+      <div class="source-refresh-date">{fmt_date(rentcast_fetched)}</div>
+      <div class="source-refresh-note">Latest live RentCast pull used for core market metrics</div>
+    </div>
+    <div class="source-refresh-card">
+      <div class="source-refresh-name">Supplemental Refresh</div>
+      <div class="source-refresh-date">{fmt_date(supplemental_fetched)}</div>
+      <div class="source-refresh-note">Apartment List 1BR/2BR and Zillow-derived bedroom support</div>
+    </div>
+    <div class="source-refresh-card">
+      <div class="source-refresh-name">AI Insight Refresh</div>
+      <div class="source-refresh-date">{generated or 'n/a'}</div>
+      <div class="source-refresh-note">Latest Claude narrative generation date</div>
+    </div>
+  </div>
+
   <div class="section-header">Regional Executive Summary</div>
   <div class="regional-block">
     <div class="regional-title">Upstate South Carolina · {as_of_display}</div>
@@ -341,11 +410,12 @@ def main():
     history = json.loads(HISTORY_FILE.read_text()) if HISTORY_FILE.exists() else []
     trends  = json.loads(TRENDS_FILE.read_text())  if TRENDS_FILE.exists()  else {}
     insights = json.loads(INSIGHTS_FILE.read_text()) if INSIGHTS_FILE.exists() else {}
+    supplemental = json.loads(SUPP_FILE.read_text()) if SUPP_FILE.exists() else {}
 
-    html = build_html(trends, insights, history)
+    html = build_html(trends, insights, history, supplemental)
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_FILE.write_text(html)
-    print(f"✅ Dashboard written → {OUTPUT_FILE} ({len(html):,} chars)\n")
+    OUTPUT_FILE.write_text(html, encoding="utf-8")
+    print(f"OK Dashboard written -> {OUTPUT_FILE} ({len(html):,} chars)\n")
 
 if __name__ == "__main__":
     main()

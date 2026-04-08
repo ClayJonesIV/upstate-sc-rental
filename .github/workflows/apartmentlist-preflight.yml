@@ -1,0 +1,25 @@
+name: Apartment List Preflight
+
+on:
+  schedule:
+    - cron: '0 12 24 * *'
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check Apartment List live data
+        run: python scripts/fetch_supplemental.py --require-apartment-list-live

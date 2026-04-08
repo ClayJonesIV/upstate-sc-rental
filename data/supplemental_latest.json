@@ -1,162 +1,166 @@
 {
-  "fetched_at": "2026-04-01T13:55:48.482376+00:00",
+  "fetched_at": "2026-04-08T00:45:29.908357+00:00",
   "month": "2026-04",
   "sources": [
     "apartment_list",
     "zillow_research"
   ],
+  "source_status": {
+    "apartment_list_live": true,
+    "zillow_live": true
+  },
   "markets": {
     "greenville": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1559.62,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1270.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1471.0,
+          "source": "apartment_list"
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1840.35,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 2105.49,
+          "source": "zillow_derived"
         }
       }
     },
     "spartanburg": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1314.04,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1018.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1136.0,
+          "source": "apartment_list"
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1550.57,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1773.95,
+          "source": "zillow_derived"
         }
       }
     },
     "anderson": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1387.05,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1008.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1083.0,
+          "source": "apartment_list"
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1636.72,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1872.52,
+          "source": "zillow_derived"
         }
       }
     },
     "simpsonville": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1798.56,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1008.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1083.0,
+          "source": "apartment_list"
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 2122.3,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 2428.06,
+          "source": "zillow_derived"
         }
       }
     },
     "greer": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1586.63,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1008.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1083.0,
+          "source": "apartment_list"
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1872.22,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 2141.95,
+          "source": "zillow_derived"
         }
       }
     },
     "easley": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1657.15,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1008.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1083.0,
+          "source": "apartment_list"
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1955.44,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 2237.15,
+          "source": "zillow_derived"
         }
       }
     },
     "piedmont": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1631.43,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1008.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1083.0,
+          "source": "apartment_list"
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1925.09,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 2202.43,
+          "source": "zillow_derived"
         }
       }
     },
@@ -165,12 +169,12 @@
       "zillow_source": "city",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1008.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1083.0,
+          "source": "apartment_list"
         },
         "3": {
           "averageRent": null,
@@ -183,30 +187,30 @@
       }
     },
     "clemson": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1751.67,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1008.0,
+          "source": "apartment_list"
         },
         "2": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1083.0,
+          "source": "apartment_list"
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 2066.97,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 2364.75,
+          "source": "zillow_derived"
         }
       }
     },
     "seneca": {
-      "zillow_avg": null,
-      "zillow_source": "city",
+      "zillow_avg": 1462.11,
+      "zillow_source": "zip+city_blend",
       "bedrooms": {
         "1": {
           "averageRent": null,
@@ -217,12 +221,12 @@
           "source": null
         },
         "3": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1725.29,
+          "source": "zillow_derived"
         },
         "4": {
-          "averageRent": null,
-          "source": null
+          "averageRent": 1973.85,
+          "source": "zillow_derived"
         }
       }
     }

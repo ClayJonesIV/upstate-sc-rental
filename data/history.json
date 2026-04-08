@@ -8651,7 +8651,7 @@
   },
   {
     "month": "2026-04",
-    "fetched_at": "2026-04-01T13:55:48.641588+00:00",
+    "fetched_at": "2026-04-08T00:53:45.248836+00:00",
     "data_sources": [
       "rentcast",
       "apartment_list",
@@ -8669,29 +8669,29 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1270.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1471.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1840.35,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 2105.49,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1559.62
       },
       "spartanburg": {
         "averageRent": 1244.0,
@@ -8704,29 +8704,29 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1018.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1136.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1550.57,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1773.95,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1314.04
       },
       "anderson": {
         "averageRent": 1347.5,
@@ -8739,29 +8739,29 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1008.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1083.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1636.72,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1872.52,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1387.05
       },
       "simpsonville": {
         "averageRent": 1995.5,
@@ -8774,29 +8774,29 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1008.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1083.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 2122.3,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 2428.06,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1798.56
       },
       "greer": {
         "averageRent": 1807.0,
@@ -8809,29 +8809,29 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1008.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1083.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1872.22,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 2141.95,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1586.63
       },
       "easley": {
         "averageRent": 1690.0,
@@ -8844,29 +8844,29 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1008.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1083.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1955.44,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 2237.15,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1657.15
       },
       "piedmont": {
         "averageRent": 1887.0,
@@ -8879,29 +8879,29 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1008.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1083.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1925.09,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 2202.43,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1631.43
       },
       "liberty": {
         "averageRent": 1366.0,
@@ -8914,14 +8914,14 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1008.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1083.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
@@ -8949,29 +8949,29 @@
           "1": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1008.0,
+            "rent_source": "apartment_list"
           },
           "2": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1083.0,
+            "rent_source": "apartment_list"
           },
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 2066.97,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 2364.75,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1751.67
       },
       "seneca": {
         "averageRent": 1498.5,
@@ -8996,17 +8996,17 @@
           "3": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1725.29,
+            "rent_source": "zillow_derived"
           },
           "4": {
             "averageDaysOnMarket": null,
             "totalListings": null,
-            "averageRent": null,
-            "rent_source": "unavailable"
+            "averageRent": 1973.85,
+            "rent_source": "zillow_derived"
           }
         },
-        "zillow_avg": null
+        "zillow_avg": 1462.11
       }
     }
   }
