@@ -91,20 +91,6 @@ def fmt_date(ts: str, fallback: str = "n/a") -> str:
         return ts[:10] if len(ts) >= 10 else ts
 
 
-def source_note_for_bedroom(bedroom: str, supp_market: dict | None) -> str:
-    if not supp_market:
-        return f"{bedroom}BR: unavailable"
-
-    bd = supp_market.get("bedrooms", {}).get(bedroom, {})
-    source = bd.get("source")
-    detail = bd.get("source_detail")
-    if source == "apartment_list":
-        return f"{bedroom}BR: Apartment List ({detail})" if detail else f"{bedroom}BR: Apartment List"
-    if source == "zillow_derived":
-        return f"{bedroom}BR: Zillow-derived ({detail})" if detail else f"{bedroom}BR: Zillow-derived"
-    return f"{bedroom}BR: unavailable"
-
-
 def market_confidence(mkt_key: str, latest_market: dict | None, supp_market: dict | None) -> dict:
     score = 35
     reasons = []
@@ -279,7 +265,6 @@ def build_other_markets_table(group_keys: list[str], history: list, trends: dict
         mom = trend_market.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
         temp = trend_market.get("market_conditions", {}).get("temperature_label", "n/a")
         supp_market = supplemental.get("markets", {}).get(key, {}) if supplemental else {}
-        source_detail = supp_market.get("zillow_source_detail") or "mixed source coverage"
         confidence = market_confidence(key, market, supp_market)
         conf_color = confidence_color(confidence["level"])
         rows.append(
@@ -289,7 +274,6 @@ def build_other_markets_table(group_keys: list[str], history: list, trends: dict
             f"<td class='{pct_class(mom)}'>{fmt_pct(mom)}</td>"
             f"<td>{temp}</td>"
             f"<td><span style='background:{conf_color}22;color:{conf_color};border:1px solid {conf_color}55;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap'>{confidence['score']:.0f} · {confidence['label']}</span></td>"
-            f"<td>{source_detail}</td>"
             f"</tr>"
         )
     return "".join(rows)
@@ -313,25 +297,7 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
 """
     elif group_key in {"greenville", "spartanburg"}:
         market_key = group["markets"][0]
-        supp_market = supplemental.get("markets", {}).get(market_key, {}) if supplemental else {}
-        beds = trends.get("markets", {}).get(market_key, {}).get("bedrooms", {})
-        bed_rows = ""
-        for b in ["1", "2", "3", "4"]:
-            bd = beds.get(b, {})
-            r = bd.get("averageRent", {}).get("current")
-            bed_rows += f"<tr><td>{b}BR</td><td>{fmt_rent(r)}</td></tr>"
-        source_lines = [source_note_for_bedroom(b, supp_market) for b in ["1", "2", "3", "4"]]
         content = f"""
-  <div class="bedroom-table-wrap">
-    <table class="bedroom-table">
-      <thead><tr><th>Size</th><th>Avg Rent</th></tr></thead>
-      <tbody>{bed_rows}</tbody>
-    </table>
-  </div>
-  <div class="source-block">
-    <div class="source-label">Bedroom Source Notes</div>
-    <div class="source-text">{''.join(f'<div>{line}</div>' for line in source_lines)}</div>
-  </div>
   <div class="source-block">
     <div class="source-label">Confidence Notes</div>
     <div class="source-text">
@@ -351,13 +317,13 @@ def build_group_section(group_key: str, trends: dict, insights: dict, history: l
     <div class="source-text">
       <div>These markets are best read as directional rather than highly precise.</div>
       <div>Examples included: Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.</div>
-      <div>Smaller-market bedroom data often relies on metro-level Apartment List fallback or Zillow-derived support.</div>
       <div>The confidence score helps separate stronger ring-market signals from thinner special-case markets.</div>
+      <div>Local sample depth and market volatility matter more here than in the core markets.</div>
     </div>
   </div>
   <div class="bedroom-table-wrap">
     <table class="bedroom-table">
-      <thead><tr><th>Market</th><th>Avg Rent</th><th>MoM</th><th>Temp</th><th>Confidence</th><th>Source Context</th></tr></thead>
+      <thead><tr><th>Market</th><th>Avg Rent</th><th>MoM</th><th>Temp</th><th>Confidence</th></tr></thead>
       <tbody>{build_other_markets_table(group['markets'], history, trends, supplemental)}</tbody>
     </table>
   </div>
@@ -686,7 +652,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
 <div class="main">
   <div class="legend-block">
     <div style="margin-bottom:14px">
-      <p style="margin:0 0 10px 0">This dashboard combines core market metrics with supplemental rent support to give a practical view of leasing conditions across the Upstate.</p>
+      <p style="margin:0 0 10px 0">This dashboard combines core market metrics to give a practical view of leasing conditions across the Upstate.</p>
       <p style="margin:0">The confidence framework helps show which markets are backed by stronger local data and which ones should be read more cautiously as directional signals.</p>
     </div>
     <div class="legend-title">Confidence Guide</div>
@@ -703,7 +669,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
   <div class="data-note">
     <strong>Jones Assurance PM Market View:</strong> Market data pulled monthly from
     <strong>RentCast API</strong> (rentcast.io) covering 18 zip codes across 10 Upstate SC markets.
-    Supplemental rent support comes from Apartment List and Zillow public data. Data reflects active rental listings only.
+    Data reflects active rental listings only.
     <strong>Not financial advice.</strong>
   </div>
 
@@ -714,11 +680,6 @@ h1 em{{color:#d7e4f2;font-style:normal}}
       <div class="source-refresh-note">Latest live RentCast pull used for core market metrics</div>
     </div>
     <div class="source-refresh-card">
-      <div class="source-refresh-name">Supplemental Refresh</div>
-      <div class="source-refresh-date">{fmt_date(supplemental_fetched)}</div>
-      <div class="source-refresh-note">Apartment List 1BR/2BR and Zillow-derived bedroom support</div>
-    </div>
-    <div class="source-refresh-card">
       <div class="source-refresh-name">Report Refresh</div>
       <div class="source-refresh-date">{generated or 'n/a'}</div>
       <div class="source-refresh-note">Latest narrative and dashboard update date</div>
@@ -726,7 +687,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
   </div>
 
   <div class="footer">
-    Jones Assurance Property Management · Rental Market Intelligence · Data: RentCast API · Supplemental data: Apartment List and Zillow ·
+    Jones Assurance Property Management · Rental Market Intelligence · Data: RentCast API ·
     Auto-refreshed 1st of each month via GitHub Actions · {as_of_display}
   </div>
 </div>

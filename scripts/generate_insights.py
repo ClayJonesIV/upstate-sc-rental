@@ -90,13 +90,11 @@ def recent_series(history: list, mkt_key: str, metric: str, months: int = 4) -> 
 
 def source_context(supplemental: dict | None, history: list) -> str:
     rentcast_date = history[-1].get("fetched_at", "")[:10] if history else "unknown"
-    supp_date = supplemental.get("fetched_at", "")[:10] if supplemental else "unknown"
     return (
         f"Recent sources available for citation:\n"
         f"- RentCast market data: {rentcast_date}\n"
-        f"- Apartment List and Zillow supplemental data: {supp_date}\n"
         f"When writing Outlook and Risks, cite the available sources in plain text like "
-        f"'(Sources: RentCast {rentcast_date}; Apartment List/Zillow {supp_date})'."
+        f"'(Sources: RentCast {rentcast_date})'."
     )
 
 
@@ -116,8 +114,6 @@ def low_confidence_guidance(mkt_key: str) -> str:
 def market_prompt(mkt_key: str, mkt_cfg: dict, mkt_trends: dict, month: str, history: list, supplemental: dict | None) -> str:
     agg = mkt_trends["aggregate"]
     cond = mkt_trends["market_conditions"]
-    beds = mkt_trends["bedrooms"]
-
     rent_cur  = agg["averageRent"]["current"]
     rent_mom  = agg["averageRent"]["changes"]["mom"]["pct_change"]
     dom_cur   = agg["averageDaysOnMarket"]["current"]
@@ -126,18 +122,6 @@ def market_prompt(mkt_key: str, mkt_cfg: dict, mkt_trends: dict, month: str, his
     inv_mom   = agg["totalListings"]["changes"]["mom"]["pct_change"]
     vacancy_proxy = recent_series(history, mkt_key, "averageDaysOnMarket", months=4)
     listing_proxy = recent_series(history, mkt_key, "totalListings", months=4)
-    supp_market = supplemental.get("markets", {}).get(mkt_key, {}) if supplemental else {}
-
-    bed_summary = ""
-    for b in ["1", "2", "3", "4"]:
-        bd = beds.get(b, {})
-        r = bd.get("averageRent", {}).get("current")
-        d = bd.get("averageDaysOnMarket", {}).get("current")
-        if r:
-            source_detail = supp_market.get("bedrooms", {}).get(b, {}).get("source_detail")
-            source_note = f" ({source_detail})" if source_detail else ""
-            bed_summary += f"\n  {b}BR: avg rent ${r:,.0f}{source_note}" + (f", DOM {d:.0f}d" if d else "")
-
     notes = mkt_cfg.get("notes", "")
     notes_line = f"\nMarket notes: {notes}" if notes else ""
 
@@ -161,7 +145,6 @@ CURRENT DATA:
   - MoM: {f'{dom_mom:+.1f}%' if dom_mom is not None else 'N/A'}
 - Active listings: {f'{inv_cur:,.0f}' if inv_cur else 'N/A'}
   - MoM: {f'{inv_mom:+.1f}%' if inv_mom is not None else 'N/A'}
-- By bedroom:{bed_summary}
 - Recent 4-month days-on-market series: {vacancy_proxy_line}
 - Recent 4-month active listings series: {listing_proxy}
 
