@@ -109,6 +109,12 @@ def compute_trends(history: list) -> dict:
                 ref_val = market_val(ref, mkt_key, metric)
                 pct = pct_change(ref_val, current)
                 reliable = len(history) >= MIN_MONTHS[label]
+                anomaly = (
+                    label == "mom"
+                    and metric in ["averageRent", "medianRent"]
+                    and pct is not None
+                    and abs(pct) > 5
+                )
                 metric_data["changes"][label] = {
                     "reference_value": ref_val,
                     "pct_change": pct if reliable else None,
@@ -116,6 +122,11 @@ def compute_trends(history: list) -> dict:
                     "direction": direction(pct) if reliable else "flat",
                     "signal": signal(metric, pct) if reliable else "insufficient data",
                     "reliable": reliable,
+                    "anomaly_flag": anomaly,
+                    "anomaly_note": (
+                        "Unusual monthly rent move; verify against sample depth and recent baseline."
+                        if anomaly else None
+                    ),
                 }
             mkt_trends["aggregate"][metric] = metric_data
 
@@ -131,6 +142,12 @@ def compute_trends(history: list) -> dict:
                     ref_val = market_val(ref, mkt_key, metric, bedroom=bkey)
                     pct = pct_change(ref_val, current)
                     reliable = len(history) >= MIN_MONTHS[label]
+                    anomaly = (
+                        label == "mom"
+                        and metric == "averageRent"
+                        and pct is not None
+                        and abs(pct) > 5
+                    )
                     m_data["changes"][label] = {
                         "reference_value": ref_val,
                         "pct_change": pct if reliable else None,
@@ -138,6 +155,11 @@ def compute_trends(history: list) -> dict:
                         "direction": direction(pct) if reliable else "flat",
                         "signal": signal(metric, pct) if reliable else "insufficient data",
                         "reliable": reliable,
+                        "anomaly_flag": anomaly,
+                        "anomaly_note": (
+                            "Unusual monthly bedroom-rent move; verify against sample depth and recent baseline."
+                            if anomaly else None
+                        ),
                     }
                 bed_data[metric] = m_data
             mkt_trends["bedrooms"][bkey] = bed_data

@@ -39,6 +39,17 @@ Do not use quarter-over-quarter or year-over-year data in any analysis or recomm
 LOW_CONFIDENCE_MARKETS = {"liberty", "clemson", "seneca"}
 
 
+def sample_gate(listings: float | int | None) -> dict:
+    count = int(round(listings)) if listings is not None else None
+    if count is None:
+        return {"count": None, "status": "unknown"}
+    if count < 10:
+        return {"count": count, "status": "insufficient"}
+    if count < 25:
+        return {"count": count, "status": "low_sample"}
+    return {"count": count, "status": "normal"}
+
+
 def sanitize_market_text(mkt_key: str, text: str) -> str:
     if not text:
         return text
@@ -111,6 +122,51 @@ def low_confidence_guidance(mkt_key: str) -> str:
         "- Keep conclusions modest and emphasize uncertainty where appropriate.\n"
     )
 
+
+def reliability_guidance(mkt_key: str, mkt_trends: dict, history: list, supplemental: dict | None) -> str:
+    latest_market = (history[-1].get("markets", {}).get(mkt_key) if history else {}) or {}
+    listings = latest_market.get("totalListings")
+    gate = sample_gate(listings)
+    mom_data = (
+        mkt_trends.get("aggregate", {})
+        .get("averageRent", {})
+        .get("changes", {})
+        .get("mom", {})
+    )
+    notes = []
+
+    if gate["status"] == "insufficient":
+        notes.append(
+            "- Current listing depth is below 10. Treat this market as too thin for precise pricing conclusions."
+        )
+        notes.append(
+            "- Do not use exact rent or DOM figures to make strong claims. Use generic language and stress uncertainty."
+        )
+    elif gate["status"] == "low_sample":
+        notes.append(
+            f"- Current listing depth is only {gate['count']}. Treat the market as directional rather than precise."
+        )
+        notes.append(
+            "- Avoid strong wording about rent momentum unless several signals point the same way."
+        )
+
+    if mom_data.get("anomaly_flag"):
+        notes.append(
+            "- The latest monthly rent move is outside the normal sanity band. Mention that the move should be verified and avoid overconfident conclusions."
+        )
+
+    supp_market = (supplemental or {}).get("markets", {}).get(mkt_key, {})
+    baseline = supp_market.get("zillow_avg")
+    current_rent = latest_market.get("averageRent")
+    if baseline and current_rent:
+        divergence = ((current_rent - baseline) / baseline) * 100 if baseline else 0
+        if abs(divergence) > 20:
+            notes.append(
+                "- The current RentCast average diverges materially from the hidden baseline cross-check. Describe pricing as directional and avoid hard certainty."
+            )
+
+    return "RELIABILITY GUARDRAILS:\n" + "\n".join(notes) + "\n" if notes else ""
+
 def market_prompt(mkt_key: str, mkt_cfg: dict, mkt_trends: dict, month: str, history: list, supplemental: dict | None) -> str:
     agg = mkt_trends["aggregate"]
     cond = mkt_trends["market_conditions"]
@@ -151,6 +207,7 @@ CURRENT DATA:
 SOURCE NOTES:
 {source_context(supplemental, history)}
 {low_confidence_guidance(mkt_key)}
+{reliability_guidance(mkt_key, mkt_trends, history, supplemental)}
 
 Write exactly FOUR paragraphs with these headers on their own line before each:
 
@@ -201,6 +258,15 @@ def regional_prompt(trends: dict, month: str, history: list, supplemental: dict 
         if mkt not in LOW_CONFIDENCE_MARKETS
     }
 
+    low_sample_markets = []
+    for mkt_key in MARKETS:
+        if mkt_key in LOW_CONFIDENCE_MARKETS:
+            continue
+        latest_market = (history[-1].get("markets", {}).get(mkt_key) if history else {}) or {}
+        gate = sample_gate(latest_market.get("totalListings"))
+        if gate["status"] in {"insufficient", "low_sample"}:
+            low_sample_markets.append(f"{MARKETS[mkt_key]['name']} ({gate['count']})")
+
     return f"""Write the REGIONAL EXECUTIVE SUMMARY for the Upstate South Carolina rental market for {month}.
 
 MARKET SNAPSHOT:
@@ -215,6 +281,7 @@ Regional stats:
 
 SOURCE NOTES:
 {source_context(supplemental, history)}
+Low-sample markets that should not anchor the regional story: {', '.join(low_sample_markets) if low_sample_markets else 'none among the included narrative markets'}.
 
 Write exactly TWO paragraphs with these headers on their own line:
 
@@ -225,6 +292,7 @@ Do not mention quarter-over-quarter or year-over-year data.
 Do not mention Clemson, Seneca, or Liberty by name in the regional summary.
 Do not anchor the regional narrative on low-confidence outlier metrics from smaller or more seasonal markets.
 If needed, refer to them only generically as smaller seasonal or outlying markets.
+Do not anchor the regional narrative on markets with thin current sample depth.
 Do not compare leasing pace to last year or older periods outside the recent 3-month window.
 Do not use dramatic relative phrases like "50% longer to lease" unless the current short-term data explicitly supports that statement.
 
