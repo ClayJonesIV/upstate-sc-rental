@@ -11,7 +11,7 @@ Writes output to data/insights.json.
 import os
 import json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 import anthropic
 
 TRENDS_FILE   = Path(__file__).parent.parent / "data" / "trends.json"
@@ -331,7 +331,7 @@ def main():
     month_display = datetime.strptime(month, "%Y-%m").strftime("%B %Y")
 
     insights = {
-        "generated_at": datetime.utcnow().isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "as_of": month,
         "regional": "",
         "markets": {},

@@ -7,10 +7,12 @@ for every market and metric. Writes results to data/trends.json.
 
 import json
 from pathlib import Path
+from datetime import datetime
 from config import MARKETS, BEDROOM_SIZES
 
 HISTORY_FILE = Path(__file__).parent.parent / "data" / "history.json"
 TRENDS_FILE  = Path(__file__).parent.parent / "data" / "trends.json"
+DOM_AUDIT_FILE = Path(__file__).parent.parent / "data" / "rentcast_dom_audit.json"
 
 WINDOWS = {"mom": 1, "qoq": 3, "yoy": 12}
 HIGH_CONFIDENCE_MARKETS = ["greenville", "spartanburg"]
@@ -25,10 +27,30 @@ def pct_change(old, new):
     return round(((new - old) / old) * 100, 2)
 
 def get_month(history: list, offset: int) -> dict | None:
-    """Get the month record at `offset` months back from the latest."""
-    if len(history) <= offset:
+    """Get the month record exactly `offset` calendar months back from the latest."""
+    if not history:
         return None
-    return history[-(offset + 1)]
+    latest_month = history[-1].get("month")
+    if not latest_month:
+        return None
+    target_month = shift_month(latest_month, -offset)
+    for record in reversed(history):
+        if record.get("month") == target_month:
+            return record
+    return None
+
+
+def shift_month(month_str: str, delta: int) -> str | None:
+    try:
+        dt = datetime.strptime(month_str, "%Y-%m")
+    except ValueError:
+        return None
+    total_months = dt.year * 12 + (dt.month - 1) + delta
+    if total_months < 0:
+        return None
+    year = total_months // 12
+    month = total_months % 12 + 1
+    return f"{year:04d}-{month:02d}"
 
 def market_val(record: dict, market: str, metric: str, bedroom: str | None = None):
     """Extract a single metric value from a month record."""
@@ -40,6 +62,18 @@ def market_val(record: dict, market: str, metric: str, bedroom: str | None = Non
     if bedroom is not None:
         return mkt.get("bedrooms", {}).get(bedroom, {}).get(metric)
     return mkt.get(metric)
+
+
+def dom_audit_val(dom_audit: dict, month: str | None, market: str) -> float | None:
+    if not month:
+        return None
+    return (
+        dom_audit.get("markets", {})
+        .get(market, {})
+        .get("months", {})
+        .get(month, {})
+        .get("weighted_averageDaysOnMarket")
+    )
 
 def direction(pct):
     if pct is None: return "flat"
@@ -80,7 +114,8 @@ def weighted_average(pairs):
         return None
     return round(sum(value * weight for value, weight in usable) / total_weight, 2)
 
-def compute_trends(history: list) -> dict:
+def compute_trends(history: list, dom_audit: dict | None = None) -> dict:
+    history = sorted(history, key=lambda record: record.get("month", ""))
     latest = history[-1] if history else None
     if latest is None:
         return {}
@@ -90,6 +125,7 @@ def compute_trends(history: list) -> dict:
         "months_of_history": len(history),
         "markets": {},
     }
+    latest_month = latest.get("month")
 
     for mkt_key in MARKETS:
         mkt_trends = {
@@ -101,12 +137,19 @@ def compute_trends(history: list) -> dict:
         # ── Aggregate metrics ──────────────────────────────────────────────
         for metric in ["averageRent", "medianRent", "averageDaysOnMarket",
                        "medianDaysOnMarket", "totalListings", "newListings"]:
-            current = market_val(latest, mkt_key, metric)
+            if metric == "averageDaysOnMarket":
+                current = dom_audit_val(dom_audit or {}, latest.get("month"), mkt_key)
+            else:
+                current = market_val(latest, mkt_key, metric)
             metric_data = {"current": current, "changes": {}}
 
             for label, offset in WINDOWS.items():
                 ref = get_month(history, offset)
-                ref_val = market_val(ref, mkt_key, metric)
+                if metric == "averageDaysOnMarket":
+                    ref_month = shift_month(latest_month, -offset) if latest_month else None
+                    ref_val = dom_audit_val(dom_audit or {}, ref_month, mkt_key)
+                else:
+                    ref_val = market_val(ref, mkt_key, metric)
                 pct = pct_change(ref_val, current)
                 reliable = len(history) >= MIN_MONTHS[label]
                 anomaly = (
@@ -265,9 +308,11 @@ def main():
         return
 
     history = json.loads(HISTORY_FILE.read_text())
+    history.sort(key=lambda record: record.get("month", ""))
     print(f"Loaded {len(history)} months of history")
 
-    trends = compute_trends(history)
+    dom_audit = json.loads(DOM_AUDIT_FILE.read_text()) if DOM_AUDIT_FILE.exists() else {}
+    trends = compute_trends(history, dom_audit)
 
     TRENDS_FILE.parent.mkdir(parents=True, exist_ok=True)
     TRENDS_FILE.write_text(json.dumps(trends, indent=2))

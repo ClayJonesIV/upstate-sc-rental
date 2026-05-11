@@ -8300,7 +8300,7 @@
       "greenville": {
         "averageRent": 1732.0,
         "medianRent": 1573.5,
-        "averageDaysOnMarket": 46.43,
+        "averageDaysOnMarket": 46.28,
         "medianDaysOnMarket": 5.75,
         "totalListings": 124.75,
         "newListings": 33.75,
@@ -8335,7 +8335,7 @@
       "spartanburg": {
         "averageRent": 1232.33,
         "medianRent": 1136.67,
-        "averageDaysOnMarket": 33.72,
+        "averageDaysOnMarket": 37.43,
         "medianDaysOnMarket": 1.0,
         "totalListings": 108.0,
         "newListings": 41.67,
@@ -8370,7 +8370,7 @@
       "anderson": {
         "averageRent": 1305.5,
         "medianRent": 1262.5,
-        "averageDaysOnMarket": 65.9,
+        "averageDaysOnMarket": 49.57,
         "medianDaysOnMarket": 38.5,
         "totalListings": 45.5,
         "newListings": 7.5,
@@ -8405,7 +8405,7 @@
       "simpsonville": {
         "averageRent": 1943.5,
         "medianRent": 1862.0,
-        "averageDaysOnMarket": 31.74,
+        "averageDaysOnMarket": 31.43,
         "medianDaysOnMarket": 7.0,
         "totalListings": 90.0,
         "newListings": 21.0,
@@ -8440,7 +8440,7 @@
       "greer": {
         "averageRent": 1833.5,
         "medianRent": 1712.5,
-        "averageDaysOnMarket": 34.38,
+        "averageDaysOnMarket": 34.33,
         "medianDaysOnMarket": 1.5,
         "totalListings": 117.5,
         "newListings": 39.0,
@@ -8475,7 +8475,7 @@
       "easley": {
         "averageRent": 1617.5,
         "medianRent": 1537.0,
-        "averageDaysOnMarket": 27.25,
+        "averageDaysOnMarket": 23.24,
         "medianDaysOnMarket": 1.0,
         "totalListings": 42.5,
         "newListings": 13.0,
@@ -8510,7 +8510,7 @@
       "piedmont": {
         "averageRent": 1825.0,
         "medianRent": 1800.0,
-        "averageDaysOnMarket": 26.24,
+        "averageDaysOnMarket": 29.23,
         "medianDaysOnMarket": 1.0,
         "totalListings": 36.0,
         "newListings": 11.0,
@@ -8545,7 +8545,7 @@
       "liberty": {
         "averageRent": 1426.0,
         "medianRent": 1400.0,
-        "averageDaysOnMarket": 59.08,
+        "averageDaysOnMarket": 61.53,
         "medianDaysOnMarket": 31.0,
         "totalListings": 12.0,
         "newListings": 2.0,
@@ -8580,7 +8580,7 @@
       "clemson": {
         "averageRent": 1515.0,
         "medianRent": 1250.0,
-        "averageDaysOnMarket": 75.86,
+        "averageDaysOnMarket": 82.92,
         "medianDaysOnMarket": 60.0,
         "totalListings": 173.0,
         "newListings": 17.0,
@@ -8615,7 +8615,7 @@
       "seneca": {
         "averageRent": 1508.0,
         "medianRent": 1450.0,
-        "averageDaysOnMarket": 47.92,
+        "averageDaysOnMarket": 67.3,
         "medianDaysOnMarket": 10.0,
         "totalListings": 48.5,
         "newListings": 9.0,
@@ -8661,7 +8661,7 @@
       "greenville": {
         "averageRent": 1728.5,
         "medianRent": 1562.25,
-        "averageDaysOnMarket": 48.16,
+        "averageDaysOnMarket": 35.92,
         "medianDaysOnMarket": 6.75,
         "totalListings": 127.0,
         "newListings": 33.25,
@@ -8696,7 +8696,7 @@
       "spartanburg": {
         "averageRent": 1248.0,
         "medianRent": 1141.67,
-        "averageDaysOnMarket": 31.62,
+        "averageDaysOnMarket": 30.61,
         "medianDaysOnMarket": 1.0,
         "totalListings": 106.67,
         "newListings": 27.67,
@@ -8731,7 +8731,7 @@
       "anderson": {
         "averageRent": 1360.0,
         "medianRent": 1372.5,
-        "averageDaysOnMarket": 61.21,
+        "averageDaysOnMarket": 50.42,
         "medianDaysOnMarket": 29.0,
         "totalListings": 45.5,
         "newListings": 4.0,
@@ -8766,7 +8766,7 @@
       "simpsonville": {
         "averageRent": 1995.0,
         "medianRent": 1957.0,
-        "averageDaysOnMarket": 30.37,
+        "averageDaysOnMarket": 30.82,
         "medianDaysOnMarket": 1.0,
         "totalListings": 105.5,
         "newListings": 29.5,
@@ -8801,7 +8801,7 @@
       "greer": {
         "averageRent": 1787.5,
         "medianRent": 1687.5,
-        "averageDaysOnMarket": 35.43,
+        "averageDaysOnMarket": 31.71,
         "medianDaysOnMarket": 1.0,
         "totalListings": 122.5,
         "newListings": 42.0,
@@ -8836,7 +8836,7 @@
       "easley": {
         "averageRent": 1692.0,
         "medianRent": 1612.5,
-        "averageDaysOnMarket": 24.21,
+        "averageDaysOnMarket": 25.14,
         "medianDaysOnMarket": 1.0,
         "totalListings": 50.5,
         "newListings": 17.5,
@@ -8871,7 +8871,7 @@
       "piedmont": {
         "averageRent": 1889.0,
         "medianRent": 1825.0,
-        "averageDaysOnMarket": 21.52,
+        "averageDaysOnMarket": 32.32,
         "medianDaysOnMarket": 1.0,
         "totalListings": 34.0,
         "newListings": 10.0,
@@ -8906,7 +8906,7 @@
       "liberty": {
         "averageRent": 1356.0,
         "medianRent": 1225.0,
-        "averageDaysOnMarket": 58.57,
+        "averageDaysOnMarket": 57.25,
         "medianDaysOnMarket": 31.0,
         "totalListings": 14.0,
         "newListings": 1.0,
@@ -8941,7 +8941,7 @@
       "clemson": {
         "averageRent": 1544.0,
         "medianRent": 1250.0,
-        "averageDaysOnMarket": 86.22,
+        "averageDaysOnMarket": 90.46,
         "medianDaysOnMarket": 56.0,
         "totalListings": 177.0,
         "newListings": 23.0,
@@ -8976,7 +8976,7 @@
       "seneca": {
         "averageRent": 1430.5,
         "medianRent": 1325.0,
-        "averageDaysOnMarket": 51.42,
+        "averageDaysOnMarket": 74.43,
         "medianDaysOnMarket": 22.0,
         "totalListings": 50.0,
         "newListings": 9.0,
@@ -9012,7 +9012,7 @@
   },
   {
     "month": "2026-05",
-    "fetched_at": "2026-05-01T13:45:34.105552+00:00",
+    "fetched_at": "2026-05-11T23:21:30.469294+00:00",
     "data_sources": [
       "rentcast",
       "apartment_list",
@@ -9022,7 +9022,7 @@
       "greenville": {
         "averageRent": 1687.0,
         "medianRent": 1544.75,
-        "averageDaysOnMarket": 37.08,
+        "averageDaysOnMarket": 34.73,
         "medianDaysOnMarket": 6.75,
         "totalListings": 136.5,
         "newListings": 26.5,
@@ -9057,7 +9057,7 @@
       "spartanburg": {
         "averageRent": 1245.0,
         "medianRent": 1125.0,
-        "averageDaysOnMarket": 30.06,
+        "averageDaysOnMarket": 30.38,
         "medianDaysOnMarket": 1.0,
         "totalListings": 112.33,
         "newListings": 22.0,
@@ -9092,7 +9092,7 @@
       "anderson": {
         "averageRent": 1410.0,
         "medianRent": 1436.0,
-        "averageDaysOnMarket": 59.72,
+        "averageDaysOnMarket": 50.76,
         "medianDaysOnMarket": 25.5,
         "totalListings": 41.5,
         "newListings": 1.5,
@@ -9127,7 +9127,7 @@
       "simpsonville": {
         "averageRent": 2031.5,
         "medianRent": 1972.0,
-        "averageDaysOnMarket": 29.12,
+        "averageDaysOnMarket": 30.77,
         "medianDaysOnMarket": 1.0,
         "totalListings": 112.5,
         "newListings": 23.5,
@@ -9162,7 +9162,7 @@
       "greer": {
         "averageRent": 1803.0,
         "medianRent": 1725.0,
-        "averageDaysOnMarket": 31.4,
+        "averageDaysOnMarket": 31.63,
         "medianDaysOnMarket": 1.0,
         "totalListings": 130.0,
         "newListings": 34.0,
@@ -9197,7 +9197,7 @@
       "easley": {
         "averageRent": 1714.0,
         "medianRent": 1739.5,
-        "averageDaysOnMarket": 25.84,
+        "averageDaysOnMarket": 25.58,
         "medianDaysOnMarket": 1.0,
         "totalListings": 55.5,
         "newListings": 14.5,
@@ -9337,7 +9337,7 @@
       "seneca": {
         "averageRent": 1479.5,
         "medianRent": 1319.0,
-        "averageDaysOnMarket": 62.09,
+        "averageDaysOnMarket": 72.34,
         "medianDaysOnMarket": 30.0,
         "totalListings": 46.0,
         "newListings": 5.5,
