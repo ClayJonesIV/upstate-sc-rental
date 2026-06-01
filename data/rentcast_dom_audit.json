@@ -1,40 +1,8 @@
 {
-  "generated_at": "2026-05-11T23:21:30.469294+00:00",
+  "generated_at": "2026-06-01T17:56:59.743967+00:00",
   "markets": {
     "greenville": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 20.43,
-          "simple_averageDaysOnMarket": 22.54,
-          "totalListings_sum": 308,
-          "zip_count": 4,
-          "zips": [
-            {
-              "zip_code": "29601",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 48.42,
-              "totalListings": 47
-            },
-            {
-              "zip_code": "29607",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 19.7,
-              "totalListings": 108
-            },
-            {
-              "zip_code": "29609",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 18.46,
-              "totalListings": 90
-            },
-            {
-              "zip_code": "29615",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 3.59,
-              "totalListings": 63
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 39.22,
           "simple_averageDaysOnMarket": 39.8,
@@ -356,34 +324,66 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 34.73,
-          "simple_averageDaysOnMarket": 37.08,
-          "totalListings_sum": 546,
+          "weighted_averageDaysOnMarket": 32.1,
+          "simple_averageDaysOnMarket": 34.92,
+          "totalListings_sum": 542,
           "zip_count": 4,
           "zips": [
             {
               "zip_code": "29601",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 51.85,
+              "averageDaysOnMarket": 56.73,
               "totalListings": 81
             },
             {
               "zip_code": "29607",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 34.33,
-              "totalListings": 178
+              "averageDaysOnMarket": 31.45,
+              "totalListings": 176
             },
             {
               "zip_code": "29609",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 37.21,
-              "totalListings": 122
+              "averageDaysOnMarket": 27.77,
+              "totalListings": 124
             },
             {
               "zip_code": "29615",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 24.93,
-              "totalListings": 165
+              "averageDaysOnMarket": 23.75,
+              "totalListings": 161
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 32.55,
+          "simple_averageDaysOnMarket": 35.3,
+          "totalListings_sum": 537,
+          "zip_count": 4,
+          "zips": [
+            {
+              "zip_code": "29601",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 57.03,
+              "totalListings": 81
+            },
+            {
+              "zip_code": "29607",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 32.08,
+              "totalListings": 174
+            },
+            {
+              "zip_code": "29609",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 27.88,
+              "totalListings": 124
+            },
+            {
+              "zip_code": "29615",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 24.19,
+              "totalListings": 158
             }
           ]
         }
@@ -391,32 +391,6 @@
     },
     "spartanburg": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 29.58,
-          "simple_averageDaysOnMarket": 28.55,
-          "totalListings_sum": 192,
-          "zip_count": 3,
-          "zips": [
-            {
-              "zip_code": "29301",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 37.02,
-              "totalListings": 60
-            },
-            {
-              "zip_code": "29303",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 29.5,
-              "totalListings": 90
-            },
-            {
-              "zip_code": "29306",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 19.12,
-              "totalListings": 42
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 37.84,
           "simple_averageDaysOnMarket": 38.01,
@@ -678,28 +652,54 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 30.38,
-          "simple_averageDaysOnMarket": 30.06,
-          "totalListings_sum": 337,
+          "weighted_averageDaysOnMarket": 33.63,
+          "simple_averageDaysOnMarket": 33.13,
+          "totalListings_sum": 287,
           "zip_count": 3,
           "zips": [
             {
               "zip_code": "29301",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 38.94,
-              "totalListings": 122
+              "averageDaysOnMarket": 36.26,
+              "totalListings": 115
             },
             {
               "zip_code": "29303",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 25.2,
-              "totalListings": 133
+              "averageDaysOnMarket": 33.58,
+              "totalListings": 99
             },
             {
               "zip_code": "29306",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 26.04,
-              "totalListings": 82
+              "averageDaysOnMarket": 29.55,
+              "totalListings": 73
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 33.82,
+          "simple_averageDaysOnMarket": 33.31,
+          "totalListings_sum": 287,
+          "zip_count": 3,
+          "zips": [
+            {
+              "zip_code": "29301",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 36.45,
+              "totalListings": 115
+            },
+            {
+              "zip_code": "29303",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 33.79,
+              "totalListings": 99
+            },
+            {
+              "zip_code": "29306",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 29.7,
+              "totalListings": 73
             }
           ]
         }
@@ -707,26 +707,6 @@
     },
     "anderson": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 28.97,
-          "simple_averageDaysOnMarket": 24.46,
-          "totalListings_sum": 75,
-          "zip_count": 2,
-          "zips": [
-            {
-              "zip_code": "29621",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 34.11,
-              "totalListings": 55
-            },
-            {
-              "zip_code": "29624",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 14.82,
-              "totalListings": 20
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 42.39,
           "simple_averageDaysOnMarket": 38.84,
@@ -928,22 +908,42 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 50.76,
-          "simple_averageDaysOnMarket": 59.72,
-          "totalListings_sum": 83,
+          "weighted_averageDaysOnMarket": 47.25,
+          "simple_averageDaysOnMarket": 56.77,
+          "totalListings_sum": 68,
           "zip_count": 2,
           "zips": [
             {
               "zip_code": "29621",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 35.73,
-              "totalListings": 57
+              "averageDaysOnMarket": 37.73,
+              "totalListings": 51
             },
             {
               "zip_code": "29624",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 83.72,
-              "totalListings": 26
+              "averageDaysOnMarket": 75.81,
+              "totalListings": 17
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 47.6,
+          "simple_averageDaysOnMarket": 57.13,
+          "totalListings_sum": 68,
+          "zip_count": 2,
+          "zips": [
+            {
+              "zip_code": "29621",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 38.07,
+              "totalListings": 51
+            },
+            {
+              "zip_code": "29624",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 76.19,
+              "totalListings": 17
             }
           ]
         }
@@ -951,26 +951,6 @@
     },
     "simpsonville": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 25.33,
-          "simple_averageDaysOnMarket": 25.68,
-          "totalListings_sum": 177,
-          "zip_count": 2,
-          "zips": [
-            {
-              "zip_code": "29680",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 26.86,
-              "totalListings": 62
-            },
-            {
-              "zip_code": "29681",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 24.5,
-              "totalListings": 115
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 25.58,
           "simple_averageDaysOnMarket": 26.05,
@@ -1172,22 +1152,42 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 30.77,
-          "simple_averageDaysOnMarket": 29.12,
-          "totalListings_sum": 225,
+          "weighted_averageDaysOnMarket": 27.73,
+          "simple_averageDaysOnMarket": 26.54,
+          "totalListings_sum": 248,
           "zip_count": 2,
           "zips": [
             {
               "zip_code": "29680",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 22.82,
-              "totalListings": 83
+              "averageDaysOnMarket": 22.84,
+              "totalListings": 84
             },
             {
               "zip_code": "29681",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 35.42,
-              "totalListings": 142
+              "averageDaysOnMarket": 30.23,
+              "totalListings": 164
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 28.08,
+          "simple_averageDaysOnMarket": 26.85,
+          "totalListings_sum": 247,
+          "zip_count": 2,
+          "zips": [
+            {
+              "zip_code": "29680",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 23.01,
+              "totalListings": 84
+            },
+            {
+              "zip_code": "29681",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 30.69,
+              "totalListings": 163
             }
           ]
         }
@@ -1195,26 +1195,6 @@
     },
     "greer": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 58.29,
-          "simple_averageDaysOnMarket": 47.06,
-          "totalListings_sum": 310,
-          "zip_count": 2,
-          "zips": [
-            {
-              "zip_code": "29650",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 10.83,
-              "totalListings": 107
-            },
-            {
-              "zip_code": "29651",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 83.3,
-              "totalListings": 203
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 57.25,
           "simple_averageDaysOnMarket": 49.09,
@@ -1416,22 +1396,42 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 31.63,
-          "simple_averageDaysOnMarket": 31.4,
-          "totalListings_sum": 260,
+          "weighted_averageDaysOnMarket": 27.16,
+          "simple_averageDaysOnMarket": 27.24,
+          "totalListings_sum": 280,
           "zip_count": 2,
           "zips": [
             {
               "zip_code": "29650",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 27.11,
-              "totalListings": 123
+              "averageDaysOnMarket": 21.67,
+              "totalListings": 142
             },
             {
               "zip_code": "29651",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 35.69,
-              "totalListings": 137
+              "averageDaysOnMarket": 32.81,
+              "totalListings": 138
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 26.64,
+          "simple_averageDaysOnMarket": 26.73,
+          "totalListings_sum": 280,
+          "zip_count": 2,
+          "zips": [
+            {
+              "zip_code": "29650",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 20.49,
+              "totalListings": 142
+            },
+            {
+              "zip_code": "29651",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 32.96,
+              "totalListings": 138
             }
           ]
         }
@@ -1439,26 +1439,6 @@
     },
     "easley": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 36.7,
-          "simple_averageDaysOnMarket": 24.89,
-          "totalListings_sum": 141,
-          "zip_count": 2,
-          "zips": [
-            {
-              "zip_code": "29640",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 7.35,
-              "totalListings": 23
-            },
-            {
-              "zip_code": "29642",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 42.42,
-              "totalListings": 118
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 39.25,
           "simple_averageDaysOnMarket": 37.59,
@@ -1660,22 +1640,42 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 25.58,
-          "simple_averageDaysOnMarket": 25.84,
-          "totalListings_sum": 111,
+          "weighted_averageDaysOnMarket": 26.75,
+          "simple_averageDaysOnMarket": 26.91,
+          "totalListings_sum": 115,
           "zip_count": 2,
           "zips": [
             {
               "zip_code": "29640",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 21.63,
+              "averageDaysOnMarket": 20.58,
               "totalListings": 59
             },
             {
               "zip_code": "29642",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 30.06,
-              "totalListings": 52
+              "averageDaysOnMarket": 33.25,
+              "totalListings": 56
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 26.35,
+          "simple_averageDaysOnMarket": 26.59,
+          "totalListings_sum": 111,
+          "zip_count": 2,
+          "zips": [
+            {
+              "zip_code": "29640",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 21.07,
+              "totalListings": 58
+            },
+            {
+              "zip_code": "29642",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 32.12,
+              "totalListings": 53
             }
           ]
         }
@@ -1683,20 +1683,6 @@
     },
     "piedmont": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 23.02,
-          "simple_averageDaysOnMarket": 23.02,
-          "totalListings_sum": 44,
-          "zip_count": 1,
-          "zips": [
-            {
-              "zip_code": "29673",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 23.02,
-              "totalListings": 44
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 20.28,
           "simple_averageDaysOnMarket": 20.28,
@@ -1838,16 +1824,30 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 32.5,
-          "simple_averageDaysOnMarket": 32.5,
-          "totalListings_sum": 35,
+          "weighted_averageDaysOnMarket": 29.9,
+          "simple_averageDaysOnMarket": 29.9,
+          "totalListings_sum": 31,
           "zip_count": 1,
           "zips": [
             {
               "zip_code": "29673",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 32.5,
-              "totalListings": 35
+              "averageDaysOnMarket": 29.9,
+              "totalListings": 31
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 30.21,
+          "simple_averageDaysOnMarket": 30.21,
+          "totalListings_sum": 30,
+          "zip_count": 1,
+          "zips": [
+            {
+              "zip_code": "29673",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 30.21,
+              "totalListings": 30
             }
           ]
         }
@@ -1855,20 +1855,6 @@
     },
     "liberty": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 16.0,
-          "simple_averageDaysOnMarket": 16.0,
-          "totalListings_sum": 6,
-          "zip_count": 1,
-          "zips": [
-            {
-              "zip_code": "29657",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 16,
-              "totalListings": 6
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 21.0,
           "simple_averageDaysOnMarket": 21.0,
@@ -2010,16 +1996,30 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 57.5,
-          "simple_averageDaysOnMarket": 57.5,
-          "totalListings_sum": 12,
+          "weighted_averageDaysOnMarket": 26.67,
+          "simple_averageDaysOnMarket": 26.67,
+          "totalListings_sum": 9,
           "zip_count": 1,
           "zips": [
             {
               "zip_code": "29657",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 57.5,
-              "totalListings": 12
+              "averageDaysOnMarket": 26.67,
+              "totalListings": 9
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 27.33,
+          "simple_averageDaysOnMarket": 27.33,
+          "totalListings_sum": 9,
+          "zip_count": 1,
+          "zips": [
+            {
+              "zip_code": "29657",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 27.33,
+              "totalListings": 9
             }
           ]
         }
@@ -2027,20 +2027,6 @@
     },
     "clemson": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 24.38,
-          "simple_averageDaysOnMarket": 24.38,
-          "totalListings_sum": 72,
-          "zip_count": 1,
-          "zips": [
-            {
-              "zip_code": "29631",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 24.38,
-              "totalListings": 72
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 49.19,
           "simple_averageDaysOnMarket": 49.19,
@@ -2182,16 +2168,30 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 90.5,
-          "simple_averageDaysOnMarket": 90.5,
-          "totalListings_sum": 176,
+          "weighted_averageDaysOnMarket": 98.46,
+          "simple_averageDaysOnMarket": 98.46,
+          "totalListings_sum": 169,
           "zip_count": 1,
           "zips": [
             {
               "zip_code": "29631",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 90.5,
-              "totalListings": 176
+              "averageDaysOnMarket": 98.46,
+              "totalListings": 169
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 99.62,
+          "simple_averageDaysOnMarket": 99.62,
+          "totalListings_sum": 167,
+          "zip_count": 1,
+          "zips": [
+            {
+              "zip_code": "29631",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 99.62,
+              "totalListings": 167
             }
           ]
         }
@@ -2199,26 +2199,6 @@
     },
     "seneca": {
       "months": {
-        "2025-06": {
-          "weighted_averageDaysOnMarket": 31.43,
-          "simple_averageDaysOnMarket": 30.7,
-          "totalListings_sum": 78,
-          "zip_count": 2,
-          "zips": [
-            {
-              "zip_code": "29678",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 31.79,
-              "totalListings": 65
-            },
-            {
-              "zip_code": "29672",
-              "date": "2025-06-01T00:00:00.000Z",
-              "averageDaysOnMarket": 29.62,
-              "totalListings": 13
-            }
-          ]
-        },
         "2025-07": {
           "weighted_averageDaysOnMarket": 55.32,
           "simple_averageDaysOnMarket": 45.48,
@@ -2420,22 +2400,42 @@
           ]
         },
         "2026-05": {
-          "weighted_averageDaysOnMarket": 72.34,
-          "simple_averageDaysOnMarket": 62.09,
-          "totalListings_sum": 92,
+          "weighted_averageDaysOnMarket": 72.95,
+          "simple_averageDaysOnMarket": 54.86,
+          "totalListings_sum": 91,
           "zip_count": 2,
           "zips": [
             {
               "zip_code": "29678",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 75.19,
-              "totalListings": 82
+              "averageDaysOnMarket": 78.72,
+              "totalListings": 80
             },
             {
               "zip_code": "29672",
               "date": "2026-05-01T00:00:00.000Z",
-              "averageDaysOnMarket": 49,
-              "totalListings": 10
+              "averageDaysOnMarket": 31,
+              "totalListings": 11
+            }
+          ]
+        },
+        "2026-06": {
+          "weighted_averageDaysOnMarket": 73.5,
+          "simple_averageDaysOnMarket": 55.35,
+          "totalListings_sum": 89,
+          "zip_count": 2,
+          "zips": [
+            {
+              "zip_code": "29678",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 79.46,
+              "totalListings": 78
+            },
+            {
+              "zip_code": "29672",
+              "date": "2026-06-01T00:00:00.000Z",
+              "averageDaysOnMarket": 31.25,
+              "totalListings": 11
             }
           ]
         }
