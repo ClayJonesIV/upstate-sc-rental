@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-07-01T14:52:06.405328+00:00",
-  "as_of": "2026-07",
+  "generated_at": "2026-08-01T13:44:15.923340+00:00",
+  "as_of": "2026-08",
   "regional": "Regional analysis unavailable this month.",
   "markets": {
-    "greenville": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVZcfggA6g5eTgXsN9'}",
-    "spartanburg": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVar5rTm5ynQR5Km3C'}",
-    "anderson": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVbN5qMVSASH1SANvR'}",
-    "simpsonville": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVbntSs1ZNGK9R4mqs'}",
-    "greer": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVcW3dYhXCg5XC4Vhd'}",
-    "easley": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVcx5sXEDoZv7iWDHR'}",
-    "piedmont": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVdUqJDGSfj9Nk4sLS'}",
-    "clemson": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVeFDgTXzBtpxJTgzv'}",
-    "seneca": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CcbXVf1rrrFKPwRxscry2'}",
+    "greenville": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8PvJVX1mJYveTurHTj'}",
+    "spartanburg": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8PwRi7CBZo2YuXSiUJ'}",
+    "anderson": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8PxB78qS3Z1rYiATuk'}",
+    "simpsonville": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8PyTkXcz1XSVUZw2y5'}",
+    "greer": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8PyrJyNYCsTpSaaDk4'}",
+    "easley": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8PzKM2H6YVQz6XGUYo'}",
+    "piedmont": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8Q1DAs85qowbSQn3jU'}",
+    "clemson": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8Q1igG4hNgTAgXnBoW'}",
+    "seneca": "Analysis unavailable: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011Cdc8Q2R6nKxxM7rX4tPMP'}",
     "liberty": "Hidden from dashboard due to low confidence and thin local signal."
   }
 }

@@ -1,6 +1,6 @@
 {
-  "fetched_at": "2026-07-01T14:51:50.276238+00:00",
-  "month": "2026-07",
+  "fetched_at": "2026-08-01T13:44:01.239888+00:00",
+  "month": "2026-08",
   "sources": [
     "apartment_list",
     "zillow_research"
@@ -11,189 +11,189 @@
   },
   "markets": {
     "greenville": {
-      "zillow_avg": 1527.79,
+      "zillow_avg": 1567.04,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29601, 29607, 29609, 29615 + Greenville-Anderson, SC",
       "bedrooms": {
         "1": {
-          "averageRent": 1295.0,
+          "averageRent": 1300.0,
           "source": "apartment_list",
           "source_detail": "Greenville, SC"
         },
         "2": {
-          "averageRent": 1500.0,
+          "averageRent": 1506.0,
           "source": "apartment_list",
           "source_detail": "Greenville, SC"
         },
         "3": {
-          "averageRent": 1802.79,
+          "averageRent": 1849.11,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         },
         "4": {
-          "averageRent": 2062.52,
+          "averageRent": 2115.5,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         }
       }
     },
     "spartanburg": {
-      "zillow_avg": 1340.42,
+      "zillow_avg": 1351.59,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29301, 29303, 29306 + Spartanburg, SC",
       "bedrooms": {
         "1": {
-          "averageRent": 1026.0,
+          "averageRent": 1029.0,
           "source": "apartment_list",
           "source_detail": "Spartanburg, SC"
         },
         "2": {
-          "averageRent": 1145.0,
+          "averageRent": 1148.0,
           "source": "apartment_list",
           "source_detail": "Spartanburg, SC"
         },
         "3": {
-          "averageRent": 1581.7,
+          "averageRent": 1594.88,
           "source": "zillow_derived",
           "source_detail": "Spartanburg, SC"
         },
         "4": {
-          "averageRent": 1809.57,
+          "averageRent": 1824.65,
           "source": "zillow_derived",
           "source_detail": "Spartanburg, SC"
         }
       }
     },
     "anderson": {
-      "zillow_avg": 1326.25,
+      "zillow_avg": 1281.25,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29621, 29624 + Greenville-Anderson, SC",
       "bedrooms": {
         "1": {
-          "averageRent": 1027.0,
+          "averageRent": 1030.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "2": {
-          "averageRent": 1104.0,
+          "averageRent": 1106.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "3": {
-          "averageRent": 1564.97,
+          "averageRent": 1511.88,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         },
         "4": {
-          "averageRent": 1790.44,
+          "averageRent": 1729.69,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         }
       }
     },
     "simpsonville": {
-      "zillow_avg": 1858.38,
+      "zillow_avg": 1801.86,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29680, 29681 + Greenville-Anderson, SC",
       "bedrooms": {
         "1": {
-          "averageRent": 1027.0,
+          "averageRent": 1030.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "2": {
-          "averageRent": 1104.0,
+          "averageRent": 1106.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "3": {
-          "averageRent": 2192.89,
+          "averageRent": 2126.19,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         },
         "4": {
-          "averageRent": 2508.81,
+          "averageRent": 2432.51,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         }
       }
     },
     "greer": {
-      "zillow_avg": 1649.77,
+      "zillow_avg": 1699.97,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29650, 29651 + Greenville-Anderson, SC",
       "bedrooms": {
         "1": {
-          "averageRent": 1027.0,
+          "averageRent": 1030.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "2": {
-          "averageRent": 1104.0,
+          "averageRent": 1106.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "3": {
-          "averageRent": 1946.73,
+          "averageRent": 2005.96,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         },
         "4": {
-          "averageRent": 2227.19,
+          "averageRent": 2294.96,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         }
       }
     },
     "easley": {
-      "zillow_avg": 1657.29,
+      "zillow_avg": 1649.25,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29640, 29642 + Greenville-Anderson, SC",
       "bedrooms": {
         "1": {
-          "averageRent": 1027.0,
+          "averageRent": 1030.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "2": {
-          "averageRent": 1104.0,
+          "averageRent": 1106.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "3": {
-          "averageRent": 1955.6,
+          "averageRent": 1946.12,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         },
         "4": {
-          "averageRent": 2237.34,
+          "averageRent": 2226.49,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         }
       }
     },
     "piedmont": {
-      "zillow_avg": 1464.48,
+      "zillow_avg": 1528.16,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29673 + Greenville-Anderson, SC",
       "bedrooms": {
         "1": {
-          "averageRent": 1027.0,
+          "averageRent": 1030.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "2": {
-          "averageRent": 1104.0,
+          "averageRent": 1106.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "3": {
-          "averageRent": 1728.09,
+          "averageRent": 1803.23,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         },
         "4": {
-          "averageRent": 1977.05,
+          "averageRent": 2063.02,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         }
@@ -205,12 +205,12 @@
       "zillow_source_detail": null,
       "bedrooms": {
         "1": {
-          "averageRent": 1027.0,
+          "averageRent": 1030.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "2": {
-          "averageRent": 1104.0,
+          "averageRent": 1106.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
@@ -227,34 +227,34 @@
       }
     },
     "clemson": {
-      "zillow_avg": 2155.95,
+      "zillow_avg": 2080.25,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29631 + Greenville-Anderson, SC",
       "bedrooms": {
         "1": {
-          "averageRent": 1027.0,
+          "averageRent": 1030.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "2": {
-          "averageRent": 1104.0,
+          "averageRent": 1106.0,
           "source": "apartment_list",
           "source_detail": "Greenville-Anderson, SC"
         },
         "3": {
-          "averageRent": 2544.02,
+          "averageRent": 2454.69,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         },
         "4": {
-          "averageRent": 2910.53,
+          "averageRent": 2808.34,
           "source": "zillow_derived",
           "source_detail": "Greenville-Anderson, SC"
         }
       }
     },
     "seneca": {
-      "zillow_avg": 1554.32,
+      "zillow_avg": 1475.39,
       "zillow_source": "zip+city_blend",
       "zillow_source_detail": "zip-level average across 29678, 29672 + Seneca, SC",
       "bedrooms": {
@@ -269,12 +269,12 @@
           "source_detail": null
         },
         "3": {
-          "averageRent": 1834.1,
+          "averageRent": 1740.96,
           "source": "zillow_derived",
           "source_detail": "Seneca, SC"
         },
         "4": {
-          "averageRent": 2098.33,
+          "averageRent": 1991.78,
           "source": "zillow_derived",
           "source_detail": "Seneca, SC"
         }
