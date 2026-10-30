@@ -24,10 +24,23 @@ import sys
 sys.path.insert(0, sys_path)
 from config import MARKETS
 
-client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+# This report has a hard per-run API budget. The SDK otherwise retries some
+# request failures twice, which could turn one planned analysis into multiple
+# billable requests. Surface failures for review instead of retrying them.
+client = anthropic.Anthropic(
+    api_key=os.environ["ANTHROPIC_API_KEY"],
+    max_retries=0,
+)
 # Approved migration from the retired Claude Sonnet 4 model. This workflow uses
 # the standard Messages API with no tools and no up-front thinking.
 CLAUDE_MODEL = "claude-sonnet-5-5"
+MAX_ANALYSIS_CALLS = 10
+MAX_OUTPUT_TOKENS_PER_CALL = 2_000
+# $0.50 maximum Claude input at the current $2 / MTok list price. Together
+# with 10 x 2,000 output tokens ($0.20) and 18 x $0.20 RentCast calls ($3.60),
+# this leaves $0.70 below the approved $5 cap. The free token-count preflight
+# measures the actual request shapes before any paid Claude request is sent.
+MAX_TOTAL_INPUT_TOKENS = 250_000
 
 
 def error_kind(error: Exception) -> str:
@@ -318,16 +331,52 @@ Include plain-text source citations using only the provided recent sources."""
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
 
-def call_claude(prompt: str, context: str = "") -> str:
+def build_messages(prompt: str, context: str = "") -> list[dict]:
     messages = []
     if context:
         messages.append({"role": "user", "content": context})
         messages.append({"role": "assistant", "content": "Understood. Ready to analyze."})
     messages.append({"role": "user", "content": prompt})
+    return messages
+
+
+def preflight_input_token_budget(planned_prompts: list[tuple[str, str]]) -> dict:
+    """Fail closed before paid Messages calls if the planned input is too large."""
+    if len(planned_prompts) > MAX_ANALYSIS_CALLS:
+        raise ValueError(
+            f"Planned analysis call count {len(planned_prompts)} exceeds cap {MAX_ANALYSIS_CALLS}"
+        )
+
+    per_prompt = {}
+    for label, prompt in planned_prompts:
+        count = client.messages.count_tokens(
+            model=CLAUDE_MODEL,
+            system=SYSTEM_PROMPT,
+            thinking={"type": "between_tools"},
+            messages=build_messages(prompt),
+        )
+        per_prompt[label] = count.input_tokens
+
+    total_input_tokens = sum(per_prompt.values())
+    if total_input_tokens > MAX_TOTAL_INPUT_TOKENS:
+        raise ValueError(
+            f"Planned input tokens {total_input_tokens} exceeds cap {MAX_TOTAL_INPUT_TOKENS}"
+        )
+
+    return {
+        "status": "approved",
+        "planned_calls": len(planned_prompts),
+        "input_tokens": total_input_tokens,
+        "input_token_cap": MAX_TOTAL_INPUT_TOKENS,
+    }
+
+
+def call_claude(prompt: str, context: str = "") -> str:
+    messages = build_messages(prompt, context)
 
     response = client.messages.create(
         model=CLAUDE_MODEL,
-        max_tokens=2000,
+        max_tokens=MAX_OUTPUT_TOKENS_PER_CALL,
         system=SYSTEM_PROMPT,
         # Sonnet 5.5 thinks by default. With this text-only, no-tool workflow,
         # between_tools preserves the previous text-only response shape.
@@ -358,6 +407,49 @@ def main():
         "markets": {},
         "analysis_status": {"regional": {}, "markets": {}},
     }
+
+    planned_prompts = [
+        ("regional", regional_prompt(trends, month_display, history, supplemental))
+    ]
+    for mkt_key, mkt_cfg in MARKETS.items():
+        if mkt_key == "liberty":
+            continue
+        mkt_trends = trends["markets"].get(mkt_key, {})
+        if mkt_trends:
+            planned_prompts.append(
+                (mkt_key, market_prompt(mkt_key, mkt_cfg, mkt_trends, month_display, history, supplemental))
+            )
+
+    try:
+        insights["analysis_status"]["budget"] = preflight_input_token_budget(planned_prompts)
+        print(
+            "Token budget preflight approved: "
+            f"{insights['analysis_status']['budget']['input_tokens']} input tokens "
+            f"across {insights['analysis_status']['budget']['planned_calls']} calls"
+        )
+    except Exception as e:
+        error = error_kind(e)
+        print(f"  ERROR Token budget preflight failed ({error}); no paid Claude requests sent")
+        insights["regional"] = "Regional analysis unavailable this month."
+        insights["analysis_status"]["regional"] = {
+            "status": "error",
+            "error_kind": error,
+            "reason": "token_budget_preflight_failed",
+        }
+        for mkt_key in MARKETS:
+            if mkt_key == "liberty":
+                continue
+            insights["markets"][mkt_key] = "Analysis unavailable this month."
+            insights["analysis_status"]["markets"][mkt_key] = {
+                "status": "skipped",
+                "reason": "token_budget_preflight_failed",
+            }
+        insights["markets"]["liberty"] = "Hidden from dashboard due to low confidence and thin local signal."
+        insights["analysis_status"]["markets"]["liberty"] = {"status": "hidden_low_confidence"}
+        INSIGHTS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        INSIGHTS_FILE.write_text(json.dumps(insights, indent=2))
+        print(f"\nOK Insights saved -> {INSIGHTS_FILE.name}\n")
+        return
 
     # Regional summary first (gives context for per-market analysis)
     print("\nGenerating regional summary...")

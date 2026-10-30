@@ -29,7 +29,10 @@ RAW_FILE = Path(__file__).parent.parent / "data" / "raw_latest.json"
 SUPP_FILE = Path(__file__).parent.parent / "data" / "supplemental_latest.json"
 DOM_AUDIT_FILE = Path(__file__).parent.parent / "data" / "rentcast_dom_audit.json"
 
-MAX_API_CALLS = 50
+# The approved full market refresh covers the current 18 configured ZIPs.
+# Fail before any provider request if configuration expands, rather than silently
+# exceeding the per-run paid API budget.
+MAX_API_CALLS = 18
 HISTORY_MONTHS = 15
 _call_count = 0
 
@@ -376,6 +379,10 @@ def main():
         all_zip_data = load_cached_rentcast()
         print(f"Loaded cached RentCast data for {len(all_zip_data)}/{len(ALL_ZIPS)} zips")
     else:
+        if len(ALL_ZIPS) > MAX_API_CALLS:
+            raise RuntimeError(
+                f"Configured ZIP count {len(ALL_ZIPS)} exceeds the paid API cap {MAX_API_CALLS}"
+            )
         print(f"\nFetching {len(ALL_ZIPS)} zip codes from RentCast...")
         all_zip_data = {}
         for index, zip_code in enumerate(ALL_ZIPS):
