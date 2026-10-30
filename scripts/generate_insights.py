@@ -26,6 +26,17 @@ from config import MARKETS
 
 client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
+
+def error_kind(error: Exception) -> str:
+    """Keep report status useful without persisting provider payloads or request IDs."""
+    return type(error).__name__
+
+
+def is_nonrecoverable_model_error(error: Exception) -> bool:
+    """Avoid paying for repeated calls when the configured model no longer exists."""
+    message = str(error).lower()
+    return "not_found_error" in message and "model" in message
+
 # ─── Prompts ──────────────────────────────────────────────────────────────────
 
 SYSTEM_PROMPT = """You are a senior real estate market analyst specializing in the Upstate South Carolina rental market.
@@ -335,6 +346,7 @@ def main():
         "as_of": month,
         "regional": "",
         "markets": {},
+        "analysis_status": {"regional": {}, "markets": {}},
     }
 
     # Regional summary first (gives context for per-market analysis)
@@ -343,10 +355,15 @@ def main():
         insights["regional"] = sanitize_regional_text(
             call_claude(regional_prompt(trends, month_display, history, supplemental))
         )
+        insights["analysis_status"]["regional"] = {"status": "ok"}
         print("  OK Regional summary done")
     except Exception as e:
-        print(f"  ERROR Regional summary failed: {e}")
+        print(f"  ERROR Regional summary failed ({error_kind(e)})")
         insights["regional"] = "Regional analysis unavailable this month."
+        insights["analysis_status"]["regional"] = {"status": "error", "error_kind": error_kind(e)}
+        model_unavailable = is_nonrecoverable_model_error(e)
+    else:
+        model_unavailable = False
 
     # Per-market analysis
     for mkt_key, mkt_cfg in MARKETS.items():
@@ -354,18 +371,33 @@ def main():
             continue
         print(f"  Analyzing {mkt_cfg['name']}...")
         mkt_trends = trends["markets"].get(mkt_key, {})
+        if model_unavailable:
+            insights["markets"][mkt_key] = "Analysis unavailable: configured Claude model is unavailable."
+            insights["analysis_status"]["markets"][mkt_key] = {
+                "status": "skipped",
+                "reason": "configured_model_unavailable",
+            }
+            print(f"  SKIP {mkt_cfg['name']} (configured model unavailable)")
+            continue
         if not mkt_trends:
             insights["markets"][mkt_key] = "Insufficient data for analysis this month."
+            insights["analysis_status"]["markets"][mkt_key] = {"status": "insufficient_data"}
             continue
         try:
             prompt = market_prompt(mkt_key, mkt_cfg, mkt_trends, month_display, history, supplemental)
             insights["markets"][mkt_key] = sanitize_market_text(mkt_key, call_claude(prompt))
+            insights["analysis_status"]["markets"][mkt_key] = {"status": "ok"}
             print(f"  OK {mkt_cfg['name']}")
         except Exception as e:
-            print(f"  ERROR {mkt_cfg['name']}: {e}")
-            insights["markets"][mkt_key] = f"Analysis unavailable: {e}"
+            print(f"  ERROR {mkt_cfg['name']} ({error_kind(e)})")
+            insights["markets"][mkt_key] = "Analysis unavailable this month."
+            insights["analysis_status"]["markets"][mkt_key] = {
+                "status": "error",
+                "error_kind": error_kind(e),
+            }
 
     insights["markets"]["liberty"] = "Hidden from dashboard due to low confidence and thin local signal."
+    insights["analysis_status"]["markets"]["liberty"] = {"status": "hidden_low_confidence"}
 
     INSIGHTS_FILE.parent.mkdir(parents=True, exist_ok=True)
     INSIGHTS_FILE.write_text(json.dumps(insights, indent=2))

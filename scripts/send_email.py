@@ -7,13 +7,15 @@ Sends the grouped HTML email report via Gmail SMTP.
 import json
 import os
 import smtplib
-from datetime import datetime
+from datetime import datetime, timezone
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from html import escape
 from pathlib import Path
 
 TRENDS_FILE = Path(__file__).parent.parent / "data" / "trends.json"
 INSIGHTS_FILE = Path(__file__).parent.parent / "data" / "insights.json"
+HISTORY_FILE = Path(__file__).parent.parent / "data" / "history.json"
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
@@ -45,7 +47,146 @@ GROUPS = {
 GMAIL_ADDRESS = os.environ["GMAIL_ADDRESS"]
 GMAIL_APP_PW = os.environ["GMAIL_APP_PASSWORD"]
 RECIPIENT = os.environ["REPORT_RECIPIENT"]
+# This user-approved internal mailbox receives the identical final report so the
+# downstream JAPM review workflow can prepare (but never publish) content.
+AUTOMATION_RECIPIENT = "japm.workorder.reports@gmail.com"
 PAGES_URL = os.environ.get("PAGE_URL") or os.environ.get("GITHUB_PAGES_URL", "https://your-username.github.io/upstate-sc-rental")
+
+
+def report_recipients(primary_recipient):
+    """Return the owner recipient plus the approved internal automation mailbox.
+
+    Keep the owner-recipient value in GitHub Secrets; the additional mailbox is
+    intentionally not a secret and is deduplicated in case both values match.
+    """
+    return list(dict.fromkeys(
+        address.strip()
+        for address in (primary_recipient, AUTOMATION_RECIPIENT)
+        if address and address.strip()
+    ))
+
+
+def _parse_timestamp(value):
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def _previous_month(as_of):
+    try:
+        current = datetime.strptime(as_of, "%Y-%m")
+    except (TypeError, ValueError):
+        return None
+    year = current.year if current.month > 1 else current.year - 1
+    month = current.month - 1 if current.month > 1 else 12
+    return f"{year:04d}-{month:02d}"
+
+
+def collect_report_status(trends, insights, history, now=None):
+    """Summarize freshness, comparability, and AI-analysis availability.
+
+    This is reporting guardrail logic only: it does not change underlying market
+    calculations or suppress an otherwise deliverable market report.
+    """
+    now = now or datetime.now(timezone.utc)
+    as_of = trends.get("as_of") or "unknown"
+    history = history or []
+    records = {record.get("month"): record for record in history if record.get("month")}
+    latest = records.get(as_of)
+    warnings = []
+    errors = []
+    analysis_failures = []
+
+    if latest is None:
+        errors.append(f"No history record matches the report month ({as_of}).")
+    else:
+        fetched_at = _parse_timestamp(latest.get("fetched_at"))
+        if fetched_at is None:
+            warnings.append("The latest source fetch time is missing or unreadable.")
+        else:
+            if fetched_at.tzinfo is None:
+                fetched_at = fetched_at.replace(tzinfo=timezone.utc)
+            age_days = (now - fetched_at.astimezone(timezone.utc)).total_seconds() / 86400
+            if age_days > 45:
+                warnings.append(f"Source data is {age_days:.0f} days old.")
+
+        expected_previous = _previous_month(as_of)
+        if expected_previous and expected_previous not in records:
+            warnings.append(
+                f"The prior month ({expected_previous}) is absent; month-over-month comparisons may be unavailable."
+            )
+
+        source_names = latest.get("data_sources") or []
+        if not source_names:
+            warnings.append("The latest record does not identify its data sources.")
+
+    regional = str(insights.get("regional") or "")
+    if "analysis unavailable" in regional.lower():
+        analysis_failures.append("regional summary")
+
+    structured_status = insights.get("analysis_status") or {}
+    market_status = structured_status.get("markets") or {}
+    for market_key in MARKETS:
+        if market_key == "liberty":
+            continue
+        text = str((insights.get("markets") or {}).get(market_key) or "")
+        detail = market_status.get(market_key) or {}
+        if "analysis unavailable" in text.lower() or detail.get("status") in {"error", "skipped"}:
+            analysis_failures.append(MARKETS[market_key]["name"])
+
+    if analysis_failures:
+        errors.append(
+            "AI narrative unavailable for " + ", ".join(analysis_failures) + ". "
+            "Market metrics are still shown, but the narrative needs review."
+        )
+
+    missing_mom = []
+    low_sample = []
+    for market_key, config in MARKETS.items():
+        aggregate = (trends.get("markets", {}).get(market_key, {}).get("aggregate", {}))
+        rent_change = aggregate.get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
+        listings = aggregate.get("totalListings", {}).get("current")
+        if rent_change is None:
+            missing_mom.append(config["name"])
+        if listings is not None and listings < 10:
+            low_sample.append(f"{config['name']} ({listings:g} listings)")
+
+    if len(missing_mom) == len(MARKETS):
+        warnings.append("Month-over-month rent movement is unavailable for every market; do not interpret blanks as no change.")
+    if low_sample:
+        warnings.append("Thin listing samples: " + ", ".join(low_sample) + ".")
+
+    return {
+        "as_of": as_of,
+        "fetched_at": latest.get("fetched_at") if latest else None,
+        "sources": (latest.get("data_sources") if latest else []) or [],
+        "analysis_complete": not analysis_failures,
+        "errors": errors,
+        "warnings": warnings,
+    }
+
+
+def report_status_html(status):
+    """Render a short, prominent, email-safe data-quality section."""
+    healthy = not status["errors"] and not status["warnings"]
+    color = "#2f855a" if healthy else ("#b54708" if not status["errors"] else "#b42318")
+    label = "READY" if healthy else ("REVIEW NEEDED" if status["errors"] else "DATA NOTES")
+    fetched = escape(str(status["fetched_at"] or "not recorded"))
+    sources = escape(", ".join(map(str, status["sources"])) if status["sources"] else "not recorded")
+    notes = status["errors"] + status["warnings"]
+    notes_html = "".join(f"<li>{escape(note)}</li>" for note in notes)
+    if not notes_html:
+        notes_html = "<li>All report-status checks passed.</li>"
+    return f"""
+    <div style="background:#fffaf0;border:1px solid {color}55;border-left:4px solid {color};border-radius:10px;padding:14px 18px;margin:0 0 24px;font-size:13px;line-height:1.6">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:{color};font-family:Montserrat,sans-serif">REPORT STATUS: {label}</div>
+      <div><strong>Report month:</strong> {escape(str(status['as_of']))} &nbsp;|&nbsp; <strong>Latest source fetch:</strong> {fetched}</div>
+      <div><strong>Sources:</strong> {sources} &nbsp;|&nbsp; <strong>AI narrative:</strong> {"complete" if status["analysis_complete"] else "incomplete — review required"}</div>
+      <ul style="margin:8px 0 0 18px;padding:0">{notes_html}</ul>
+    </div>"""
 
 
 def fmt_rent(value):
@@ -252,9 +393,10 @@ def build_group_section(group_key, trends, insights):
     </div>"""
 
 
-def build_email_html(trends, insights):
+def build_email_html(trends, insights, history=None, now=None):
     as_of = trends.get("as_of", "")
     as_of_display = datetime.strptime(as_of, "%Y-%m").strftime("%B %Y") if as_of else "-"
+    status = collect_report_status(trends, insights, history or [], now=now)
     rs = trends.get("regional_summary", {})
     hottest = MARKETS.get(rs.get("hottest_market", ""), {}).get("name", "-")
     softest = MARKETS.get(rs.get("softest_market", ""), {}).get("name", "-")
@@ -281,6 +423,7 @@ def build_email_html(trends, insights):
     <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Softest Market</div><div style="font-size:22px;font-weight:800;color:#5d729a;font-family:Montserrat,sans-serif">{softest}</div></div>
   </div>
   <div style="padding:28px 36px">
+    {report_status_html(status)}
     <div style="background:#ffffff;border:1px solid #d9ded7;border-left:4px solid #2f355d;border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;font-family:Roboto,sans-serif">
       <strong style="color:#2f355d">View interactive dashboard:</strong>
       <a href="{PAGES_URL}" style="color:#2f355d">{PAGES_URL}</a>
@@ -307,20 +450,22 @@ def main():
 
     trends = json.loads(TRENDS_FILE.read_text()) if TRENDS_FILE.exists() else {}
     insights = json.loads(INSIGHTS_FILE.read_text()) if INSIGHTS_FILE.exists() else {}
+    history = json.loads(HISTORY_FILE.read_text()) if HISTORY_FILE.exists() else []
     as_of = trends.get("as_of", "")
     as_of_display = datetime.strptime(as_of, "%Y-%m").strftime("%B %Y") if as_of else "-"
+    recipients = report_recipients(RECIPIENT)
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Upstate SC Rental Market Intelligence | {as_of_display}"
     msg["From"] = GMAIL_ADDRESS
-    msg["To"] = RECIPIENT
-    msg.attach(MIMEText(build_email_html(trends, insights), "html"))
+    msg["To"] = ", ".join(recipients)
+    msg.attach(MIMEText(build_email_html(trends, insights, history), "html"))
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
         smtp.login(GMAIL_ADDRESS, GMAIL_APP_PW)
-        smtp.sendmail(GMAIL_ADDRESS, [RECIPIENT], msg.as_string())
+        smtp.sendmail(GMAIL_ADDRESS, recipients, msg.as_string())
 
-    print(f"OK Email sent to {RECIPIENT}\n")
+    print(f"OK Email sent to {len(recipients)} approved report recipient(s)\n")
 
 
 if __name__ == "__main__":

@@ -144,7 +144,10 @@ def pct_gap(primary, baseline):
 
 def recent_history_market(history, market_key):
     latest = history[-1] if history else {"markets": {}}
-    return latest.get("markets", {}).get(market_key, {})
+    # A failed/partial refresh can serialize a market as JSON null. Treat that
+    # as missing input so one market cannot prevent the entire dashboard or
+    # report email from being produced.
+    return latest.get("markets", {}).get(market_key) or {}
 
 
 def market_reliability(market_key, latest_market, trend_market, supp_market):
@@ -355,7 +358,7 @@ def group_confidence(group_keys, history, trends, supplemental):
     latest_history = history[-1] if history else {"markets": {}}
     weighted_scores = []
     for key in group_keys:
-        latest_market = latest_history.get("markets", {}).get(key, {})
+        latest_market = latest_history.get("markets", {}).get(key) or {}
         trend_market = trends.get("markets", {}).get(key, {})
         supp_market = supplemental.get("markets", {}).get(key, {}) if supplemental else {}
         confidence = market_confidence(key, latest_market, supp_market, trend_market)
@@ -471,7 +474,7 @@ def build_other_markets_table(group_keys, history, trends, supplemental):
     latest_history = history[-1] if history else {"markets": {}}
     rows = []
     for key in group_keys:
-        market = latest_history.get("markets", {}).get(key, {})
+        market = latest_history.get("markets", {}).get(key) or {}
         trend_market = trends.get("markets", {}).get(key, {})
         mom = trend_market.get("aggregate", {}).get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
         temp = trend_market.get("market_conditions", {}).get("temperature_label", "n/a")
