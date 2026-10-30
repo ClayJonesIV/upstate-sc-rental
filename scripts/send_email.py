@@ -39,8 +39,8 @@ GROUPS = {
     },
     "other": {
         "title": "Other Markets",
-        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "clemson", "seneca"],
-        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.",
+        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "liberty", "clemson", "seneca"],
+        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca. Liberty rent is suppressed when the local listing sample is too thin.",
     },
 }
 
@@ -83,6 +83,24 @@ def _previous_month(as_of):
     year = current.year if current.month > 1 else current.year - 1
     month = current.month - 1 if current.month > 1 else 12
     return f"{year:04d}-{month:02d}"
+
+
+def missing_prior_snapshot(as_of, history):
+    """Return the missing prior month key when a saved comparison is absent."""
+    expected = _previous_month(as_of)
+    records = {record.get("month") for record in (history or []) if record.get("month")}
+    return expected if expected and expected not in records else None
+
+
+def comparison_note_html(as_of, history):
+    missing_month = missing_prior_snapshot(as_of, history)
+    if not missing_month:
+        return ""
+    display_month = datetime.strptime(missing_month, "%Y-%m").strftime("%B %Y")
+    return f"""
+    <div style="background:#fffaf0;border:1px solid #b5470855;border-left:4px solid #b54708;border-radius:10px;padding:14px 18px;margin:0 0 24px;font-size:13px;line-height:1.6">
+      <strong>Comparison note:</strong> The saved {display_month} rent and listing snapshot is unavailable, so rent and listing MoM values are intentionally unavailable. Where shown, days-on-market MoM comes from RentCast's embedded historical audit.
+    </div>"""
 
 
 def collect_report_status(trends, insights, history, now=None):
@@ -311,12 +329,17 @@ def build_other_markets_rows(trends):
         agg = market.get("aggregate", {})
         cond = market.get("market_conditions", {})
         mom = agg.get("averageRent", {}).get("changes", {}).get("mom", {}).get("pct_change")
+        listings = agg.get("totalListings", {}).get("current")
+        thin_sample = listings is not None and listings < 10
+        rent_html = "Insufficient data" if thin_sample else fmt_rent(agg.get("averageRent", {}).get("current"))
+        if thin_sample:
+            rent_html += "<div style='margin-top:3px;font-size:10px;color:#b54708;font-weight:700'>Thin local sample</div>"
         tc = temp_color(cond.get("temperature"))
         rows.append(
             f"""
             <tr>
               <td style="padding:12px 14px;border-bottom:1px solid #d9ded7;font-weight:700;color:{MARKETS[key]['color']};white-space:nowrap">{MARKETS[key]['name']}</td>
-              <td style="padding:12px 14px;border-bottom:1px solid #d9ded7;font-size:16px;font-weight:800;color:#2d2e30;white-space:nowrap">{fmt_rent(agg.get('averageRent', {}).get('current'))}</td>
+              <td style="padding:12px 14px;border-bottom:1px solid #d9ded7;font-size:16px;font-weight:800;color:#2d2e30;white-space:nowrap">{rent_html}</td>
               <td style="padding:12px 14px;border-bottom:1px solid #d9ded7;color:{pct_color(mom)};font-weight:700;white-space:nowrap">{fmt_pct(mom)}</td>
               <td style="padding:12px 14px;border-bottom:1px solid #d9ded7"><span style="background:{tc}22;color:{tc};border:1px solid {tc}55;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">{cond.get('temperature_label', '-')}</span></td>
             </tr>"""
@@ -324,17 +347,19 @@ def build_other_markets_rows(trends):
     return "".join(rows)
 
 
-def build_group_section(group_key, trends, insights):
+def build_group_section(group_key, trends, insights, history=None):
     group = GROUPS[group_key]
     metrics = aggregate_group_metrics(group["markets"], trends)
     color = "#2f355d" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
     tc = temp_color(metrics["temperature"])
     dom_trend_html = ""
     if group_key != "other":
-        dom_trend_html = f"<div style='font-size:11px;color:{pct_color(-metrics['average_dom_mom'])};margin-top:4px'>MoM {fmt_pct(metrics['average_dom_mom'])}</div>" if metrics["average_dom_mom"] is not None else ""
+        dom_note = " (RentCast historical audit; lower is better)" if missing_prior_snapshot(trends.get("as_of", ""), history) else " (lower is better)"
+        dom_trend_html = f"<div style='font-size:11px;color:{pct_color(-metrics['average_dom_mom'])};margin-top:4px'>MoM {fmt_pct(metrics['average_dom_mom'])}{dom_note}</div>" if metrics["average_dom_mom"] is not None else ""
 
     if group_key == "headline":
         body = f"""
+        <div style="margin-top:16px;font-size:12px;color:#6b716c;line-height:1.6"><strong>Core narrative scope:</strong> regional ranges and rankings apply to Greenville, Spartanburg, Anderson, Simpsonville, Greer, Easley, and Piedmont. Liberty, Clemson, and Seneca remain visible below with directional cautions.</div>
         <div style="background:#fbfcfa;border:1px solid #d9ded7;border-radius:10px;padding:18px 20px;margin-top:16px">
           {insight_html(insights.get("regional", ""), color="#2f355d", headers=["UPSTATE SC MACRO VIEW", "OUTLOOK AND RISKS"])}
         </div>"""
@@ -347,7 +372,7 @@ def build_group_section(group_key, trends, insights):
     else:
         body = f"""
         <div style="margin-top:16px;font-size:13px;color:#2d2e30;line-height:1.7">
-          Directional read for Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.
+          Directional read for Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca.
           Smaller and more specialized markets should be read more cautiously than Greenville and Spartanburg.
         </div>
         <div style="overflow-x:auto;margin-top:16px">
@@ -399,8 +424,8 @@ def build_email_html(trends, insights, history=None, now=None):
     as_of_display = datetime.strptime(as_of, "%Y-%m").strftime("%B %Y") if as_of else "-"
     status = collect_report_status(trends, insights, history or [], now=now)
     rs = trends.get("regional_summary", {})
-    hottest = MARKETS.get(rs.get("hottest_market", ""), {}).get("name", "-")
-    softest = MARKETS.get(rs.get("softest_market", ""), {}).get("name", "-")
+    hottest = MARKETS.get(rs.get("hottest_market", ""), {}).get("name", "N/A")
+    softest = MARKETS.get(rs.get("softest_market", ""), {}).get("name", "N/A")
     avg_mom_values = [
         trends["markets"][market]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"]
         for market in MARKETS
@@ -420,23 +445,24 @@ def build_email_html(trends, insights, history=None, now=None):
   </div>
   <div style="background:#ffffff;padding:20px 36px;border-bottom:1px solid #d9ded7;display:flex;gap:24px;flex-wrap:wrap">
     <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Avg MoM Rent</div><div style="font-size:22px;font-weight:800;color:{pct_color(avg_mom)};font-family:Montserrat,sans-serif">{fmt_pct(avg_mom)}</div></div>
-    <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Hottest Market</div><div style="font-size:22px;font-weight:800;color:#fd5315;font-family:Montserrat,sans-serif">{hottest}</div></div>
-    <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Softest Market</div><div style="font-size:22px;font-weight:800;color:#5d729a;font-family:Montserrat,sans-serif">{softest}</div></div>
+    <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Hottest Rent MoM</div><div style="font-size:22px;font-weight:800;color:#fd5315;font-family:Montserrat,sans-serif">{hottest}</div></div>
+    <div><div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Softest Rent MoM</div><div style="font-size:22px;font-weight:800;color:#5d729a;font-family:Montserrat,sans-serif">{softest}</div></div>
   </div>
   <div style="padding:28px 36px">
     {report_status_html(status)}
+    {comparison_note_html(as_of, history or [])}
     <div style="background:#ffffff;border:1px solid #d9ded7;border-left:4px solid #2f355d;border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;font-family:Roboto,sans-serif">
       <strong style="color:#2f355d">View interactive dashboard:</strong>
       <a href="{PAGES_URL}" style="color:#2f355d">{PAGES_URL}</a>
     </div>
     <h2 style="font-size:16px;font-weight:700;color:#2f355d;letter-spacing:1px;margin-bottom:18px;border-bottom:1px solid #d9ded7;padding-bottom:8px;font-family:Montserrat,sans-serif">TIERED MARKET VIEW</h2>
-    {build_group_section("headline", trends, insights)}
-    {build_group_section("greenville", trends, insights)}
-    {build_group_section("spartanburg", trends, insights)}
-    {build_group_section("other", trends, insights)}
+    {build_group_section("headline", trends, insights, history)}
+    {build_group_section("greenville", trends, insights, history)}
+    {build_group_section("spartanburg", trends, insights, history)}
+    {build_group_section("other", trends, insights, history)}
     <div style="margin-top:40px;padding-top:20px;border-top:1px solid #d9ded7;font-size:11px;color:#6b716c;font-family:Montserrat,sans-serif;text-align:center">
       Jones Assurance Property Management | Rental Market Intelligence | Data: RentCast API<br>
-      Auto-generated {datetime.utcnow().strftime('%Y-%m-%d')} | Not financial advice
+      Auto-generated {datetime.now(timezone.utc).strftime('%Y-%m-%d')} | Not financial advice
     </div>
   </div>
 </div>

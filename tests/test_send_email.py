@@ -111,6 +111,33 @@ class ReportEmailTests(unittest.TestCase):
         self.assertIn("score", confidence)
         self.assertEqual(market_dashboard.recent_history_market(history, "greenville"), {})
 
+    def test_email_scopes_regional_range_and_shows_thin_sample_market(self):
+        trends = {
+            "as_of": "2026-10",
+            "markets": {key: market_payload() for key in market_email.MARKETS},
+            "regional_summary": {"hottest_market": None, "softest_market": None},
+        }
+        trends["markets"]["liberty"] = market_payload(rent=1339, listings=8, mom=None)
+        insights = {
+            "regional": (
+                "UPSTATE SC MACRO VIEW\n\nAcross the seven core narrative markets, rents range "
+                "from roughly $1,286 in Spartanburg to $2,013 in Simpsonville."
+            ),
+            "markets": {key: "Current market analysis." for key in market_email.MARKETS},
+        }
+        html = market_email.build_email_html(
+            trends,
+            insights,
+            history=[{"month": "2026-10", "fetched_at": "2026-10-30T16:44:25+00:00", "data_sources": ["rentcast"]}],
+        )
+
+        self.assertIn("Core narrative scope", html)
+        self.assertIn("Across the seven core narrative markets", html)
+        self.assertIn("Liberty", html)
+        self.assertIn("Insufficient data", html)
+        self.assertIn("Hottest Rent MoM", html)
+        self.assertIn("Comparison note", html)
+
 
 if __name__ == "__main__":
     unittest.main()
