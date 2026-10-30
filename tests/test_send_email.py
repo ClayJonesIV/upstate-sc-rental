@@ -137,6 +137,10 @@ class ReportEmailTests(unittest.TestCase):
         self.assertIn("Insufficient data", html)
         self.assertIn("Hottest Rent MoM", html)
         self.assertIn("Comparison note", html)
+        self.assertIn("Market Coverage", html)
+        self.assertIn("10 Markets", html)
+        self.assertIn("Listing Inventory Index", html)
+        self.assertIn("not a count of unique active properties", html)
 
 
 if __name__ == "__main__":

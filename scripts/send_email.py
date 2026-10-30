@@ -19,7 +19,7 @@ HISTORY_FILE = Path(__file__).parent.parent / "data" / "history.json"
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
-from config import MARKETS
+from config import ALL_ZIPS, MARKETS
 
 GROUPS = {
     "headline": {
@@ -100,6 +100,14 @@ def comparison_note_html(as_of, history):
     return f"""
     <div style="background:#fffaf0;border:1px solid #b5470855;border-left:4px solid #b54708;border-radius:10px;padding:14px 18px;margin:0 0 24px;font-size:13px;line-height:1.6">
       <strong>Comparison note:</strong> The saved {display_month} rent and listing snapshot is unavailable, so rent and listing MoM values are intentionally unavailable. Where shown, days-on-market MoM comes from RentCast's embedded historical audit.
+    </div>"""
+
+
+def inventory_methodology_html(inventory_index):
+    value = f"{inventory_index:,.0f}" if inventory_index is not None else "unavailable"
+    return f"""
+    <div style="background:#ffffff;border:1px solid #2f355d55;border-left:4px solid #2f355d;border-radius:10px;padding:14px 18px;margin:0 0 24px;font-size:13px;line-height:1.6">
+      <strong>Aggregation methodology:</strong> The all-market Listing Inventory Index is {value}. It is the sum of market-level ZIP-average listing counts, not a count of unique active properties. Rent and days-on-market figures are dashboard-weighted market measures, not pooled listing-level regional averages.
     </div>"""
 
 
@@ -352,6 +360,14 @@ def build_group_section(group_key, trends, insights, history=None):
     metrics = aggregate_group_metrics(group["markets"], trends)
     color = "#2f355d" if group_key == "headline" else MARKETS[group["markets"][0]]["color"]
     tc = temp_color(metrics["temperature"])
+    if group_key == "headline":
+        inventory_label = "Market Coverage"
+        inventory_value = f"{len(MARKETS)} Markets"
+        inventory_note = f"{len(ALL_ZIPS)} ZIP codes covered"
+    else:
+        inventory_label = "Listing Inventory Index"
+        inventory_value = f"{metrics['total_listings']:,.0f}" if metrics['total_listings'] is not None else "-"
+        inventory_note = "market ZIP-average index; not a property count"
     dom_trend_html = ""
     if group_key != "other":
         dom_note = " (RentCast historical audit; lower is better)" if missing_prior_snapshot(trends.get("as_of", ""), history) else " (lower is better)"
@@ -411,8 +427,9 @@ def build_group_section(group_key, trends, insights, history=None):
           {dom_trend_html}
         </div>
         <div style="background:#f7f7f3;border:1px solid #d9ded7;border-radius:10px;padding:12px 14px;min-width:150px">
-          <div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">Listings</div>
-          <div style="font-size:21px;font-weight:800;color:#2d2e30;font-family:Montserrat,sans-serif">{f"{metrics['total_listings']:,.0f}" if metrics['total_listings'] is not None else "-"}</div>
+          <div style="font-size:10px;color:#6b716c;text-transform:uppercase;letter-spacing:1px;font-family:Montserrat,sans-serif">{inventory_label}</div>
+          <div style="font-size:21px;font-weight:800;color:#2d2e30;font-family:Montserrat,sans-serif">{inventory_value}</div>
+          <div style="font-size:10px;color:#6b716c;margin-top:4px">{inventory_note}</div>
         </div>
       </div>
       {body}
@@ -432,6 +449,7 @@ def build_email_html(trends, insights, history=None, now=None):
         if trends["markets"][market]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] is not None
     ]
     avg_mom = round(sum(avg_mom_values) / len(avg_mom_values), 2) if avg_mom_values else None
+    headline_metrics = aggregate_group_metrics(GROUPS["headline"]["markets"], trends)
 
     return f"""<!DOCTYPE html>
 <html>
@@ -451,6 +469,7 @@ def build_email_html(trends, insights, history=None, now=None):
   <div style="padding:28px 36px">
     {report_status_html(status)}
     {comparison_note_html(as_of, history or [])}
+    {inventory_methodology_html(headline_metrics['total_listings'])}
     <div style="background:#ffffff;border:1px solid #d9ded7;border-left:4px solid #2f355d;border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:13px;font-family:Roboto,sans-serif">
       <strong style="color:#2f355d">View interactive dashboard:</strong>
       <a href="{PAGES_URL}" style="color:#2f355d">{PAGES_URL}</a>

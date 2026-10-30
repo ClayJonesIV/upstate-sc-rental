@@ -103,6 +103,15 @@ def comparison_gap_html(history: list) -> str:
 """.strip()
 
 
+def inventory_methodology_html(inventory_index) -> str:
+    value = f"{inventory_index:,.0f}" if inventory_index is not None else "unavailable"
+    return f"""
+  <div class=\"data-note\">
+    <strong>Aggregation methodology:</strong> The all-market Listing Inventory Index is {value}. It is the sum of market-level ZIP-average listing counts, not a count of unique active properties. Rent and days-on-market figures are dashboard-weighted market measures, not pooled listing-level regional averages.
+  </div>
+""".strip()
+
+
 def pct_class(value):
     if value is None:
         return ""
@@ -537,6 +546,14 @@ def build_group_section(group_key, trends, insights, history, supplemental):
 
     rent_value_html = fmt_rent(metrics["average_rent"])
     rent_mom_html = f"<span class='trend-item {pct_class(metrics['average_mom'])}'>MoM {fmt_pct(metrics['average_mom'])}</span>"
+    if group_key == "headline":
+        inventory_label = "Market Coverage"
+        inventory_value = f"{len(MARKETS)} Markets"
+        inventory_note = f"({len(ALL_ZIPS)} ZIP codes covered)"
+    else:
+        inventory_label = "Listing Inventory Index"
+        inventory_value = f"{metrics['total_listings']:,.0f}" if metrics['total_listings'] is not None else "-"
+        inventory_note = "(market ZIP-average index; not a property count)"
     content = ""
 
     if group_key == "headline":
@@ -622,9 +639,9 @@ def build_group_section(group_key, trends, insights, history, supplemental):
       </div>
     </div>
     <div class="metric-card" style="border-top-color:{color}">
-      <div class="metric-label">Active Listings</div>
-      <div class="metric-val">{f"{metrics['total_listings']:,.0f}" if metrics['total_listings'] is not None else '—'}</div>
-      <div class="trend-row"><span class="trend-note">(tier-level summary)</span></div>
+      <div class="metric-label">{inventory_label}</div>
+      <div class="metric-val">{inventory_value}</div>
+      <div class="trend-row"><span class="trend-note">{inventory_note}</span></div>
     </div>
   </div>
   {content}
@@ -663,6 +680,8 @@ def build_html(trends, insights, history, supplemental):
     hottest = hottest if rs.get("hottest_market") else "N/A"
     softest = softest if rs.get("softest_market") else "N/A"
     comparison_gap = comparison_gap_html(history)
+    headline_metrics = aggregate_group_metrics(GROUPS["headline"]["markets"], history, trends)
+    inventory_methodology = inventory_methodology_html(headline_metrics["total_listings"])
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -789,6 +808,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
     <div>Lower sample sizes trigger visible cautions, while unusual monthly moves are flagged for review rather than hidden.</div>
   </div>
   {comparison_gap}
+  {inventory_methodology}
 
   <div class="section-header">Tiered Market View</div>
   {headline_section}
@@ -799,7 +819,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
   <div class="data-note">
     <strong>Jones Assurance PM Market View:</strong> Market data pulled monthly from
     <strong>RentCast API</strong> (rentcast.io) covering {len(ALL_ZIPS)} zip codes across 10 Upstate SC markets.
-    Data reflects active rental listings only.
+    Metrics are derived from active-rental-listing source data; the Listing Inventory Index is not a unique-property count.
     <strong>Not financial advice.</strong>
   </div>
 
