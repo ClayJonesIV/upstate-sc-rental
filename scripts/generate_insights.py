@@ -37,8 +37,8 @@ CLAUDE_MODEL = "claude-sonnet-5-5"
 MAX_ANALYSIS_CALLS = 10
 MAX_OUTPUT_TOKENS_PER_CALL = 2_000
 # $0.50 maximum Claude input at the current $2 / MTok list price. Together
-# with 10 x 2,000 output tokens ($0.20) and 18 x $0.20 RentCast calls ($3.60),
-# this leaves $0.70 below the approved $5 cap. The free token-count preflight
+# with 10 x 2,000 output tokens ($0.20) and 20 x $0.20 RentCast calls ($4.00),
+# this leaves $0.30 below the approved $5 cap. The free token-count preflight
 # measures the actual request shapes before any paid Claude request is sent.
 MAX_TOTAL_INPUT_TOKENS = 250_000
 

@@ -29,10 +29,10 @@ RAW_FILE = Path(__file__).parent.parent / "data" / "raw_latest.json"
 SUPP_FILE = Path(__file__).parent.parent / "data" / "supplemental_latest.json"
 DOM_AUDIT_FILE = Path(__file__).parent.parent / "data" / "rentcast_dom_audit.json"
 
-# The approved full market refresh covers the current 18 configured ZIPs.
+# The approved full market refresh covers the current 20 configured ZIPs.
 # Fail before any provider request if configuration expands, rather than silently
 # exceeding the per-run paid API budget.
-MAX_API_CALLS = 18
+MAX_API_CALLS = 20
 HISTORY_MONTHS = 15
 _call_count = 0
 
