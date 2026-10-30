@@ -163,6 +163,7 @@ def collect_report_status(trends, insights, history, now=None):
         "as_of": as_of,
         "fetched_at": latest.get("fetched_at") if latest else None,
         "sources": (latest.get("data_sources") if latest else []) or [],
+        "model": insights.get("model") or "not recorded",
         "analysis_complete": not analysis_failures,
         "errors": errors,
         "warnings": warnings,
@@ -184,7 +185,7 @@ def report_status_html(status):
     <div style="background:#fffaf0;border:1px solid {color}55;border-left:4px solid {color};border-radius:10px;padding:14px 18px;margin:0 0 24px;font-size:13px;line-height:1.6">
       <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:{color};font-family:Montserrat,sans-serif">REPORT STATUS: {label}</div>
       <div><strong>Report month:</strong> {escape(str(status['as_of']))} &nbsp;|&nbsp; <strong>Latest source fetch:</strong> {fetched}</div>
-      <div><strong>Sources:</strong> {sources} &nbsp;|&nbsp; <strong>AI narrative:</strong> {"complete" if status["analysis_complete"] else "incomplete — review required"}</div>
+      <div><strong>Sources:</strong> {sources} &nbsp;|&nbsp; <strong>AI model:</strong> {escape(str(status['model']))} &nbsp;|&nbsp; <strong>AI narrative:</strong> {"complete" if status["analysis_complete"] else "incomplete — review required"}</div>
       <ul style="margin:8px 0 0 18px;padding:0">{notes_html}</ul>
     </div>"""
 

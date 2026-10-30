@@ -44,7 +44,7 @@ Hosted free on GitHub Pages.
 **Anthropic API**
 1. Sign up at [console.anthropic.com](https://console.anthropic.com)
 2. Go to API Keys → Create Key
-3. Cost per monthly run: ~$0.10–0.15 (Claude Sonnet, 11 market analyses)
+3. The workflow uses Claude Sonnet 5.5 for one regional and nine market analyses, each capped at 2,000 output tokens.
 
 **Gmail App Password**
 1. Enable 2-Step Verification on your Google account
@@ -102,9 +102,9 @@ You can also trigger it manually from the Actions tab anytime.
 | GitHub Actions | Free (well within 2,000 min/month limit) |
 | GitHub Pages | Free |
 | RentCast API | Free (18 calls / 50 included) |
-| Anthropic API | ~$0.10–0.15/month |
+| Anthropic API | Variable: Claude Sonnet 5.5, 10 analyses/run, each capped at 2,000 output tokens. At current list prices, the maximum output-token charge is $0.20/run plus input tokens. |
 | Gmail SMTP | Free |
-| **Total** | **~$0.15/month** |
+| **Total** | **Variable; depends on current provider plans and Anthropic input/output token usage.** |
 
 ## Customization
 

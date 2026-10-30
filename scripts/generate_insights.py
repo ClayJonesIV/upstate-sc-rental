@@ -25,6 +25,9 @@ sys.path.insert(0, sys_path)
 from config import MARKETS
 
 client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+# Approved migration from the retired Claude Sonnet 4 model. This workflow uses
+# the standard Messages API with no tools and no up-front thinking.
+CLAUDE_MODEL = "claude-sonnet-5-5"
 
 
 def error_kind(error: Exception) -> str:
@@ -323,12 +326,18 @@ def call_claude(prompt: str, context: str = "") -> str:
     messages.append({"role": "user", "content": prompt})
 
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model=CLAUDE_MODEL,
         max_tokens=2000,
         system=SYSTEM_PROMPT,
+        # Sonnet 5.5 thinks by default. With this text-only, no-tool workflow,
+        # between_tools preserves the previous text-only response shape.
+        thinking={"type": "between_tools"},
         messages=messages,
     )
-    return response.content[0].text.strip()
+    text_blocks = [block.text for block in response.content if getattr(block, "type", None) == "text"]
+    if not text_blocks:
+        raise ValueError("Claude response contained no text block")
+    return "\n".join(text_blocks).strip()
 
 def main():
     print(f"\n{'='*55}")
@@ -344,6 +353,7 @@ def main():
     insights = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "as_of": month,
+        "model": CLAUDE_MODEL,
         "regional": "",
         "markets": {},
         "analysis_status": {"regional": {}, "markets": {}},
