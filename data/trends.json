@@ -6531,8 +6531,8 @@
     "avg_dom_qoq_pct": 22.15,
     "markets_with_rent_growth": 0,
     "markets_declining": 0,
-    "hottest_market": "greenville",
-    "softest_market": "greenville",
+    "hottest_market": null,
+    "softest_market": null,
     "top_market_scope": "high_confidence_only"
   }
 }

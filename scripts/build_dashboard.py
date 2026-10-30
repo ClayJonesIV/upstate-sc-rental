@@ -6,7 +6,7 @@ and writes a complete self-contained docs/index.html for GitHub Pages.
 """
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 HISTORY_FILE = Path(__file__).parent.parent / "data" / "history.json"
@@ -17,7 +17,7 @@ OUTPUT_FILE = Path(__file__).parent.parent / "docs" / "index.html"
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
-from config import MARKETS
+from config import ALL_ZIPS, MARKETS
 
 GROUPS = {
     "headline": {
@@ -37,8 +37,8 @@ GROUPS = {
     },
     "other": {
         "title": "Other Markets",
-        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "clemson", "seneca"],
-        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Clemson, and Seneca.",
+        "markets": ["anderson", "simpsonville", "greer", "easley", "piedmont", "liberty", "clemson", "seneca"],
+        "description": "Directional view for Anderson, Simpsonville, Greer, Easley, Piedmont, Liberty, Clemson, and Seneca. Liberty rent is suppressed when the local listing sample is too thin.",
     },
 }
 
@@ -69,6 +69,38 @@ def fmt_date(ts: str, fallback: str = "n/a") -> str:
         return datetime.fromisoformat(ts.replace("Z", "+00:00")).strftime("%Y-%m-%d")
     except ValueError:
         return ts[:10] if len(ts) >= 10 else ts
+
+
+def missing_prior_snapshot(history: list) -> str | None:
+    """Return the prior calendar month only when the saved market snapshot is absent."""
+    if not history:
+        return None
+    latest_month = history[-1].get("month", "")
+    try:
+        latest = datetime.strptime(latest_month, "%Y-%m")
+    except ValueError:
+        return None
+    prior = latest.replace(day=1) - timedelta(days=1)
+    prior_key = prior.strftime("%Y-%m")
+    return prior.strftime("%B %Y") if not any(record.get("month") == prior_key for record in history) else None
+
+
+def dom_comparison_note(history: list) -> str:
+    missing_month = missing_prior_snapshot(history)
+    if not missing_month:
+        return "(lower is better)"
+    return f"(RentCast {missing_month} historical audit; lower is better)"
+
+
+def comparison_gap_html(history: list) -> str:
+    missing_month = missing_prior_snapshot(history)
+    if not missing_month:
+        return ""
+    return f"""
+  <div class=\"data-note\">
+    <strong>Comparison note:</strong> The saved {missing_month} rent and listing snapshot is unavailable, so rent and listing MoM values are intentionally shown as unavailable. Days-on-market MoM remains available because RentCast returned {missing_month} in its embedded historical audit.
+  </div>
+""".strip()
 
 
 def pct_class(value):
@@ -327,7 +359,7 @@ def data_inputs_html(reliability):
     <div><strong>Zip codes queried:</strong> {", ".join(reliability['zip_codes'])}</div>
     <div><strong>Fallback support invoked:</strong> {"Yes" if reliability['fallback_invoked'] else "No"}</div>
     <div><strong>Baseline cross-check:</strong> {divergence}</div>
-    <div><strong>Latest MoM audit:</strong> {mom_line}</div>
+    <div><strong>Latest rent MoM audit:</strong> {mom_line}</div>
   </div>
 </details>
 """
@@ -510,7 +542,8 @@ def build_group_section(group_key, trends, insights, history, supplemental):
     if group_key == "headline":
         content = f"""
   <div class="insight-block">
-    <div class="insight-label">Regional Market Analysis</div>
+    <div class="insight-label">Regional Market Analysis — Core Narrative Scope</div>
+    <p>The regional narrative uses the seven core markets with more stable local signal. The headline metrics above aggregate all 10 tracked markets; Liberty, Clemson, and Seneca remain visible in the table with directional cautions.</p>
     {insight_paragraphs(insights.get('regional', 'Analysis not available.'))}
   </div>
 """
@@ -585,7 +618,7 @@ def build_group_section(group_key, trends, insights, history, supplemental):
       <div class="metric-val">{fmt_days(metrics['average_dom'])}</div>
       <div class="trend-row">
         {f'<span class="trend-item {pct_class(-metrics["average_dom_mom"]) if metrics["average_dom_mom"] is not None else ""}">MoM {fmt_pct(metrics["average_dom_mom"])}</span>' if group_key != "other" else ''}
-        <span class="trend-note">(lower is better)</span>
+        <span class="trend-note">{dom_comparison_note(history)}</span>
       </div>
     </div>
     <div class="metric-card" style="border-top-color:{color}">
@@ -627,6 +660,9 @@ def build_html(trends, insights, history, supplemental):
 
     hottest = MARKETS.get(rs.get("hottest_market", ""), {}).get("name", "—")
     softest = MARKETS.get(rs.get("softest_market", ""), {}).get("name", "—")
+    hottest = hottest if rs.get("hottest_market") else "N/A"
+    softest = softest if rs.get("softest_market") else "N/A"
+    comparison_gap = comparison_gap_html(history)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -730,11 +766,11 @@ h1 em{{color:#d7e4f2;font-style:normal}}
       <div class="hs-val" style="color:{'#2f355d' if (avg_mom_rent or 0) >= 0 else '#e07a6a'}">{fmt_pct(avg_mom_rent)}</div>
     </div>
     <div class="hero-stat">
-      <div class="hs-label">Hottest Market</div>
+      <div class="hs-label">Hottest Rent MoM</div>
       <div class="hs-val" style="color:#f4a235;font-size:15px">{hottest}</div>
     </div>
     <div class="hero-stat">
-      <div class="hs-label">Softest Market</div>
+      <div class="hs-label">Softest Rent MoM</div>
       <div class="hs-val" style="color:#5d729a;font-size:15px">{softest}</div>
     </div>
   </div>
@@ -752,6 +788,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
     <div>Confidence scores combine listing depth, source specificity, fallback usage, and baseline cross-check behavior.</div>
     <div>Lower sample sizes trigger visible cautions, while unusual monthly moves are flagged for review rather than hidden.</div>
   </div>
+  {comparison_gap}
 
   <div class="section-header">Tiered Market View</div>
   {headline_section}
@@ -761,7 +798,7 @@ h1 em{{color:#d7e4f2;font-style:normal}}
 
   <div class="data-note">
     <strong>Jones Assurance PM Market View:</strong> Market data pulled monthly from
-    <strong>RentCast API</strong> (rentcast.io) covering 18 zip codes across 10 Upstate SC markets.
+    <strong>RentCast API</strong> (rentcast.io) covering {len(ALL_ZIPS)} zip codes across 10 Upstate SC markets.
     Data reflects active rental listings only.
     <strong>Not financial advice.</strong>
   </div>

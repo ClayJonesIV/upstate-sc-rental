@@ -296,6 +296,11 @@ def regional_prompt(trends: dict, month: str, history: list, supplemental: dict 
 
     return f"""Write the REGIONAL EXECUTIVE SUMMARY for the Upstate South Carolina rental market for {month}.
 
+NARRATIVE SCOPE:
+- This narrative uses these seven core markets: Greenville, Spartanburg, Anderson, Simpsonville, Greer, Easley, and Piedmont.
+- Liberty, Clemson, and Seneca are intentionally excluded from regional narrative ranges and rankings because their data is more directional, seasonal, or thin; the dashboard still displays them separately with cautions.
+- When describing a rent range or market ranking, state that it applies to the core narrative markets.
+
 MARKET SNAPSHOT:
 {markets_str}
 

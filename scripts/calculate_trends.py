@@ -114,6 +114,26 @@ def weighted_average(pairs):
         return None
     return round(sum(value * weight for value, weight in usable) / total_weight, 2)
 
+
+def rank_high_confidence_rent_momentum(trends: dict) -> tuple[str | None, str | None]:
+    """Return rent-MoM leaders only when there is a valid comparison to rank."""
+    candidates = []
+    for market in HIGH_CONFIDENCE_MARKETS:
+        value = (
+            trends.get("markets", {})
+            .get(market, {})
+            .get("aggregate", {})
+            .get("averageRent", {})
+            .get("changes", {})
+            .get("mom", {})
+            .get("pct_change")
+        )
+        if value is not None:
+            candidates.append((market, value))
+    if not candidates:
+        return None, None
+    return max(candidates, key=lambda item: item[1])[0], min(candidates, key=lambda item: item[1])[0]
+
 def compute_trends(history: list, dom_audit: dict | None = None) -> dict:
     history = sorted(history, key=lambda record: record.get("month", ""))
     latest = history[-1] if history else None
@@ -275,6 +295,7 @@ def compute_trends(history: list, dom_audit: dict | None = None) -> dict:
         )
         for m in MARKETS
     ]
+    hottest_market, softest_market = rank_high_confidence_rent_momentum(trends)
     trends["regional_summary"] = {
         "avg_rent_mom_pct": round(sum(all_mom) / len(all_mom), 2) if all_mom else None,
         "avg_rent_yoy_pct": round(sum(all_yoy) / len(all_yoy), 2) if all_yoy else None,
@@ -289,10 +310,8 @@ def compute_trends(history: list, dom_audit: dict | None = None) -> dict:
         "avg_dom_qoq_pct": weighted_average(all_dom_qoq),
         "markets_with_rent_growth": sum(1 for v in all_yoy if v > 0),
         "markets_declining": sum(1 for v in all_yoy if v < 0),
-        "hottest_market": max(HIGH_CONFIDENCE_MARKETS, key=lambda m:
-            trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] or -999),
-        "softest_market": min(HIGH_CONFIDENCE_MARKETS, key=lambda m:
-            trends["markets"][m]["aggregate"]["averageRent"]["changes"]["mom"]["pct_change"] or 999),
+        "hottest_market": hottest_market,
+        "softest_market": softest_market,
         "top_market_scope": "high_confidence_only",
     }
 
